@@ -1,0 +1,54 @@
+
+
+<div *ngIf="presby$ | async as presby">
+	<div style="margin-top: .5rem; background-color: lightgray; display: flex; justify-content: space-between; align-items: center">
+		<h2 style="margin-left: 1rem"> Host Detail </h2>
+		<div style="text-align: center"><button (click)="gotoPresbies(presby)"> Back </button></div>
+	</div>
+	<table>
+		<tr>
+			<td style="width: 50%">
+				<h2> Host: <br/>	<strong> {{presby.name}}	</strong></h2>
+				<p>	ROSTER ROW:	<strong> {{presby.id}}			</strong>
+				<p> ACTIVE:		<strong> {{presby.ACTIVE}}		</strong>
+			</td>
+			<td style="width: 50%; text-align: right">
+				<qr-code value="tel:1-785-{{presby.HOME}}" size="150" errorCorrectionLevel="H"></qr-code>
+			</td>
+		</tr>
+	</table>
+	
+	<label for="presby-HJAN"	><strong> January </strong> Available Seats:	</label>
+	<input type="text" id="presby-HJAN"		[(ngModel)]="presby.HJAN"	placeholder="HJAN"	/>
+	
+	<label for="presby-HFEB"	><strong> February </strong> Available Seats:	</label>
+	<input type="text" id="presby-HFEB"		[(ngModel)]="presby.HFEB"	placeholder="HFEB"	/>
+	
+	<label for="presby-HMAR"	><strong> March </strong> Available Seats:		</label>
+	<input type="text" id="presby-HMAR"		[(ngModel)]="presby.HMAR"	placeholder="HMAR"	/>
+	
+	<label for="presby-S"		> S???				</label>
+	<input type="text" id="presby-S"		[(ngModel)]="presby.S"		placeholder="S"		/>
+	
+	<label for="presby-EMAIL"	> Email:			</label>
+	<input type="text" id="presby-EMAIL"	[(ngModel)]="presby.EMAIL"	placeholder="EMAIL"	/>
+	
+	<label for="presby-HOME"	> Home Phone:		</label>
+	<input type="text" id="presby-HOME"		[(ngModel)]="presby.HOME"	placeholder="HOME"	/>
+	
+	<label for="presby-CELL"	> Mobile Phone:		</label>
+	<input type="text" id="presby-CELL"		[(ngModel)]="presby.CELL"	placeholder="CELL"	/>
+	
+	<label for="presby-SMAIL"	> Home Address:		</label>
+	<input type="text" id="presby-SMAIL"	[(ngModel)]="presby.SMAIL"	placeholder="SMAIL"	/>
+	
+	<label for="presby-CITY"	> Home City:		</label>
+	<input type="text" id="presby-CITY"		[(ngModel)]="presby.CITY"	placeholder="CITY"	/>
+	
+	<label for="presby-ST"		> Home State:		</label>
+	<input type="text" id="presby-ST"		[(ngModel)]="presby.ST"		placeholder="ST"	/>
+	
+	<label for="presby-ZIP"		> Home Zip Code:	</label>
+	<input type="text" id="presby-ZIP"		[(ngModel)]="presby.ZIP"	placeholder="ZIP"	/>
+
+</div>

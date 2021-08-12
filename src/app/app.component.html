@@ -1,0 +1,21 @@
+
+
+<div class="wrapper">
+	<h1 class="title" style="margin-bottom: 0"> Presby Grub Club </h1>
+	<hr style=""/>
+	<nav>
+		<a routerLink="/presbies"	routerLinkActive="active" > Presbies 	</a>
+		<a routerLink="/hosts"		routerLinkActive="active" > Hosts		</a>
+		<a routerLink="/plans"		routerLinkActive="active" > Plan 		</a>
+		<a routerLink="/login"		routerLinkActive="active"	aria-disabled="true"> Login		</a>
+		<a [routerLink]="[{ outlets: { popup: ['compose'] } }]"	aria-disabled="true"> Contact	</a>
+	</nav>
+	<router-outlet name="popup"></router-outlet>
+	<div [@routeAnimation]="getAnimationData(routerOutlet)">
+		<router-outlet #routerOutlet="outlet"></router-outlet>
+	</div>
+</div>
+
+
+
+<!--a routerLink="/admin"		routerLinkActive="active"	aria-disabled="true"> Admin	</a-->

@@ -1,0 +1,17 @@
+{
+    "FdTest":               false,
+    "FdVerbose":            false,
+    "FdBuildContext":       "angular",
+    "FdRepo":               "pdc",
+    "FdService":            "pdc",
+    "FdRouteBase":          "/pdc/",
+    "FdTitle":              "PDC-Admin",
+    "FdTargetAlias":        "local",
+    "FdTargetDomain":       "weja.us",
+    "FdTargetImageTag":     "latest",
+    "FdTargetLocalPort":    "7777",
+    "FdTargetLogLevel":     "info",
+    "FdTargetProjectId":    "weja-us",
+    "FdTargetRealm":        "too.fb.",
+    "FdTargetRemotePort":   "8080"
+}

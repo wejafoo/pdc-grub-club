@@ -1,0 +1,27 @@
+
+
+<div style="margin-top: .5rem; background-color: lightgray; display: flex; justify-content: space-between; align-items: center">
+	<h2 style="margin-left: 1rem"> Grub Club Planning Hub </h2>
+	<button id="alt-button" style="" (click)="addPlan()" class="fab"> + </button>
+</div>
+<ul>
+	<li *ngFor="let plan of newPlansReturn" [class.selected]="plan.id === selectedId">
+		<div style="display: flex; ">
+			<div style="display: flex; width: 100%; ">
+				<a routerLinkActive="active" routerLink="/plan/{{plan.id}}">
+					<div><button style="margin: 0 1rem 0 0; " class="fab"> {{plan.id}} </button></div>
+					<div style="width: 100%; color: black"> {{plan.name}} </div>
+				</a>
+			</div>
+			<div style="display: flex; ">
+				<button style="margin: 0 0 0 1rem; " (click)="removePlan( plan.id )" class="fab"> - </button>
+			</div>
+		</div>
+	</li>
+</ul>
+<hr/>
+<router-outlet></router-outlet>
+
+
+<!--li *ngFor="let plan of plans$ | async" [class.selected]="plan.id === selectedId"-->
+<!--a routerLinkActive="active" [routerLink]="[plan.id]"-->

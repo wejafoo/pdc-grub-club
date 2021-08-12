@@ -1,0 +1,13 @@
+
+
+<h2> Active Host List </h2>
+
+<ul class="presbies">
+	<li *ngFor="let presby of presbies$ | async" [class.selected]="presby.id === selectedId">
+		<a [routerLink]="['/host', presby.id]">
+			<span class="badge"> {{ presby.id }} </span>{{ presby.name }}
+		</a>
+	</li>
+</ul>
+
+<!--button routerLink="/sidekicks"> Go to sidekicks </button-->
