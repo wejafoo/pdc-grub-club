@@ -2,20 +2,21 @@
 
 <div class="wrapper">
 	<h1 class="title" style="margin-bottom: 0"> Presby Grub Club </h1>
-	<hr style=""/>
+	<hr/>
 	<nav>
-		<a routerLink="/presbies"	routerLinkActive="active" > Presbies 	</a>
-		<a routerLink="/hosts"		routerLinkActive="active" > Hosts		</a>
-		<a routerLink="/plans"		routerLinkActive="active" > Plan 		</a>
-		<a routerLink="/login"		routerLinkActive="active"	aria-disabled="true"> Login		</a>
-		<a [routerLink]="[{ outlets: { popup: ['compose'] } }]"	aria-disabled="true"> Contact	</a>
+		<a routerLink="/guest"	routerLinkActive="active" 		> Guests 	</a>
+		<a routerLink="/host"	routerLinkActive="active" 		> Hosts		</a>
+		<a routerLink="/plan"	routerLinkActive="active" 		> Plans 	</a>
+		<a routerLink="/login"	routerLinkActive="active" 		> Login		</a>
+		<a [routerLink]="[{ outlets: { popup: ['compose']}}]"	> Contact	</a>
+		<!--a routerLink="/admin" routerLinkActive="active"	aria-disabled="true"> Admin	</a-->
 	</nav>
+	
 	<router-outlet name="popup"></router-outlet>
-	<div [@routeAnimation]="getAnimationData(routerOutlet)">
-		<router-outlet #routerOutlet="outlet"></router-outlet>
-	</div>
+	<!--div [@routeAnimation]="getAnimationData( routerOutlet )" ><router-outlet #routerOutlet="outlet"></router-outlet-->
+	<router-outlet></router-outlet>
+	
 </div>
 
 
 
-<!--a routerLink="/admin"		routerLinkActive="active"	aria-disabled="true"> Admin	</a-->

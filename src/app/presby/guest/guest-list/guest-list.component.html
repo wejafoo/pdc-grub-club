@@ -1,0 +1,12 @@
+
+
+<h2> Active Guest List </h2>
+<ul class="guests">
+	<li *ngFor="let guest of guests$ | async" [class.selected]="guest.id === guestId">
+		<a [routerLink]="['/guest', guest.id]">
+			<span class="badge"> {{ guest.id }} </span>
+			{{ guest.name }}
+			<qr-code  style="display: none" value="(816) 522-7678" size="50" errorCorrectionLevel="H"></qr-code>
+		</a>
+	</li>
+</ul>

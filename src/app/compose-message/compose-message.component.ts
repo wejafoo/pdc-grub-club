@@ -31,10 +31,6 @@ export class ComposeMessageComponent {
 		}, 1000 )
 	}
 	
-	cancel()		{ this.closePopup() }
-	closePopup()	{
-		this.router.navigate([{ outlets: { popup: null }}]).then( r => {
-			if ( this.debug ) console.log( 'Navigation from compose-message->closePopup():', r )
-		})
-	}
+	cancel() { this.closePopup() }
+	closePopup() { this.router.navigate([{ outlets: { popup: null }}]).then(r => { if (this.debug) console.log(r)})}
 }

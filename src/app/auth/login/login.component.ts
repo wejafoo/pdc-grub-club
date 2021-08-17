@@ -2,10 +2,10 @@
 
 import { environment		} from '../../../environments/environment';
 import { Component			} from '@angular/core';
-import { NavigationExtras	} from '@angular/router';
 import { Router				} from '@angular/router';
 import { AuthService		} from '../services/auth.service';
 
+// import { NavigationExtras } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -34,10 +34,10 @@ export class LoginComponent {
 		this.authService.login().subscribe(() => {
 			this.message = this.getMessage();
 			if ( this.authService.isLoggedIn ) {
-				const redirectUrl = '/admin';																			// Usually you would use the redirect URL from the auth service.  However to keep the example simple, we will always redirect to `/admin`.
-				const navigationExtras: NavigationExtras = { queryParamsHandling: 'preserve', preserveFragment: true };	// Set our navigation extras object that passes on our global query params and fragment
+				// const redirectUrl = '/admin';																		// Usually you would use the redirect URL from the auth service.  However to keep the example simple, we will always redirect to `/admin`.
+				// const navigationExtras: NavigationExtras = { queryParamsHandling: 'preserve', preserveFragment: true };	// Set our navigation extras object that passes on our global query params and fragment
 				if ( this.debug ) console.log( 'Querying auth service:', this.authService.isLoggedIn );
-				// this.router.navigate([redirectUrl], navigationExtras ).then( r => console.log( r ))					// Redirect user on success
+				// this.router.navigate([redirectUrl], navigationExtras ).then(r => { if (this.debug) console.log(r)})}	// Redirect user on success
 			}
 		})
 	}

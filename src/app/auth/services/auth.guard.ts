@@ -6,13 +6,11 @@ import { CanActivate			} from '@angular/router';
 import { CanActivateChild		} from '@angular/router';
 import { CanLoad				} from '@angular/router';
 import { Injectable				} from '@angular/core';
-import { NavigationExtras		} from '@angular/router';
 import { Route					} from '@angular/router';
 import { RouterStateSnapshot	} from '@angular/router';
 import { AuthService			} from './auth.service';
 
-// import { Router	} from '@angular/router';
-// private router: Router
+// import { NavigationExtras } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 
@@ -43,8 +41,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 		// const sessionId = 123456789;																					// Create a dummy session id
 		// const navigationExtras: NavigationExtras = {queryParams: { session_id: sessionId }, fragment: 'anchor'};		// Set our navigation extras object that contains our global query params and fragment
 		if ( this.debug ) console.log( 'AuthGuard redirect to:', url );
-		// this.router.navigate(['/login'], navigationExtras ).then( r => {												// Navigate to the login page with extras
-		// if ( this.debug ) console.log( r ));})
+		// this.router.navigate(['/login'], navigationExtras ).then(r => { if (this.debug) console.log(r)})}			// Navigate to the login page with extras
 		return false;
 	}
 }

@@ -20,7 +20,6 @@ export class DialogService {
 	}
 	
 	confirm( message?: string ): Observable<boolean> {
-		console.log( 'Dialog-ing, please wait...' );
 		const confirmation = window.confirm( message  ||  'Is it OK?' );
 		return of( confirmation )																						// Return confirmation observable resolving to `true`=confirm or `false`=cancel
 	}

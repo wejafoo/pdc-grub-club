@@ -1,27 +1,30 @@
 
 
-<div style="margin-top: .5rem; background-color: lightgray; display: flex; justify-content: space-between; align-items: center">
+<div style="margin-top: .5rem; background-color: gainsboro; display: flex; justify-content: space-between; align-items: center">
 	<h2 style="margin-left: 1rem"> Grub Club Planning Hub </h2>
-	<button id="alt-button" style="" (click)="addPlan()" class="fab"> + </button>
+	<button id="alt-button" style="margin: .5rem " (click)="addPlan()" class="fab">
+		<mat-icon aria-hidden="false" aria-label="Example home icon"> add </mat-icon>
+	</button>
 </div>
-<ul>
-	<li *ngFor="let plan of newPlansReturn" [class.selected]="plan.id === selectedId">
+<h3 style="margin: .5rem"> Plans </h3>
+<ul style="margin: .5rem">
+	<li *ngFor="let plan of plans" [class.selected]="plan.id === planId">
 		<div style="display: flex; ">
 			<div style="display: flex; width: 100%; ">
 				<a routerLinkActive="active" routerLink="/plan/{{plan.id}}">
-					<div><button style="margin: 0 1rem 0 0; " class="fab"> {{plan.id}} </button></div>
-					<div style="width: 100%; color: black"> {{plan.name}} </div>
+					<div style="padding: 0 .5rem; height: 100%; "> {{plan.id}} </div>
+					<div style="height: 100%; ">-</div>
+					<div style="padding: 0 .5rem; width: 100%; "> {{plan.name}} </div>
 				</a>
 			</div>
-			<div style="display: flex; ">
-				<button style="margin: 0 0 0 1rem; " (click)="removePlan( plan.id )" class="fab"> - </button>
-			</div>
+			<div style="display: flex; "><button style="margin-left: .5rem; " (click)="updatePlan(plan.id)"	class="fab"><mat-icon> edit 	</mat-icon></button></div>
+			<div style="display: flex; "><button style="margin-left: .5rem; " (click)="removePlan(plan.id)"	class="fab"><mat-icon> delete 	</mat-icon></button></div>
 		</div>
 	</li>
 </ul>
 <hr/>
-<router-outlet></router-outlet>
+<div>
 
+	<router-outlet></router-outlet>
 
-<!--li *ngFor="let plan of plans$ | async" [class.selected]="plan.id === selectedId"-->
-<!--a routerLinkActive="active" [routerLink]="[plan.id]"-->
+</div>

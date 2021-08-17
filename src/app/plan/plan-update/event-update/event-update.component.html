@@ -1,0 +1,44 @@
+
+
+<div *ngIf="updatePlan !== undefined">
+	<div style="margin-top: .5rem; background-color: gainsboro; display: flex; justify-content: space-between; align-items: center">
+		<h2 style="margin-left: 1rem"> {{updatePlan.name}} </h2>
+		<button id="alt-button" style="margin: .5rem " (click)="addEvent()" class="fab">
+			<mat-icon aria-hidden="false" aria-label="Example home icon"> add </mat-icon>
+		</button>
+	</div>
+	<h3 style="margin: .5rem; "> Events </h3>
+	<ul style="margin: .5rem; " >
+		<li *ngFor="let event of updatePlan.events" [class.selected]="event.id === eventId">
+			<div style="display: flex; ">
+				<div style="display: flex; width: 100%; ">
+					<a routerLinkActive="active" routerLink="/plan/{{event.id}}">
+						<div><button style="margin-right: .5rem; padding: .25rem; height: 100%; " class="fab"> {{event.id}} </button></div>
+						<div style="width: 100%; color: black"> {{event.name}} </div>
+					</a>
+				</div>
+				<div style="display: flex; ">
+					<button style="margin-left: .5rem; " (click)="editEvent( event.id )" class="fab">
+						<mat-icon aria-hidden="false" aria-label="Example home icon"> edit </mat-icon>
+					</button>
+				</div>
+				<div style="display: flex; ">
+					<button style="margin-left: .5rem; " (click)="removeEvent( event.id )" class="fab">
+						<mat-icon aria-hidden="false" aria-label="Example home icon"> delete </mat-icon>
+					</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+	<hr/>
+	
+	<hr/>
+	<div>
+		<p>		Id: {{updatePlan.id}}
+		<p>		<label for="editPlan-name"> Plan name: </label><input type="text" id="editPlan-name" [(ngModel)]="updatePlan.name" placeholder="name"/>
+		<div>
+			<button (click)="save()"	> Save		</button>
+			<button (click)="cancel()"	> Cancel 	</button>
+		</div>
+	</div>
+</div>
