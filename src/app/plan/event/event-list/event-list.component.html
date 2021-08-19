@@ -1,33 +1,29 @@
 
 
-<div style="margin-top: .5rem; background-color: gainsboro; display: flex; justify-content: space-between; align-items: center">
-	<h2 style="margin-left: 1rem"> Grub Club Planning Hub Scrub </h2>
-	<button id="alt-button" style="margin: .5rem " (click)="addEvent()" class="fab">
-		<mat-icon aria-hidden="false" aria-label="Example home icon">add</mat-icon>
-	</button>
+<div id="page-title">
+	<h2> Grub Club Planning Hub Scrub </h2>
+	<button id="alt-button" class="fab" (click)="addEvent()"><mat-icon> add </mat-icon></button>
 </div>
-<h3 style="margin: .5rem"> Plans </h3>
-<ul style="margin: .5rem">
-	<li *ngFor="let event of events" [class.selected]="event.id === selectedEventId">
-		<div style="display: flex; ">
-			<div style="display: flex; width: 100%; ">
-				<a routerLinkActive="active" routerLink="/plan/{{event.id}}">
-					<div><button style="margin-right: .5rem; padding: .25rem; height: 100%; " class="fab"> {{event.id}} </button></div>
-					<div style="width: 100%; "> {{event.name}} </div>
-				</a>
+<div id="page-body">
+	<div id="page-title-2">
+		<h3 style="margin: .5rem"> Plans </h3>
+	</div>
+	<ul class="plans">
+		<li *ngFor="let event of events" [class.selected]="event.id === selectedEventId">
+			<div>
+				<div>
+					<a routerLinkActive="active" routerLink="/plan/{{event.id}}">
+						<div> {{event.id}}		</div>
+						<div> {{event.name}}	</div>
+					</a>
+				</div>
+				<div><button (click)="updateEvent( event.id )"><mat-icon> edit		</mat-icon></button></div>
+				<div><button (click)="removeEvent( event.id )"><mat-icon> delete	</mat-icon></button></div>
 			</div>
-			<div style="display: flex; ">
-				<button style="margin-left: .5rem; " (click)="updateEvent( event.id )" class="fab">
-					<mat-icon aria-hidden="false" aria-label="Example home icon"> edit		</mat-icon>
-				</button>
-			</div>
-			<div style="display: flex; ">
-				<button style="margin-left: .5rem; " (click)="removeEvent( event.id )" class="fab">
-					<mat-icon aria-hidden="false" aria-label="Example home icon"> delete	</mat-icon></button>
-			</div>
-		</div>
-	</li>
-</ul>
-<hr/>
-
-<router-outlet></router-outlet>
+		</li>
+	</ul>
+	<hr/>
+	<div>
+		<router-outlet></router-outlet>
+	</div>
+</div>

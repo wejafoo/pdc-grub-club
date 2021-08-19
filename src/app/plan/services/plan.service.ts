@@ -2,10 +2,10 @@
 
 import { environment		} from '../../../environments/environment';
 import { Injectable			} from '@angular/core';
+import { BehaviorSubject	} from 'rxjs';
 import { Event				} from '../models/plan';
 import { Plan				} from '../models/plan';
 import { Plans				} from '../models/plan';
-import { BehaviorSubject	} from 'rxjs';
 import { PLANS				} from '../models/mock-plans';
 
 @Injectable({ providedIn: 'root' })
@@ -13,11 +13,11 @@ import { PLANS				} from '../models/mock-plans';
 export class PlanService {
 	env:	any;
 	debug:	boolean;
+	plans: Plans	= PLANS;
 	nextPlanId		= 100;
 	nextEventId		= 100;
-	planNameSlug	= 'Mama gotta brand new PLAN - owwwww!'
-	eventNameSlug	= 'Mama gotta brand new EVENT - owwwww!';
-	plans: Plans	= PLANS;
+	planNameSlug	= 'Presbies gotta brand new PLAN - owwwww!'
+	eventNameSlug	= 'Presbies gotta brand new EVENT - owwwww!';
 	planSubject		= new BehaviorSubject<Plans>( this.plans );
 	
 	constructor () {
@@ -30,6 +30,10 @@ export class PlanService {
 			if ( plan.id === newId ) return plan;
 			return undefined
 		})
+	}
+	
+	getEventIndex( plan: Plan, eventId: number ): number {
+		return plan.events.findIndex( event => event.id === eventId )
 	}
 	
 	addEvent( planID: number, name?: string ): number {

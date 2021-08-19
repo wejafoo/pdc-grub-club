@@ -1,8 +1,10 @@
 
 
+import { environment	} from '../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { ActivatedRoute	} from '@angular/router';
+import { Router			} from '@angular/router';
 import { Observable		} from 'rxjs';
 import { switchMap		} from 'rxjs/operators';
 import { PresbyService	} from '../../services/presby.service';
@@ -15,20 +17,26 @@ import { Presby			} from '../../models/presby';
 })
 
 export class GuestListComponent implements OnInit {
-	guests$!: Observable<Presby[]>;
+	env:		any;
+	debug:		any;
+	guests$!:	Observable<Presby[]>;
 	guestId = 0;
 	
 	constructor (
 		private	service:	PresbyService,
+		private router:		Router,
 		private	route:		ActivatedRoute
-	) {}
+	) {
+		this.env	= environment;
+		this.debug	= this.env.debug
+	}
 	
 	ngOnInit() {
-		this.guests$ = this.route.paramMap.pipe(
-			switchMap(params => {
-				this.guestId = parseInt( params.get( 'guestId' )!, 10 );
-				return this.service.getPresbies()
-			})
-		)
+		this.guests$ = this.route.paramMap.pipe( switchMap(params => {
+			this.guestId = parseInt( params.get( 'guestId' )!, 10 );
+			return this.service.getPresbies()
+		}))
 	}
+	
+	toGuests() { this.router.navigate(['/hosts']).then( r => {if (this.debug) console.log(r)})}
 }

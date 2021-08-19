@@ -1,14 +1,14 @@
 
 
 <div class="wrapper">
-	<h1 class="title" style="margin-bottom: 0"> Presby Grub Club </h1>
+	<h1 class="title" style="margin: 0"> Presby Grub Club </h1>
 	<hr/>
 	<nav>
-		<a routerLink="/guest"	routerLinkActive="active" 		> Guests 	</a>
-		<a routerLink="/host"	routerLinkActive="active" 		> Hosts		</a>
-		<a routerLink="/plan"	routerLinkActive="active" 		> Plans 	</a>
-		<a routerLink="/login"	routerLinkActive="active" 		> Login		</a>
-		<a [routerLink]="[{ outlets: { popup: ['compose']}}]"	> Contact	</a>
+		<a routerLink="/plan"	routerLinkActive="active" 	> Plans  </a>
+		<a routerLink="/guest"	routerLinkActive="active" 	> Guests </a>
+		<a routerLink="/host"	routerLinkActive="active" 	> Hosts	 </a>
+		<a routerLink="/login"	routerLinkActive="active" 	> Login	 </a>
+		<a [routerLink]="[{outlets: {popup: ['compose']}}]"	> Help!	 </a>
 		<!--a routerLink="/admin" routerLinkActive="active"	aria-disabled="true"> Admin	</a-->
 	</nav>
 	

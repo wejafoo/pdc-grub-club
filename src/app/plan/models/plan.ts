@@ -6,22 +6,22 @@ export type Guests	= Guest[];
 export type Hosts	= Host[];
 
 export interface Plan {
-	id:		number;
-	name:	string;
-	events:	Event[];
+	id:			number;
+	name:		string;
+	events:		Events;
 }
 
 export interface Event {
 	id:			number;
 	name:		string;
-	hosts?:		Host[];
+	hosts?:		Hosts;
 }
 
 export interface Host {
 	id:			number;
 	name:		string;
 	seats:		number;
-	guests?:	Guest[];
+	guests?:	Guests;
 }
 
 export interface Guest {

@@ -31,5 +31,5 @@ export class HostDetailComponent implements OnInit {
 	}
 	
 	ngOnInit() { this.host$ = this.route.paramMap.pipe(switchMap(params => this.ps.getPresby(params.get('hostId')!)))}
-	reviewHost( host: Presby ) { this.router.navigate(['/host', { id: host.id }]).then( r => {if (this.debug) console.log(r)})}
+	toHosts( host: Presby ) { this.router.navigate(['/host', { id: host.id }]).then( r => {if (this.debug) console.log(r)})}
 }

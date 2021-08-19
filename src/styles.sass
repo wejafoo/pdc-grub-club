@@ -3,16 +3,128 @@
 // Global Styles
 *
 	font-family:		Roboto, sans-serif
+	font-weight:		200
+
+#page-body
+	padding:				.5rem
+	ul
+		display:			flex
+		flex-direction: 	column
+		
+#page-title
+	background-color:		gainsboro
+	display:				flex
+	justify-content:		space-between
+	align-items:			center
+	a
+		background-color:	aliceblue
+		color:				black
+		display: 			flex
+		margin:				.5rem
+		padding: 			0
+		border-style: 		double
+		border-color: 		#425
+	a:hover
+		background-color:	gainsboro
+		color:				#425
+
+#page-title-2
+	padding:				0
+	display:				flex
+	justify-content:		space-between
+	align-items:			center
+	a
+		padding:			5px 10px
+		text-decoration:	none
+		margin-right:		10px
+		display:			inline-block
+		background-color:	aliceblue
+		color:				#425
+	a:hover
+		background-color:	#425
+		color:				gainsboro
+	h3
+		margin:				0
+
+strong
+	margin:					0 .5rem
+	font-weight:			600
+	
+.guests, .hosts
+	list-style-type:		none
+	padding:				0
+	div
+		display:			inline-block
+		text-align:			center
+		height:				100%
+	a
+		color:				black
+		display:			inline-block
+		text-decoration:	none
+		font-size:			1.2rem
+		background-color:	aliceblue
+		margin:				.1em
+		border-radius:		4px
+		width:				100%
+	a:hover
+		color:				white
+		background-color:	#425
+		border-radius:		10px 4px 4px 10px
+	.badge
+		color:				#425
+		background-color:	gainsboro
+		border-radius:		4px 0 0 4px
+		margin-right:		1em
+		width:				2rem
+		padding:			.25em
+
+.plans
+	list-style-type:	none
+	padding:			0
+	div
+		display:			flex
+		align-items:		center
+	a
+		color:				black
+		display:			flex
+		text-decoration:	none
+		font-size:			1.2rem
+		background-color:	aliceblue
+		width:				100%
+	a.active
+			background-color:	#425
+			color:				white
+			border-radius:		10px 0 0 10px
+	a:hover
+		// color:				white
+		background-color:	gainsboro
+		border-radius:		10px 0 0 10px
+	.badge
+		color:				#425
+		background-color:	gainsboro
+		border-radius:		4px 0 0 4px
+		justify-content:	center
+		margin-right:		1em
+		width:				2rem
+		padding:			0.25em
+	button
+		margin-left:		.25rem
+		color:				#425
+	li
+		margin:				.25em 0
+		display:			flex
+		align-items:		center
 
 h1
-	color:				#264D73
 	font-size:			2.5rem
 	text-align:			center
 
-h2, h3
-	color:				#444
-	font-weight:		lighter
+h1, h2, h3
+	color:				#425
 
+h2
+	margin:				0 0 0 1rem
+	
 h3
 	font-size:			1.3rem
 
@@ -32,7 +144,7 @@ body, input[text]
 a
 	cursor:				pointer
 
-button
+// button
 	background-color:	aliceblue
 	border:				none
 	cursor:				pointer
@@ -43,11 +155,11 @@ button
 	margin-bottom:		.5rem
 	margin-top:			.5rem
 
-button:hover
-	background-color:	#42545C
+// button:hover
+	background-color:	#425
 	color:				white
 
-button:disabled
+// button:disabled
 	background-color:	aliceblue
 	color:				gainsboro
 	cursor:				auto
@@ -60,18 +172,17 @@ nav a
 	padding:			5px 10px
 	text-decoration:	none
 	margin-right:		10px
-	margin-top:			10px
 	display:			inline-block
 	background-color:	aliceblue
-	color:				#3d3d3d
+	color:				#425
 	
 nav a:hover
-	background-color:	gainsboro
-	color:				black
+	background-color:	#425
+	color:				white
 
 nav a.active
-	background-color:	#42545C
-	color:				white
+	background-color:	gainsboro
+	color:				#425
 
 input[type="text"]
 	box-sizing:			border-box

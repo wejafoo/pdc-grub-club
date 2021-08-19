@@ -31,6 +31,6 @@ export class GuestDetailComponent implements OnInit {
 		this.debug	= this.env.debug
 	}
 	
-	ngOnInit()		{ this.presby$ = this.route.paramMap.pipe( switchMap(( params: ParamMap) => this.service.getPresby( params.get( 'guestId' )!)))}
-	toGuestList()	{ this.router.navigate(['/guests']).then(r => {if (this.debug) console.log(r)})}
+	ngOnInit()	{ this.presby$ = this.route.paramMap.pipe( switchMap(( params: ParamMap) => this.service.getPresby( params.get( 'guestId' )!)))}
+	toGuests()	{ this.router.navigate(['/guests']).then(r => {if (this.debug) console.log(r)})}
 }

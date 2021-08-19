@@ -1,18 +1,18 @@
 
 
-import { NgModule					} from '@angular/core';
-import { CommonModule				} from '@angular/common';
-import { FormsModule				} from '@angular/forms';
-import { EventDetailComponent		} from './event/event-detail/event-detail.component';
+import { NgModule				} from '@angular/core';
+import { CommonModule			} from '@angular/common';
+import { FormsModule			} from '@angular/forms';
+import { EventDetailComponent	} from './event/event-detail/event-detail.component';
+import { EventListComponent		} from './event/event-list/event-list.component';
+import { EventScheduleComponent	} from './plan-update/event-schedule/event-schedule.component';
 import { EventUpdateComponent	} from './plan-update/event-update/event-update.component';
-import { EventListComponent			} from './event/event-list/event-list.component';
-import { EventHomeComponent			} from './event/event-home/event-home.component';
-import { PlanDetailComponent		} from './plan-detail/plan-detail.component';
-import { PlanUpdateComponent		} from './plan-update/plan-update.component';
-import { PlanListComponent			} from './plan-list/plan-list.component';
-import { PlanHomeComponent			} from './plan-home/plan-home.component';
-import { PlanRoutingModule			} from './plan-routing.module';
-import { MaterialModule				} from '../sub-modules/material.module';
+import { PlanDetailComponent	} from './plan-detail/plan-detail.component';
+import { PlanUpdateComponent	} from './plan-update/plan-update.component';
+import { PlanListComponent		} from './plan-list/plan-list.component';
+import { PlanHomeComponent		} from './plan-home/plan-home.component';
+import { PlanRoutingModule		} from './plan-routing.module';
+import { MaterialModule			} from '../sub-modules/material.module';
 
 @NgModule({
 	imports: [
@@ -23,12 +23,12 @@ import { MaterialModule				} from '../sub-modules/material.module';
 	],
 	declarations: [
 		EventDetailComponent,
-		EventUpdateComponent,
-		EventHomeComponent,
 		EventListComponent,
+		EventScheduleComponent,
+		EventUpdateComponent,
+		PlanDetailComponent,
 		PlanHomeComponent,
 		PlanListComponent,
-		PlanDetailComponent,
 		PlanUpdateComponent
 	]
 })

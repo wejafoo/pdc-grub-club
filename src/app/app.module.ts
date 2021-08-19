@@ -13,8 +13,6 @@ import { NoSoupComponent			} from './no-soup/no-soup.component';
 import { PlanModule					} from './plan/plan.module';
 import { PresbyModule				} from './presby/presby.module';
 
-// import { Router } from '@angular/router';		// Only necessary for routing diagnostics(commented out below)
-
 @NgModule({
 	imports: [
 		BrowserModule,

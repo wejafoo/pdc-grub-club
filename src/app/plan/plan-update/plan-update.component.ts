@@ -1,20 +1,21 @@
 
 
-import { environment			} from '../../../environments/environment';
-import { ActivatedRoute			} from '@angular/router';
-import { Component				} from '@angular/core';
-import { OnInit					} from '@angular/core';
-import { Router					} from '@angular/router';
-import { Observable				} from 'rxjs';
-import { of						} from 'rxjs';
-import { switchMap				} from 'rxjs/operators';
-import { DialogService			} from '../../services/dialog.service';
-import { Plan					} from '../models/plan';
-import { Event					} from '../models/plan';
-import { PlanService			} from '../services/plan.service';
+import { environment	} from '../../../environments/environment';
+import { ActivatedRoute	} from '@angular/router';
+import { Component		} from '@angular/core';
+import { OnInit			} from '@angular/core';
+import { Router			} from '@angular/router';
+import { Observable		} from 'rxjs';
+import { of				} from 'rxjs';
+import { switchMap		} from 'rxjs/operators';
+import { DialogService	} from '../../services/dialog.service';
+import { Event			} from '../models/plan';
+import { Plan			} from '../models/plan';
+import { PlanService	} from '../services/plan.service';
 
-// import { ActivatedRouteSnapshot	} from '@angular/router';
-// import { RouterStateSnapshot		} from '@angular/router';
+// import { Input } from '@angular/core';
+// import { ActivatedRouteSnapshot } from '@angular/router';
+// import { RouterStateSnapshot } from '@angular/router';
 
 @Component({
 	selector: 'app-plan-update',
@@ -23,6 +24,7 @@ import { PlanService			} from '../services/plan.service';
 })
 
 export class PlanUpdateComponent implements OnInit {
+
 	env:			any;
 	debug:			boolean;
 	plan!:			Plan;
@@ -31,7 +33,6 @@ export class PlanUpdateComponent implements OnInit {
 	planId!:		number;
 	eventNameSlug = 'Mama gotta brand new event - owwwww!'
 	JSON:			JSON;
-	
 	// public	ars:	ActivatedRouteSnapshot,
 	// public	state:	RouterStateSnapshot,
 
@@ -60,6 +61,19 @@ export class PlanUpdateComponent implements OnInit {
 		})
 	}
 	
+	cancel() { this.toPlans() }
+
+	save() {
+		this.plan = JSON.parse(JSON.stringify(this.updatePlan));
+		this.ps.updatePlan( this.plan );
+		this.reviewPlan()
+	}
+	
+	canDeactivate(): Observable<boolean> | boolean {
+		if ( JSON.stringify(this.plan) === JSON.stringify(this.updatePlan)) return true;
+		return this.dialog.confirm( 'Abandon changes?' )
+	}
+	
 	addEvent() {
 		const nextEventId		= this.updatePlan.events!.length + 1;
 		if (this.debug) console.log( 'Next up Event #', nextEventId );
@@ -68,12 +82,6 @@ export class PlanUpdateComponent implements OnInit {
 		this.updatePlan.events!.push( nextEvent )																		// Todo: clean up array push with object.array or something
 	}
 	
-	cancel() { this.toPlans() }
-	
-	canDeactivate(): Observable<boolean> | boolean {
-		if ( JSON.stringify(this.plan) === JSON.stringify(this.updatePlan)) return true;
-		return this.dialog.confirm( 'Abandon changes?' )
-	}
 	
 	removeEvent( eventId: number ) {
 		const itemToRemoveIndex = this.updatePlan.events!.findIndex( event => event.id === eventId );
@@ -84,13 +92,14 @@ export class PlanUpdateComponent implements OnInit {
 
 	reviewPlan() { this.router.navigate(['/plan', this.planId]).then(r => {if (this.debug) console.log(r)})}
 	
-	save() {
-		this.plan = JSON.parse(JSON.stringify(this.updatePlan));
-		this.ps.updatePlan( this.plan );
-		this.reviewPlan()
+	scheduleEvent( eventId: number ) {
+		this.router.navigate(['/plan', this.planId, 'update', 'event', eventId, 'schedule']).then(r => {if (this.debug) console.log(r)})
 	}
-
-	toPlans() { this.router.navigate(['/plans']).then(r => {if (this.debug) console.log(r)})}
 	
-	updateEvent( eventId: number ) {}
+	toPlan()	{ this.router.navigate(['/plan', this.planId	]).then(r => {if (this.debug) console.log(r)})}
+	toPlans()	{ this.router.navigate(['/plans'				]).then(r => {if (this.debug) console.log(r)})}
+	
+	updateEvent( eventId: number ) {
+		this.router.navigate(['/plan', this.planId, 'update', 'event', eventId, 'update']).then(r => {if (this.debug) console.log(r)})
+	}
 }
