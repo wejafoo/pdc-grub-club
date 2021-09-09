@@ -43,7 +43,7 @@ describe('Router', () => {
 	
 	it('has expected dashboard tabs', async () => {
 		const page = getPageStruct();
-		expect( await page.hrefs.count()).toEqual(numDashboardTabs, 'dashboard tab count');
+		expect( await page.hrefs.cnt()).toEqual(numDashboardTabs, 'dashboard tab count');
 		expect( await page.planHref.getText()).toEqual('Planning Center'	);
 		expect( await page.presbiesHref.getText()).toEqual('Presbies'		);
 		expect( await page.adminHref.getText()).toEqual('Admin'			);
@@ -60,24 +60,24 @@ describe('Router', () => {
 		const page = getPageStruct();
 		await page.planHref.click();
 		expect( await page.activeHref.getText()).toEqual('Planning Center' );
-		expect( await page.planList.count()).toBe( numPlans, 'plan list count' );
+		expect( await page.planList.cnt()).toBe( numPlans, 'plan list count' );
 	});
 	
 	it('has presby items', async () => {
 		const page = getPageStruct();
 		await page.presbiesHref.click();
 		expect( await page.activeHref.getText()).toEqual('Presbies');
-		expect( await page.presbiesList.count()).toBe(numPresbies, 'presby list count');
+		expect( await page.presbiesList.cnt()).toBe(numPresbies, 'presby list count');
 	});
 	
 	it('toggles views', async () => {
 		const page = getPageStruct();
 		await page.planHref.click();
 		expect( await page.activeHref.getText()).toEqual('Planning Center' );
-		expect( await page.planList.count()).toBe( numPlans, 'plan list count' );
+		expect( await page.planList.cnt()).toBe( numPlans, 'plan list count' );
 		await page.presbiesHref.click();
 		expect( await page.activeHref.getText()).toEqual('Presbies' );
-		expect( await page.presbiesList.count()).toBe( numPresbies, 'presby list count' );
+		expect( await page.presbiesList.cnt()).toBe( numPresbies, 'presby list count' );
 	});
 	
 	it('saves changed plan details', async () => {
@@ -105,7 +105,7 @@ describe('Router', () => {
 		const presbyText = text.substr( text.indexOf( ' ' )).trim();													// remove leading id from text
 		await presbyEle.click();
 		await browser.sleep(600 );
-		expect( await page.presbiesList.count()).toBe(0, 'presby list count' );
+		expect( await page.presbiesList.cnt()).toBe(0, 'presby list count' );
 		expect( await page.presbyDetail.isPresent()).toBe(true, 'presby detail' );
 		expect( await page.presbyDetailTitle.getText()).toContain( presbyText );
 		
@@ -124,7 +124,7 @@ describe('Router', () => {
 		await page.loginHref.click();
 		await page.loginButton.click();
 		const list = page.adminPreloadList;
-		expect( await list.count()).toBe(1, 'preloaded module' );
+		expect( await list.cnt()).toBe(1, 'preloaded module' );
 		expect( await list.first().getText()).toBe('planning-center', 'first preloaded module' );
 	});
 	
@@ -132,8 +132,8 @@ describe('Router', () => {
 		const page = getPageStruct();
 		await page.presbiesHref.click();
 		await page.contactHref.click();
-		expect( await page.primaryOutlet.count()	).toBe(1, 'primary outlet'	);
-		expect( await page.secondaryOutlet.count()	).toBe(1, 'secondary outlet');
+		expect( await page.primaryOutlet.cnt()	).toBe(1, 'primary outlet'	);
+		expect( await page.secondaryOutlet.cnt()	).toBe(1, 'secondary outlet');
 	});
 	
 	it('should redirect with secondary route', async () => {
@@ -147,7 +147,7 @@ describe('Router', () => {
 		await page.adminHref.click();																					// attempt to go to admin page, redirects to login with secondary outlet open
 		await page.loginButton.click();																					// login, get redirected back to admin with outlet still open
 		expect( await page.adminPage.isDisplayed()).toBeTruthy();
-		expect( await page.secondaryOutlet.count()).toBeTruthy()
+		expect( await page.secondaryOutlet.cnt()).toBeTruthy()
 	});
 	
 	async function planningCenterEdit( index: number, save: boolean ) {

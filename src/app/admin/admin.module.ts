@@ -7,10 +7,11 @@ import { AdminDashboardComponent	} from './admin-dashboard/admin-dashboard.compo
 import { ManagePlansComponent		} from './manage-plans/manage-plans.component';
 import { ManagePresbiesComponent	} from './manage-presbies/manage-presbies.component';
 import { AdminRoutingModule			} from './admin-routing.module';
-
+import { MaterialModule				} from '../sub-modules/material.module';
 
 @NgModule({
-  imports:		[CommonModule, AdminRoutingModule],
+	imports:	[CommonModule, AdminRoutingModule, MaterialModule],
   declarations:	[AdminComponent, AdminDashboardComponent, ManagePlansComponent, ManagePresbiesComponent]
 })
+
 export class AdminModule {}

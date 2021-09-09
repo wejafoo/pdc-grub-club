@@ -1,0 +1,171 @@
+
+
+mat-icon.unassigned-guest
+	color:	white
+	float:	right
+
+mat-icon.assigned-guest-guest
+	color:	lime
+	float:	right
+
+mat-icon.assigned-guest-host
+	color:	black
+	float:	right
+
+.polyBase
+	background-color:	red
+	height:				10em
+	width:				10em
+
+.poly-6
+	align-items:		flex-end
+	clip-path:			polygon( 50% 0%,	5% 90%,		95% 90% )
+.poly-content-6
+	display:			flex
+	flex-flow:			row wrap
+	justify-content:	center
+	margin:				0 30%
+	padding-top:		35%
+
+.poly-8
+	clip-path:			polygon( 50% 0%,  95% 50%,  50% 100%,  5% 50% )
+.poly-content-8
+	display:			flex
+	flex-flow:			row wrap
+	justify-content:	center
+	margin:				0 20%
+	padding-top:		25%
+
+.poly-10
+	clip-path:			polygon( 50% 0%,	95% 40%,	75% 90%,	25% 90%,	5% 40% )
+.poly-content-10
+	display:			flex
+	flex-flow:			row wrap
+	justify-content:	center
+	margin:				0 10%
+	padding-top:		30%
+
+.poly-12
+	clip-path:			polygon( 50% 0%,	95% 25%,	95% 75%,	50% 100%,	5% 75%,		5% 25% )
+.poly-content-12
+	display:			flex
+	flex-flow:			row wrap
+	justify-content:	center
+	padding-top:		25%
+
+h3
+	margin:				0 0 0 1.25em
+
+table
+	border-collapse:	collapse
+
+tr
+	display:			flex
+	justify-content:	space-between
+
+.event-heading
+	display:			flex
+	justify-content:	space-between
+	align-items:		center
+	background-color:	aliceblue
+	padding:			0 1em
+
+.full
+	color:	green
+
+.not-full
+	color:	red
+
+
+.list
+	justify-content:	space-around
+	div
+		width:				13em
+		flex-direction:		column
+		font-size:			xx-small
+		margin:				.25em
+// 	box-sizing:				border-box
+	:not(.cdk-drag-placeholder)
+		transition:				transform 250ms cubic-bezier(0, 0, 0.2, 1)
+	
+.vertical-info
+	background-color:	white
+	border:				none
+	flex-direction:		column
+	justify-content:	flex-start
+	align-items:		inherit
+	width:				10em
+	padding:			0
+	div
+		display:			flex
+		font-size:			smaller
+		justify-content:	center
+
+.cdk-drop-list-receiving
+	background-color:	lightgreen
+	
+.cdk-drag-disabled
+	background:			red
+	cursor:				pointer
+
+mat-accordion .mat-expansion-panel-header-title,
+mat-accordion .mat-expansion-panel-header-description
+	flex-basis:			0
+	align-items:		center
+	justify-content:	space-between
+
+.example-headers-align .mat-form-field + .mat-form-field
+	margin-left:		8px
+
+mat-grid-tile
+	background:			gainsboro
+	
+.mat-grid-tile-content
+	flex-direction:		column
+	align-items:		flex-start
+	justify-content:	flex-start
+	margin:				1em 0 0 1em
+	display:			flex
+	
+mat-card
+	align-items:		center
+	background-color:	aliceblue
+	display:			flex
+	justify-content:	space-between
+	padding: 			0 1em
+	mat-icon
+		display:			flex
+		font-size:			xx-small
+		align-items:		center
+
+mat-card:hover
+	cursor:		grab
+	
+mat-card:active
+	cursor:		grabbing
+
+strong
+	margin:		0
+
+td
+	display:					flex
+	flex-direction:				row
+	flex-wrap:					wrap
+	justify-content:			space-evenly
+	align-items:				center
+	border:						solid
+	padding:					.25em
+	width: 						45%
+	background-color:			gainsboro
+
+.cdk-drag-preview
+	box-sizing:					border-box
+	border-radius:				4px
+	box-shadow:					0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
+
+.cdk-drag-placeholder
+	opacity:					0
+
+.cdk-drag-animating
+	transition:					transform 250ms cubic-bezier(0, 0, 0.2, 1)
+

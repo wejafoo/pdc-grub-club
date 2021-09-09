@@ -9,7 +9,7 @@ import { Observable				} from 'rxjs';
 import { of						} from 'rxjs';
 import { EMPTY					} from 'rxjs';
 import { PlanService			} from './plan.service';
-import { Plan					} from '../models/plan';
+import { Plan					} from '../../../../.ARCHIVE/models/plan';
 
 /*
 	import { Router		} from '@angular/router';
@@ -29,7 +29,7 @@ export class PlanDetailResolverService implements Resolve<Plan> {
 		this.debug	= this.env.debug
 	}
 	
-	resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): Observable<Plan> | Observable<never> {
+	resolve ( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): Observable<Plan> | Observable<never> {
 		const id: number	= +route.paramMap.get( 'planId' )!;
 		const tmpPlan		= this.ps.getPlan( id );
 		if ( tmpPlan ) {

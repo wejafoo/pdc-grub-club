@@ -1,0 +1,30 @@
+
+
+<div id="page-title">
+	<h2> Grub Club Planning Hub Scrub </h2>
+	<button id="alt-button" class="fab" (click)="addEvent()"><mat-icon> add </mat-icon></button>
+</div>
+<div id="page-body">
+	<div id="page-title-2">
+		<h3 style="margin: .5rem"> Plans </h3>
+	</div>
+	<ul class="plans">
+		<li *ngFor="let event of events" [class.selected]="event.id === selectedEventId">
+			<div>
+				<div>
+					<a routerLinkActive="active" routerLink="/plan/{{event.id}}">
+						<div> {{event.id}}		</div>
+						<div> {{event.name}}	</div>
+					</a>
+				</div>
+				<!-- div><button (click)="updateEvent( event.id )"><mat-icon> edit </mat-icon></button></div -->
+				<div><button (click)="updateEvent()"		><mat-icon> edit	</mat-icon></button></div>
+				<div><button (click)="removeEvent(event.id)"><mat-icon> delete	</mat-icon></button></div>
+			</div>
+		</li>
+	</ul>
+	<hr/>
+	<div>
+		<router-outlet></router-outlet>
+	</div>
+</div>

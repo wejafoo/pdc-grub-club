@@ -1,15 +1,18 @@
 
 
-<h3> Contact Planning Center </h3>
+<h3> Contact Support </h3>
 
 <div *ngIf="details"> {{ details }} </div>
 
 <div>
 	<div><label for="message"> Enter your message: </label></div>
-	<div><textarea id="message" [(ngModel)]="message" rows="10" cols="35" [disabled]="sending"></textarea></div>
+	<div><textarea id="message" [(ngModel)]="message" rows="3" cols="35" [disabled]="sending"></textarea></div>
+</div>
+<div style="text-align: right">
+	<nav *ngIf="!sending">
+		<a (click)="send()"		> Send		</a>
+		<a (click)="cancel()"	> Cancel	</a>
+	</nav>
 </div>
 
-<p *ngIf="!sending">
-	<button (click)="send()"	> Send		</button>
-	<button (click)="cancel()"	> Cancel	</button>
-</p>
+<p></p>
