@@ -15,7 +15,7 @@
 					<div style="width: 1.5em; " class="badge"> {{ host["id"]	}} </div>
 					<div *ngIf="host['active']; else inactive"> &#9989; </div>
 					<ng-template #inactive><div> &#9940; </div></ng-template>
-					<div style="margin-left: 1em; text-align: left; width: 40%; "> {{ host["name"] }} </div>
+					<div style="margin-left: 1em; text-align: left; width: 40%; "> {{ host["last"]+'-'+host['id'] }} </div>
 					<div style="text-align: right; width: 70%; ">
 						<div *ngFor="let hosting of host['hosting']">
 							<div style="width: 5em; max-height: 2em; font-size: 9px; ">

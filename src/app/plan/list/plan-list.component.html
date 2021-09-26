@@ -9,8 +9,8 @@
 	<ul class="plans">
 		<li *ngFor="let plan of plans" [class.selected]="plan.id === planId">
 			<a routerLinkActive="active" routerLink="/plan/{{plan.id}}">
-				<div class="badge"	> {{plan.id}}	</div>
-				<div				> {{plan.name}}	</div>
+				<div class="badge"	> {{plan.id}}		</div>
+				<div				> {{plan.name}}		</div>
 			</a>
 			<div><button (click)="toVersion()"			><mat-icon> schedule	</mat-icon></button></div>
 			<div><button (click)="updatePlan( plan.id )"><mat-icon> edit 		</mat-icon></button></div>

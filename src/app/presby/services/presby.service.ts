@@ -29,10 +29,10 @@ export class PresbyService {
 		const returnActive: Presby[] = [];
 		for ( let i = 0, iLen = PRESBIES.length; i < iLen; i++ ) {
 			if ( PRESBIES[i].active === true ) {
-				if (this.debug) console.log( PRESBIES[i].name, 'is ACTIVE!' );
+				if (this.debug) console.log( PRESBIES[i].last, 'is ACTIVE!' );
 				returnActive.push( PRESBIES[i] )
 			} else {
-				if (this.debug) console.log( PRESBIES[i].name, 'is not participating this time!' )
+				if (this.debug) console.log( PRESBIES[i].last, 'is not participating this time!' )
 			}
 		}
 		return returnActive

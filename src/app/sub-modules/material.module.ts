@@ -21,7 +21,7 @@ import { MatDatepickerModule		} from '@angular/material/datepicker';
 import { MatExpansionModule			} from '@angular/material/expansion';
 import { DragDropModule				} from '@angular/cdk/drag-drop';
 import { MatTableModule				} from '@angular/material/table';
-
+import { OverlayModule				} from '@angular/cdk/overlay';
 
 @NgModule({
 	imports: [
@@ -44,7 +44,8 @@ import { MatTableModule				} from '@angular/material/table';
 		MatSidenavModule,
 		MatTableModule,
 		MatToolbarModule,
-		MatTreeModule
+		MatTreeModule,
+		OverlayModule
 	],
 	exports: [
 		DragDropModule,
@@ -66,7 +67,8 @@ import { MatTableModule				} from '@angular/material/table';
 		MatSidenavModule,
 		MatTableModule,
 		MatToolbarModule,
-		MatTreeModule
+		MatTreeModule,
+		OverlayModule
 	]
 })
 

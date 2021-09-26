@@ -1,5 +1,24 @@
 
 
+
+.cdk-drag-disabled
+	background:	floralwhite
+	color:		gainsboro
+
+mat-card:hover
+	cursor:		grab
+mat-card:active
+	cursor:		grabbing
+mat-card:hover.cdk-drag-disabled
+	cursor:		not-allowed
+mat-card:active.cdk-drag-disabled
+	cursor:		none
+
+.cdk-drop-list-receiving.not-full-host
+	background-color:	lightgreen!important
+.cdk-drop-list-receiving
+	background-color:	lightgreen
+
 mat-icon.unassigned-guest
 	color:	white
 	float:	right
@@ -13,9 +32,24 @@ mat-icon.assigned-guest-host
 	float:	right
 
 .polyBase
+	height:	10em
+	width:	10em
+
+.polyBase.full-host
 	background-color:	red
-	height:				10em
-	width:				10em
+	cursor:				no-drop
+
+.polyBase.not-full-host
+	background-color:	orange
+
+.poly-2
+	display:			flex
+	justify-content:	center
+	align-items:		center
+	clip-path:			circle( 30% )
+.poly-content-2
+	display:			flex
+	justify-content:	center
 
 .poly-6
 	align-items:		flex-end
@@ -58,6 +92,7 @@ h3
 
 table
 	border-collapse:	collapse
+	padding:			0
 
 tr
 	display:			flex
@@ -76,23 +111,20 @@ tr
 .not-full
 	color:	red
 
-
 .list
-	justify-content:	space-around
+	display:			flex
+	justify-content:	space-evenly
+	flex-wrap:			wrap
+	align-items:		center
 	div
-		width:				13em
-		flex-direction:		column
-		font-size:			xx-small
-		margin:				.25em
-// 	box-sizing:				border-box
-	:not(.cdk-drag-placeholder)
-		transition:				transform 250ms cubic-bezier(0, 0, 0.2, 1)
-	
+		width:			14em
+		font-size:		xx-small
+
 .vertical-info
 	background-color:	white
 	border:				none
 	flex-direction:		column
-	justify-content:	flex-start
+	justify-content:	center
 	align-items:		inherit
 	width:				10em
 	padding:			0
@@ -101,12 +133,6 @@ tr
 		font-size:			smaller
 		justify-content:	center
 
-.cdk-drop-list-receiving
-	background-color:	lightgreen
-	
-.cdk-drag-disabled
-	background:			red
-	cursor:				pointer
 
 mat-accordion .mat-expansion-panel-header-title,
 mat-accordion .mat-expansion-panel-header-description
@@ -114,7 +140,7 @@ mat-accordion .mat-expansion-panel-header-description
 	align-items:		center
 	justify-content:	space-between
 
-.example-headers-align .mat-form-field + .mat-form-field
+.mat-form-field + .mat-form-field
 	margin-left:		8px
 
 mat-grid-tile
@@ -132,40 +158,30 @@ mat-card
 	background-color:	aliceblue
 	display:			flex
 	justify-content:	space-between
-	padding: 			0 1em
+	padding: 			0 .75em
+	height:				1.75em
 	mat-icon
 		display:			flex
 		font-size:			xx-small
 		align-items:		center
 
-mat-card:hover
-	cursor:		grab
-	
-mat-card:active
-	cursor:		grabbing
-
-strong
-	margin:		0
-
 td
-	display:					flex
-	flex-direction:				row
-	flex-wrap:					wrap
-	justify-content:			space-evenly
-	align-items:				center
-	border:						solid
-	padding:					.25em
-	width: 						45%
-	background-color:			gainsboro
+	display:			flex
+	flex-wrap:			wrap
+	justify-content:	space-evenly
+	align-items:		center
+	border:				solid
+	padding:			.5em
+	width: 				45%
+	background-color:	gainsboro
 
 .cdk-drag-preview
-	box-sizing:					border-box
-	border-radius:				4px
-	box-shadow:					0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
+	box-sizing:			border-box
+	border-radius:		4px
+	box-shadow:			0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
 
 .cdk-drag-placeholder
-	opacity:					0
+	opacity:			0
 
 .cdk-drag-animating
-	transition:					transform 250ms cubic-bezier(0, 0, 0.2, 1)
-
+	transition:			transform 250ms cubic-bezier(0, 0, 0.2, 1)

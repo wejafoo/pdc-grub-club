@@ -1,4 +1,13 @@
 
+// sched: { assignedHosts?: {[key: string]: any}; assignedGuests?:{[key: string]: any}; unassignedHosts?: {[key: string]: any}; unassignedGuests?: {[key: string]: any}; actives?: Presbies; } = {};
+
+export interface Schedule  {
+	unGuests:	{[key: string]: Guests	};
+	aGuests:	{[key: string]: Guests	};
+	unHosts:	{[key: string]: Hosts	};
+	aHosts:		{[key: string]: Hosts	};
+	actives:	Presbies
+};
 
 export type Plans = Plan[];
 export interface Plan {
@@ -24,33 +33,37 @@ export interface Event {
 export type Hosts = Host[];
 export interface Host {
 	eventName:		string;
-	seats:			number;
-	hostName?:		string;
-	assigned?:		boolean;
-	assignable?:	boolean;
-	disabled?:		boolean;
-	guests?:		Guests;
+	seats?:			number;
+	hostKey?:		string;
 	id?:			number;
+	guests?:		Guests;
+	hostName?:		string;
+	isAssignable?:	boolean;
+	isAssigned?:	boolean;
+	isDisabled?:	boolean;
 }
 
 export type Guests = Guest[];
 export interface Guest {
-	id:				number;
-	partyName:		string
 	eventName:		string;
+	guestKey?:		string;
+	id?:			number;
 	guests?:		string[];
+	partyName?:		string;
 	cnt?:			number;
-	assigned:		boolean;
-	disabled?:		boolean;
-	assignable?:	boolean;
+	isAssignable?:	boolean;
+	isAssigned?:	boolean;
+	isDisabled?:	boolean;
 }
 
+export type Presbies = Presby[];
 export interface Presby {
 	active:		boolean;
 	id:			number;
-	name:		string;
+	// name:	string;
 	last:		string;
 	guests:		string[];
+	hostSeats:	number;
 	hosting:	Hosts;
 	guesting:	Guests;
 	U?:			boolean;
