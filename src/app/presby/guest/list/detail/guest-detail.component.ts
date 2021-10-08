@@ -5,12 +5,12 @@ import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { ParamMap		} from '@angular/router';
 import { Observable		} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
+import { map			} from 'rxjs/operators';
 import { PresbyService	} from '../../../services/presby.service';
-import { Presby			} from '../../../../../../.ARCHIVE/models/plan';
+import { Presbies	 	} from '../../../../../../.ARCHIVE/models/plan';
 
+// import { ParamMap } from '@angular/router';
 
 @Component({
 	selector: 'app-presby-detail',
@@ -21,19 +21,20 @@ import { Presby			} from '../../../../../../.ARCHIVE/models/plan';
 export class GuestDetailComponent implements OnInit {
 	env:		any;
 	debug:		boolean;
-	presby$!:	Observable<Presby>;
+	guests$!:	Observable<Presbies>;
 	JSON:		JSON ;
 	
 	constructor (
-		private	route:		ActivatedRoute,
-		private	router:		Router,
-		private	service:	PresbyService
+		private	route:	ActivatedRoute,
+		private	ps:		PresbyService,
+		private	router:	Router
 	) {
 		this.env	= environment;
 		this.debug	= this.env.debug;
 		this.JSON	= JSON
 	}
 	
-	ngOnInit ()	{ this.presby$ = this.route.paramMap.pipe( switchMap(( params: ParamMap) => this.service.getPresby( params.get( 'guestId' )!)))}
-	toGuests ()	{ this.router.navigate(['/guests']).then(r => {if (this.debug) console.log(r)})}
+	ngOnInit ()	{ this.guests$ = this.ps.watch().valueChanges.pipe( map(result => result.data.presbies ))}
+	toGuests ()	{ this.router.navigate(['/guests']).then( r => console.log(r))}
 }
+// ngOnInit ()	{ this.presby$ = this.route.paramMap.pipe( switchMap(( params: ParamMap) => this.service.getPresby( params.get( 'guestId' )!)))}

@@ -27,7 +27,7 @@ export class EventUpdateComponent implements OnInit {
 	planId!:		number;
 	versionId!:		number;
 	JSON:			JSON	= JSON;
-	eventNameSlug			= 'Mama gotta brand new event - owwwww!'
+	eventSlug				= 'Mama gotta brand new event - owwwww!'
 
 	constructor (
 		public	dialog:	DialogService,

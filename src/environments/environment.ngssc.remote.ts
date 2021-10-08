@@ -3,8 +3,8 @@
 import 'angular-server-side-configuration/process';
 
 // V7
-import { fb		} from "./fb.stage";
-import { remote	} from "./remote";
+import { fb		} from './fb.stage';
+import { remote	} from './remote';
 // import { local	} from "./local";
 
 const realmBase		= process.env.REALM_BASE	|| 'https://too.fb.weja.us';
@@ -12,7 +12,7 @@ const routeBase		= process.env.ROUTE_BASE	|| '/private-element/';
 const privateMife	= process.env.PRIVATE_MIFE	|| realmBase + routeBase + '#/';		// DEFINES THIS MIFE
 const thisMife		= privateMife;
 
-const alias			= process.env.ALIAS			|| "stage"
+const alias			= process.env.ALIAS			|| 'stage'
 const title			= process.env.TITLE			|| 'Default Private Website Title';
 const debug			= process.env.DEBUG			|| 'true';
 const logs			= process.env.LOGS			|| 'true';
@@ -23,9 +23,11 @@ const publicMife	= process.env.PUBLIC_MIFE	|| remote.default.PUBLIC_MIFE;
 const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
-const cmsService	= 'https://foo.fb.weja.us/cms';
-const cmsSheet		= 'https://docs.google.com/spreadsheets/d/14T-GM6Cx-OpT_s4MCytc1VL8fQax8eOC8IHdne-1Wf4/edit#gid=1055269632';
+const cmsService	= 'http://localhost:8080';
+// const cmsService	= 'https://foo.fb.weja.us/cms';
 const cmsAlias		= 'stage-EN_US';
+const cmsSheet		= 'https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8/edit#gid=1463760381';
+// const cmsSheet = 'https://docs.google.com/spreadsheets/d/14T-GM6Cx-OpT_s4MCytc1VL8fQax8eOC8IHdne-1Wf4/edit#gid=1055269632';
 
 
 export const environment = {

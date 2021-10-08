@@ -1,9 +1,9 @@
 
 
-
 .cdk-drag-disabled
 	background:	floralwhite
 	color:		gainsboro
+	margin:		0 3%
 
 mat-card:hover
 	cursor:		grab
@@ -32,16 +32,13 @@ mat-icon.assigned-guest-host
 	float:	right
 
 .polyBase
-	height:	10em
-	width:	10em
-
+	height:	8em
+	width:	8em
 .polyBase.full-host
 	background-color:	red
 	cursor:				no-drop
-
 .polyBase.not-full-host
 	background-color:	orange
-
 .poly-2
 	display:			flex
 	justify-content:	center
@@ -50,7 +47,6 @@ mat-icon.assigned-guest-host
 .poly-content-2
 	display:			flex
 	justify-content:	center
-
 .poly-6
 	align-items:		flex-end
 	clip-path:			polygon( 50% 0%,	5% 90%,		95% 90% )
@@ -58,33 +54,31 @@ mat-icon.assigned-guest-host
 	display:			flex
 	flex-flow:			row wrap
 	justify-content:	center
-	margin:				0 30%
-	padding-top:		35%
-
+	margin:				0 33% 0 31%
+	padding-top:		31%
 .poly-8
 	clip-path:			polygon( 50% 0%,  95% 50%,  50% 100%,  5% 50% )
 .poly-content-8
 	display:			flex
 	flex-flow:			row wrap
 	justify-content:	center
-	margin:				0 20%
+	margin:				0 24% 0 22%
 	padding-top:		25%
-
 .poly-10
 	clip-path:			polygon( 50% 0%,	95% 40%,	75% 90%,	25% 90%,	5% 40% )
 .poly-content-10
 	display:			flex
 	flex-flow:			row wrap
 	justify-content:	center
-	margin:				0 10%
+	margin:				0 15% 0 12%
 	padding-top:		30%
-
 .poly-12
 	clip-path:			polygon( 50% 0%,	95% 25%,	95% 75%,	50% 100%,	5% 75%,		5% 25% )
 .poly-content-12
 	display:			flex
 	flex-flow:			row wrap
 	justify-content:	center
+	margin:				0 3% 0 0
 	padding-top:		25%
 
 h3
@@ -133,7 +127,6 @@ tr
 		font-size:			smaller
 		justify-content:	center
 
-
 mat-accordion .mat-expansion-panel-header-title,
 mat-accordion .mat-expansion-panel-header-description
 	flex-basis:			0
@@ -158,12 +151,16 @@ mat-card
 	background-color:	aliceblue
 	display:			flex
 	justify-content:	space-between
-	padding: 			0 .75em
+	padding: 			0 .25em
 	height:				1.75em
 	mat-icon
 		display:			flex
 		font-size:			xx-small
 		align-items:		center
+	
+.mat-icon.peep
+	height:				20px
+	width:				20px
 
 td
 	display:			flex

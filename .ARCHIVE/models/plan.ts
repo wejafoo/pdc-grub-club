@@ -2,11 +2,11 @@
 // sched: { assignedHosts?: {[key: string]: any}; assignedGuests?:{[key: string]: any}; unassignedHosts?: {[key: string]: any}; unassignedGuests?: {[key: string]: any}; actives?: Presbies; } = {};
 
 export interface Schedule  {
-	unGuests:	{[key: string]: Guests	};
-	aGuests:	{[key: string]: Guests	};
-	unHosts:	{[key: string]: Hosts	};
-	aHosts:		{[key: string]: Hosts	};
-	actives:	Presbies
+	unGs:	{[key: string]: Guests	};
+	aGs:	{[key: string]: Guests	};
+	unHs:	{[key: string]: Hosts	};
+	aHs:	{[key: string]: Hosts	};
+	actives: Presbies
 };
 
 export type Plans = Plan[];
@@ -32,11 +32,11 @@ export interface Event {
 
 export type Hosts = Host[];
 export interface Host {
-	eventName:		string;
+	event:			string;
 	seats?:			number;
 	hostKey?:		string;
 	id?:			number;
-	guests?:		Guests;
+	guests?:		string[];
 	hostName?:		string;
 	isAssignable?:	boolean;
 	isAssigned?:	boolean;
@@ -45,7 +45,7 @@ export interface Host {
 
 export type Guests = Guest[];
 export interface Guest {
-	eventName:		string;
+	event:			string;
 	guestKey?:		string;
 	id?:			number;
 	guests?:		string[];
@@ -56,16 +56,17 @@ export interface Guest {
 	isDisabled?:	boolean;
 }
 
+export interface PresbyQuery { presbies: Presbies }
 export type Presbies = Presby[];
 export interface Presby {
-	active:		boolean;
+	key:		string;
+	isActive:	boolean;
 	id:			number;
-	// name:	string;
 	last:		string;
 	guests:		string[];
-	hostSeats:	number;
-	hosting:	Hosts;
-	guesting:	Guests;
+	guestings:	Guests;
+	hostings:	Hosts;
+	seats?:		number;
 	U?:			boolean;
 	S?:			boolean;
 	email?:		string;

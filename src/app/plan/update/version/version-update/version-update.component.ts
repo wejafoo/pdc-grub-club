@@ -10,16 +10,16 @@ import { CdkDrag			} from '@angular/cdk/drag-drop';
 import { CdkDropList		} from '@angular/cdk/drag-drop';
 import { transferArrayItem	} from '@angular/cdk/drag-drop';
 import { CdkDragDrop		} from '@angular/cdk/drag-drop';
-import { Observable			} from 'rxjs';
-import { of					} from 'rxjs';
-import { isObject			} from 'rxjs/internal-compatibility';
-import { switchMap			} from 'rxjs/operators';
+import { Apollo				} from 'apollo-angular';
+import { gql				} from 'apollo-angular';
+import { isObject			} from 'lodash';
 import { PlanService		} from '../../../services/plan.service';
-import { ScheduleService	} from '../../../services/schedule.service';
-import { DialogService		} from '../../../../services/dialog.service';
-import { PresbyService		} from '../../../../presby/services/presby.service';
+import { Presby				} from '../../../../../../.ARCHIVE/models/plan';
 import { Schedule			} from '../../../../../../.ARCHIVE/models/plan';
 import { Version			} from '../../../../../../.ARCHIVE/models/plan';
+import { Presbies			} from '../../../../../../.ARCHIVE/models/plan';
+
+export type Query = { presbies: Presbies }
 
 @Component({
 	selector: 'app-version-update',
@@ -28,114 +28,375 @@ import { Version			} from '../../../../../../.ARCHIVE/models/plan';
 })
 
 export class VersionUpdateComponent implements OnInit {
-	env:			any;
-	debug:			boolean;
-	planId!:		number;		// provided by router param - "plan/X"
-	versionId!:		number;		// provided by router param - "version/X"
-	loadedVer!:		Version;
-	ver!:			Version;
-	sched!:			Schedule
-	aHs: 			{[key: string]: any		} = [];		// assigned		hosts
-	unHs:			{[key: string]: any		} = [];		// unassigned	hosts
-	aGs:			{[key: string]: any		} = [];		// assigned		guests
-	unGs:			{[key: string]: any		} = [];		// unassigned	guests
-	allGs:			{[key: string]: any		} = {};		// assigned		guests by all/event/host
-	summary: 		{[key: string]:	any		} = {};
-	pairs: 			{[key: string]: any[]	} = {};
-	panelOpenState	= false;	// accordion panel open/close
-	step			= 1;		// accordion panel previous/next order control default
-	isOpen			= false;	// toggle between peeps/card views
+	env:		any;
+	debug:		boolean;
+	error:		any;
+	events!:	string[];
+	planId!:	number;									// provided by router param - "plan/X"
+	versionId!:	number;									// provided by router param - "version/X"
+	loadedVer!:	Version;
+	ver!:		Version;
+	sched!:		Schedule
+	presbies:	Array<Presby> = [];
+	actives:	Array<Presby> = [];
+	aHs: 		{[key: string]: any[]	}	= {};		// assigned		hosts
+	unHs:		{[key: string]: any[]	}	= {};		// unassigned	hosts
+	aGs:		{[key: string]: any		}	= {};		// assigned		guests
+	unGs: 		{[key: string]: any[]	}	= {};		// unassigned	guests
+	summary:	{[key: string]:	any		}	= {};
+	pairs: 		{[key: string]: any[]	}	= {};
+	loaded	= false;
+	step	= 1;										// accordion panel previous/next order control default
+	isOpen	= false;									// toggle between peeps/card views
+	QUERY	= gql`{ presbies { key id isActive last guests guestings { event seats } hostings { event seats } seats U S email home cell smail city st zip mmail }}`;
+	objKeys = Object.keys;
 	
 	constructor (
-		public	dialog:		DialogService,
-		public	planSvc:	PlanService,
-		public	presbySvc:	PresbyService,
-		public	route:		ActivatedRoute,
-		public	router:		Router,
-		public	schedSvc:	ScheduleService
+		public route:	ActivatedRoute,
+		public router:	Router,
+		public apollo:	Apollo,
+		public planSvc:	PlanService,
 	) {
 		this.env	= environment;
-		this.debug	= this.env.debug
+		this.debug	= this.env.debug;
 	}
 	
-	  ///////////////////////////////
-	// 	COMPONENT LIFECYCLE STUFF  //////////////////////////////////////////////////////////////////////////////////////////////
-	
+		///////////////////////////////
+	////  COMPONENT LIFECYCLE STUFF  //////////////////////////////////////////////////////////////////////////////////////////////
 	ngOnInit() {
-		this.route.paramMap.pipe(switchMap(params => of(params.get( 'planId'		)))).subscribe(planId		=> this.planSvc.setPlan(+planId!));
-		this.route.paramMap.pipe(switchMap(params => of(params.get( 'versionId'	)))).subscribe(versionId	=> {
-			this.planSvc.setVersion( +versionId! );
-			this.loadedVer								= this.planSvc.getVersion();
-			this.ver									= JSON.parse( JSON.stringify( this.loadedVer ));					// version
-			this.sched									= this.schedSvc.loadVersion( this.ver );							// schedule
-			this.aHs									= this.sched.aHosts;												// allocated Hosts (usually empty)
-			this.unHs									= this.sched.unHosts;												// unallocated Hosts
-			this.aGs									= this.sched.aGuests;												// assigned Guests (usually empty)
-			this.unGs									= this.sched.unGuests;												// unassigned Guests
-			let unpairedGs:	any[]	 					= [];
-			const pairs:	{[key: string]: string[]}	= {};
-			for ( const unG in this.sched.unGuests ) { unpairedGs = unpairedGs.concat( this.sched.unGuests[unG]) } 			// Load uniq guestKeys from all events
-			for ( let gst1 = 0, gst1Len = unpairedGs.length;	gst1 < gst1Len;		gst1++ ) {
-				if ( pairs[unpairedGs[gst1].guestKey] === undefined ) {
-					pairs[unpairedGs[gst1].guestKey] = [];
-					for ( let gst2 = 0, gst2Len = unpairedGs.length;	gst2 < gst2Len;		gst2++ ) {
-						if (( unpairedGs[gst1].guestKey !== unpairedGs[gst2].guestKey )  && ( !( pairs[unpairedGs[gst1].guestKey].includes(unpairedGs[gst2].guestKey)))){
-							pairs[unpairedGs[gst1].guestKey].push( unpairedGs[gst2].guestKey )
-						}
-					}
-				}
+		this.planId			= Number( this.route.snapshot.paramMap.get( 'planId'	));
+		this.versionId		= Number( this.route.snapshot.paramMap.get( 'versionId'	));
+		this.planSvc.setPlanVersion( this.planId, this.versionId );
+		this.ver			= JSON.parse( JSON.stringify( this.planSvc.getVersion()));
+		this.events			= this.ver.events.map( event => event.name );
+		for ( const evt of this.events ) {
+			this.aHs[evt]	= [];
+			this.unHs[evt]	= [];
+			this.aGs[evt]	= {};
+			this.unGs[evt]	= [];
+		}
+		// this.apollo.watchQuery<Query>({ query: this.QUERY/*, notifyOnNetworkStatusChange: true*/}).valueChanges.subscribe(async (result: any) => {
+		this.apollo.watchQuery<Query>({ query: this.QUERY }).valueChanges.subscribe(result => {
+			this.error		= result.error;
+			this.presbies	= result.data.presbies;
+			this.actives	= this.presbies.filter( presby => presby.isActive );
+			this.sched		= { aGs: this.aGs, aHs: this.aHs, unGs: this.unGs, unHs: this.unHs, actives: this.actives };
+			const pairs: {[key: string]: string[]} = {};
+			for ( const a1 of this.actives ) {
+				pairs[a1.key] = [];
+				for ( const a2 of this.actives ) { if ( a1 !== a2 ) { pairs[a1.key].push( a2.key )}}
 			}
 			this.summary.pairs			= JSON.parse( JSON.stringify( pairs ));
-			this.summary.refreshPairs	= JSON.parse( JSON.stringify( pairs ));		// set aside for audit/testing refresh support
-
+			this.summary.refreshPairs	= JSON.parse( JSON.stringify( pairs ));
+			for ( const evt of this.events ) { this.loadActives(evt) }
+			
 			this.assignAllUniqHosts();
 			this.autoAllocateHosts('all' );
-			this.autoAssignGuests('all' );
+			// this.autoAssignGuests('all' );
+			
+			this.loaded	= true;
+			console.log( 'SCHEDULE:',	this.sched		);
+			console.log( 'SUMMARY:',	this.summary	);
 		})
 	}
-																										   ///////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////// GUEST STUFF ////
 	
-	  /////////////////
-	//  ASSIGN GUEST ///////////////////////////////////////////////////////////////////////////////////////////////////////
+	loadActives( evt: string ) {
+		console.log( '>>> loadActives()\t', evt );
+		// 																												//  LOAD HOSTING OBJECTS
+		for ( const active of this.actives ) {
+			console.log( '\tloadActives()\t\thost:', active.key );
+			const hostings	= active.hostings
+			const activeObj	= Object.assign({}, active );
+			let hCnt = 0;
+			for ( const hosting of hostings ) {
+				console.log( '\tloadActives()\t\t\tevent:', hosting.event );
+				const hostingObj = Object.assign({}, hosting );
+				if ( hostingObj.event === evt ) {
+					hostingObj.id		= JSON.parse( JSON.stringify( activeObj.id ));
+					hostingObj.hostName	= activeObj.last;
+					hostingObj.hostKey	= activeObj.last + '-' + activeObj.id + '-' + activeObj.seats + '-' + activeObj.guests.length;
+					if ( ! ( 'guests'	in hostingObj )) { hostingObj.guests = JSON.parse( JSON.stringify( activeObj.guests ))}
+					if ( ! ( 'seats'	in hostingObj )	||	hostingObj.seats === null ) { hostingObj.seats = activeObj.seats }
+					this.unHs[evt].push( hostingObj );
+				}
+				hCnt++;
+			}
+		}
+		// 																												//  LOAD GUESTING OBJECTS
+		for ( const active of this.actives ) {
+			console.log( '\tloadActives()\t\tguest:', active.key );
+			const activeObj	= Object.assign({}, active );
+			let gCnt		= 0;
+
+			for ( const guesting of activeObj.guestings ) {
+				console.log( '\tloadActives()\t\t\tevent:', guesting.event );
+				const guestingObj = Object.assign({}, guesting);
+				if ( guestingObj.event === evt ) {																		// ADD PRESBY FIELDS TO GUESTING OBJECT
+					if ( ! ('cnt' in guestingObj) || guestingObj.cnt === null ) { guestingObj.cnt		= activeObj.guests.length	}
+					if ( ! ( 'guests' in guestingObj ))							{ guestingObj.guests	= activeObj.guests			}
+					guestingObj.id			= JSON.parse( JSON.stringify( activeObj.id		));
+					guestingObj.partyName	= JSON.parse( JSON.stringify( activeObj.last	));
+					guestingObj.guestKey	= activeObj.last + '-' + activeObj.id + '-' + activeObj.seats + '-' + activeObj.guests.length;
+					this.unGs[evt].push( guestingObj );
+				}
+				gCnt++;
+			}
+		}
+		// 																												//  EVENT SUMMARY
+		let accumSeatCnt	= 0;
+		this.summary[evt]	= {guests: [], rsvps: 0, seatCnt: accumSeatCnt, allocatedSeatCnt: accumSeatCnt, assignedSeatCnt: 0, overAllocatedSeatCnt: 0, overAssignedSeatCnt: 0, overAssignedGuestCnt: 0, unAllocatedSeatCnt: 0, unAllocatedHostCnt: 0}
+		this.summary[evt].unAllocatedHostCnt = this.unHs[evt].length
+		for ( const host of this.unHs[evt] ) { this.summary[evt].unAllocatedSeatCnt	+= host.seats }
+		console.log( '\tloadActives()\t\tinit event:', evt );
+		// 																												//  HOST SUMMARY
+		for ( const host of this.unHs[evt] ) {
+			const hst = host.hostKey;
+			accumSeatCnt = accumSeatCnt + host.seats
+			this.summary[evt][hst]					= { isAllocated: false, guests: [...host.guests], hosts: [...host.guests], seats: host.seats, assignedGuestCnt: 0, assignedSeatCnt: 0, overAssignedSeatCnt: 0, overAssignedGuestCnt: 0, unAssignedSeatCnt: host.seats}
+			this.summary[evt].seatCnt				=	accumSeatCnt;
+			this.summary[evt].assignedSeatCnt		+=	this.summary[evt][hst].guests.length;
+			this.summary[evt][hst].assignedSeatCnt	=	this.summary[evt][hst].guests.length;
+			this.summary[evt][hst].assignedGuestCnt	=	this.summary[evt][hst].guests.length;
+			console.log( '\tloadActives()\t\t\thost:\t', hst, '\twith guests:\t', this.summary[evt][hst].guests );
+		}
+		// 																												//  GUEST SUMMARY
+		for ( const gst of this.unGs[evt] ) {
+			this.summary[evt].rsvps += gst.guests.length
+			console.log( '\tloadActives()\t\t\tguest:\t', gst.guestKey, '\tRSVP\'d for:\t', gst.guests.length );
+		}
+		console.log( '<<< loadActives()', JSON.parse( JSON.stringify( this.summary )) );
+	}
+
+	calcTotals( logMessage: string, event?: string, host?: string, ) {
+		
+		if ( event ) {
+			console.log( '\ncalcTotals()\trequest:', logMessage, 'event:', event, 'host:', host  );
+		} else {
+			console.log( '\ncalcTotals()\trequest:', logMessage, this.aGs  );
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// THE GOAL:	IDEALLY, ALL CALCULATIONS WOULD BE HERE AND, OF COURSE,
+		// 					BE IDEMPOTENT AND PROCESSED USING A FUNCTIONAL PATTERN SIMILAR TO QUEUE PROCESSING
+		//  All calculations below that require specific event or host to do the calculation should ultimately be
+		//      replaced by an entry here that is capable of obtaining the same result without arguments being sent,
+		//      	preferably processed holistically across all events, hosts, etc.
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		const events = Object.keys( this.aGs );
+		for ( const evt of events ) {																					// calculate via event index
+			
+			console.log( 'calcTotals()\t\tevent:', evt );
+			console.log( 'calcTotals()\t\t\tCalculating...');
+			
+			let accumUnAssignedGuests = 0;
+			for ( const gst of this.unGs[evt] ) { accumUnAssignedGuests += gst.cnt }
+			this.summary[evt].unAssignedGuestCnt	= accumUnAssignedGuests;
+			
+			
+			let accumAllocatedSeats = 0;
+			for ( const hst of this.aHs[evt] ) { accumAllocatedSeats += hst.seats }
+			this.summary[evt].allocatedSeatCnt		= accumAllocatedSeats;
+			
+			
+			this.summary[evt].assignedSeatCnt		= this.summary[evt].guests.length;
+			this.summary[evt].assignedGuestCnt		= this.summary[evt].guests.length;
+			this.summary[evt].overAllocatedSeatCnt	= this.summary[evt].allocatedSeatCnt	- this.summary[evt].rsvps;
+			this.summary[evt].unAssignedSeatCnt		= this.summary[evt].allocatedSeatCnt	- this.summary[evt].assignedSeatCnt;
+			this.summary[evt].overAssignedGuestCnt	= this.summary[evt].assignedGuestCnt	- this.summary[evt].rsvps;
+			this.summary[evt].overAssignedSeatCnt	= this.summary[evt].assignedSeatCnt		- this.summary[evt].allocatedSeatCnt;
+			
+			console.log( 'calcTotals()\t\t\t\tunassigned guests:\t\t\t',		this.summary[evt].unAssignedGuestCnt	);
+			console.log( 'calcTotals()\t\t\t\tallocated seats:\t\t\t',			this.summary[evt].allocatedSeatCnt		);
+			console.log( 'calcTotals()\t\t\t\tassigned seats:\t\t\t\t',			this.summary[evt].assignedSeatCnt		);
+			console.log( 'calcTotals()\t\t\t\tassigned guests:\t\t\t',			this.summary[evt].assignedGuestCnt		);
+			console.log( 'calcTotals()\t\t\t\tallocated over/under:\t\t',		this.summary[evt].overAllocatedSeatCnt	);
+			console.log( 'calcTotals()\t\t\t\tunassigned seats:\t\t\t',			this.summary[evt].unAssignedSeatCnt		);
+			console.log( 'calcTotals()\t\t\t\tassigned guests over/under:\t',	this.summary[evt].overAssignedGuestCnt	);
+			console.log( 'calcTotals()\t\t\t\tassigned seats over/under:\t',	this.summary[evt].overAssignedSeatCnt	);
+			
+			let nextHostToAssignCount				= 0;
+			this.summary[evt].nextAutoAssignHost	= '<undefined>';
+
+			for ( const hst in this.aGs[evt] ) {
+				
+				console.log( 'calcTotals()\t\t\thost:', hst, 'allocated?', this.summary[evt][hst].isAllocated, this.summary[evt][hst].guests );
+				
+				this.summary[evt][hst].assignedGuestCnt			= this.summary[evt][hst].guests.length;
+				this.summary[evt][hst].assignedSeatCnt			= this.summary[evt][hst].guests.length;
+				this.summary[evt][hst].unAssignedSeatCnt		= this.summary[evt][hst].seats			- this.summary[evt][hst].guests.length;
+				this.summary[evt][hst].overAssignedSeatCnt		= this.summary[evt][hst].guests.length	- this.summary[evt][hst].seats;
+				this.summary[evt][hst].overAssignedGuestCnt		= this.summary[evt][hst].guests.length	- this.summary[evt][hst].seats;
+				
+				console.log( 'calcTotals()\t\t\t\t\tBTW, is', hst + '\'s remaining seats:', this.summary[evt][hst].unAssignedSeatCnt, '\t > \t', nextHostToAssignCount, this.summary[evt].nextAutoAssignHost + '\'s remaining' );
+				
+				if ( this.summary[evt][hst].unAssignedSeatCnt > nextHostToAssignCount ) {
+					console.log( 'calcTotals()\t\t\t\t\t\tGood, using:', hst, 'for next auto-assignment, continuing...' );
+					nextHostToAssignCount					= this.summary[evt][hst].unAssignedSeatCnt;
+					this.summary[evt].nextAutoAssignHost	= hst;
+				} else {
+					console.log( 'calcTotals()\t\t\t\t\t\tk, keeping:', this.summary[evt].nextAutoAssignHost, 'for the next assignment, moving along...' );
+				}
+				
+				console.log( 'calcTotals()\t\t\t\t\t\tCalculating guest counts for:', hst );
+				
+				for ( const gst of this.aGs[evt][hst] ) {
+					console.log( 'calcTotals()\t\t\t\t\t\t\treviewing guest:', gst.guestKey );
+					console.log( 'calcTotals()\t\t\t\t\t\t\t\t', gst.guests.length, 'rsvps currently assigned to:', gst.guestKey );
+				}
+			}
+		}
+		if ( event && host ) { return this.summary[event][host][logMessage]	} else if ( event ) { return this.summary[event][logMessage] }
+	}
 	
-	autoAssignGuests ( scope: string ) {
-		this.debug = false;
-		let scopeArray: string[] = [];
-		if ( scope === 'all' ) { this.ver.events.forEach( evt => scopeArray.push(evt.name))} else { scopeArray = [scope]}
-		for ( let e1 = 0, e1Len = scopeArray.length;   e1 < e1Len;   e1++   ) {
-			const evt = scopeArray[e1];
-			let cnt = 0;
-			let startMarker = 0;
-			const hostKeys = Object.keys( this.aGs[evt] );
-			const startUnGsCnt = this.unGs[evt].length;
-			this.unGs[evt].sort(() => Math.random() - 0.5 );																// randomize auto-assignment order...
-			this.unGs[evt].sort(( a: {guests: string[]}, b: {guests: string[]} ) => b.guests.length - a.guests.length );  	// ...then re-sort, so that large groups auto-assign first
-			while (	this.summary[evt].assignedSeats		< this.summary[evt].totalGuests		&&								// assigned seats inexplicably greater than initial total guests
-					this.summary[evt].assignedSeats		< this.summary[evt].allocatedSeats	&&								// No more seats to assign
-					this.summary[evt].unassignedGuests	> 0									&&								// No more guests to assign
-					cnt									< startUnGsCnt														// Just failsafe for infinite loop (which, of course, shouldn't ever happen :))
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// 																				////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////  ALL MAGIC HAPPENS HERE //////////
+	
+	
+	
+	allocateHost( evt: string, hst: string, prevHostIndex: number, hostDrop?: CdkDragDrop<any[]> ) {
+		console.log( '\t>>> allocateHosts()\tevent:', evt, '\thost:', hst, '\tidx:', prevHostIndex );
+		let newHostIndex: number;
+		if ( hostDrop ) { transferArrayItem( hostDrop.previousContainer.data, hostDrop.container.data, hostDrop.previousIndex, hostDrop.currentIndex )} else {
+			newHostIndex = ( this.aHs[evt].push( ...this.unHs[evt].splice( prevHostIndex, 1 ))) - 1;
+			console.log( '\t>>> allocateHosts()\t\thost:', this.aHs[evt][newHostIndex].hostKey );
+			this.summary[evt].guests.push( ...this.aHs[evt][newHostIndex].guests );
+			console.log( '\t>>> allocateHosts()\t\tsummary host:', this.summary[evt].guests );
+			this.summary[evt][hst].isAllocated	= true;
+			console.log( '\t>>> allocateHosts()\t\t\tsummary host allocation flag:', this.summary[evt][hst].isAllocated );
+		}
+		
+		// this.summary[evt].guests.push( ...this.unHs[evt][prevHostIndex].guests );
+		this.disableOtherHostings( evt, hst, true);
+		let unAssignedGuestIndex = 0;
+		
+		
+		const tmpUnAssignedGuestIndex = this.unGs[evt].findIndex( guest => guest.guestKey === hst )
+		for ( const unG of this.unGs[evt] ) {
+			const gst = unG.guestKey
+			if ( hst === gst ) {
+				this.aGs[evt][hst] = [];
+				console.log( '\t\tallocateHost()\t\t\tDo numbers match?', tmpUnAssignedGuestIndex, '<--->', unAssignedGuestIndex );
+				console.log( '\t\tallocateHost()\t\t\t\tIf so, YAY !!! just remove this for-of in lieu of Array.findIndex' );
+				this.assignGuest( evt, hst, gst, unAssignedGuestIndex );
+				break;
+			} else {
+				unAssignedGuestIndex++;
+			}
+		}
+		
+		console.log( '\t<<< allocateHosts()\t', this.aGs[evt][hst].length, 'host(s) allocated!' );
+		
+		this.calcTotals( 'allocateHost()' );
+	}
+
+
+
+
+	assignGuest( evt: string, hst: string, gst: string, gstIdx: number, guestDrop?: CdkDragDrop<any[]> ): boolean {
+		console.log ( '\t\t>>> assignGuest() evt:', evt, 'hst:', hst, 'gst:', gst, 'idx:', gstIdx );
+		let success = false;
+		if ( hst === gst ) {
+			const newGstIdx = this.aGs[evt][hst].push( ...this.unGs[evt].splice( gstIdx, 1 )) - 1;	// NOTE: push() returns length, "-1" returns the index
+			this.aGs[evt][hst][newGstIdx].isDisabled = true;
+			success	 = true;
+		} else {
+			if ( this.aGs[evt][hst].every(( prevAssignedGuest: { guestKey: string }) => {
+				console.log( prevAssignedGuest, this.summary.pairs[gst].includes( prevAssignedGuest.guestKey ));
+				return this.summary.pairs[gst].includes( prevAssignedGuest.guestKey );
+			})
+			) {
+				if ( guestDrop ) {
+					const leaveArray = [];
+					transferArrayItem( guestDrop.previousContainer.data, guestDrop.container.data, guestDrop.previousIndex, guestDrop.currentIndex )	// CDK drag/drop magic
+					if ( guestDrop.previousContainer.id !== 'unassigned') {
+						const pushGuests	= guestDrop.previousContainer.data;																			// previous container guests
+						const pushGuest		= guestDrop.item.data;																						// dropped guest
+						leaveArray.push( ...pushGuests );
+						for ( const guest of leaveArray ) {
+							console.log( '\t\tassignGuest()\t\tadding back...', pushGuest.guestKey, '\t\tto:\t', guest.guestKey );
+							this.summary.pairs[guest.guestKey].push(pushGuest.guestKey);																// return un-assigned guests back to exiting guest pair list
+							console.log( '\t\tassignGuest()\t\tadding back...', guest.guestKey, '\t\tto:\t', pushGuest.guestKey );
+							this.summary.pairs[pushGuest.guestKey].push(guest.guestKey);																// ...and vice-versa
+						}
+					}
+				} else {
+					if ( this.aGs[evt][hst].push( ...this.unGs[evt].splice( gstIdx, 1 )) > 0 ) {				// ASSIGN!!!
+						for ( let gst1 = 0, gst1Len = this.aGs[evt][hst].length;	gst1 > gst1Len;		gst1++ ) {		// Reconcile pairs object to assignment
+							const prevAssignedGuest = this.aGs[evt][hst][gst1].guestKey;
+							this.aGs[evt][hst].every(( guest: any ) => { console.log('\t\t', guest )});
+							this.aGs[evt][hst].every(( guest: any ) => this.summary.pairs[gst].splice( this.summary.pairs[prevAssignedGuest].indexOf( guest.guestKey ), 1 ));
+						}
+						this.calcTotals( 'autoAssignGuests()' );
+						success = true;
+					} else { success = false }
+				}
+				this.pairsByMonth( evt );
+			} else {
+				if ( guestDrop ) window.alert( 'derp - collision!' + evt + hst + gst );
+				success = false;
+			}
+		}
+		console.log ( '\t\t<<< assignGuest()' );
+		return success;
+	}
+	// 																								//////////////////
+		///////////////////  ///////////////////////////////////////////////////////////////////////  GUEST STUFF  /////
+	////  ASSIGN GUESTS /////////////////////////////////////////////////////////////////////////////////////////////////
+	autoAssignGuests( scope: string ) {
+		console.log( '\t>>> autoAssignGuests()\tscope:', scope );
+		let events: string[];
+		if ( scope === 'all' ) { events = Object.keys(this.unGs) } else { events = [scope] }
+		
+		for ( const evt of events ) {
+			let cnt				= 0;
+			let startMarker		= 0;
+			const hosts			= Object.keys( this.aGs[evt] );
+			const startUnGsCnt	= this.unGs[evt].length;
+
+			this.unGs[evt].sort(() => Math.random() - 0.5 );																			// randomize auto-assignment order...
+			this.unGs[evt].sort(( a: { guests: string[] }, b: { guests: string[] } ) => b.guests.length - a.guests.length );  		// ...then re-sort, so that large groups auto-assign first
+
+			console.log(
+				'All of the following conditions must be met to assign guests for:\t\t', evt,
+				'\nassigned seats:\t\t\t',	this.summary[evt].assignedSeatCnt,			'\t < \t',		this.summary[evt].rsvps,			'\t:guest count',
+				'\nassigned seats:\t\t\t',	this.summary[evt].assignedSeatCnt,			'\t < \t',		this.summary[evt].allocatedSeatCnt, '\t:allocated seats',
+				'\nunassigned guests:\t\t',	this.summary[evt].unAssignedGuestCnt,		'\t > \t0\t\t:no more guests left to assign',
+				'\ncount:\t\t\t\t\t',	cnt,										  '\t\t < \t',	startUnGsCnt, 						'\t:stop gap to avoid endlessness',
+			);
+			
+			while (	this.summary[evt].assignedSeatCnt		< this.summary[evt].rsvps				&&	// assigned seats inexplicably greater than initial total guests
+					this.summary[evt].assignedSeatCnt		< this.summary[evt].allocatedSeatCnt	&&	// No more seats to assign
+					this.summary[evt].unAssignedGuestCnt	> 0										&&	// No more guests to assign
+					cnt										< startUnGsCnt								// Just failsafe for infinite loop (which, of course, shouldn't ever happen :))
 			) {
 				cnt++;
-				const nextHost = this.summary[evt].nextAutoAssignHost;
+				const nextHost	= this.summary[evt].nextAutoAssignHost;
 				const nextGuest = this.unGs[evt][startMarker].guestKey;
-				for ( let hst = 0, hstLen = hostKeys.length;	hst < hstLen;	hst++ ) {
-					const hostKey = hostKeys[hst];
-					if ( hostKey === nextHost ) {
-						if ( ! this.assignGuest( evt, hostKey, nextGuest, startMarker )) {
-							if (this.debug) console.log( '\tPAIR CONFLICT -- The following assignment was aborted:\t\t', nextGuest, '\t\tto event:\t\t', evt + '-' + hostKey );
+				console.log( '\t\tautoAssignGuests()\t\tnext auto-assignment host:\t',	nextHost	);
+				console.log( '\t\tautoAssignGuests()\t\tnext auto-assignment guest:\t',	nextGuest	);
+
+				for ( const hst of hosts ) {
+					if ( hst === nextHost ) {
+						const wasGoodAssignment = this.assignGuest( evt, hst, nextGuest, startMarker )
+						if ( ! wasGoodAssignment ) {
+							console.log( '\tPAIR CONFLICT -- The following assignment was aborted:\t\t', nextGuest, '\t\tto event:\t\t', evt + '-' + hst );
 							startMarker++;
 						}
 						break;
 					}
 				}
 			}
-			this.pairsByMonth( evt );
+			this.pairsByMonth(evt);
 		}
-		this.debug = false;
+		console.log( '\t<<< autoAssignGuests()' );
 	}
 
-	dropGuest ( guestDrop: CdkDragDrop<any[]>, evt: string  ) {										// unassigned -> host ...or... host -> host
+	dropGuest ( guestDrop: CdkDragDrop<any[]>, evt: string  ) {		// should work for unassigned -> host ...or... host -> host
 		if ( guestDrop.previousContainer === guestDrop.container ) {
 			console.log( 'dropGuest()\tevent summary:', this.summary, this.aGs, guestDrop );
 			moveItemInArray( guestDrop.container.data, guestDrop.previousIndex, guestDrop.currentIndex )
@@ -146,7 +407,7 @@ export class VersionUpdateComponent implements OnInit {
 			if ( guestDrop.previousContainer.id === 'unassigned' ) {
 				prevGuestIdx	= guestDrop.previousIndex;
 				dropContainerId	= guestDrop.container.id
-				guestKey		= this.unGs[evt][prevGuestIdx].guestKey;
+				guestKey		= this.unGs[evt][prevGuestIdx].guestKey!;
 			} else {
 				prevGuestIdx	= guestDrop.previousIndex;
 				dropContainerId	= guestDrop.container.id
@@ -155,57 +416,8 @@ export class VersionUpdateComponent implements OnInit {
 			this.assignGuest( evt, dropContainerId, guestKey, prevGuestIdx, guestDrop );
 		}
 	}
-	
-	assignGuest( evt: string, hst: string, gst: string, gstIdx: number, guestDrop?: CdkDragDrop<any[]> ): boolean {
-		let rtn = false;
-		if ( hst === gst ) {																				// host -> guest fast track i.e. no conflict checking
-			const newGstIdx = this.aGs[evt][hst].push( ...this.unGs[evt].splice( gstIdx, 1 )) - 1;			// .push() returns length, "- 1" returns the index
-			this.aGs[evt][hst][newGstIdx].isDisabled = true;
-			rtn	 = true;
-		} else {
-			if (
-				this.aGs[evt][hst].every(( prevAssignedGuest: { guestKey: string }) => {
-					if (this.debug) console.log( prevAssignedGuest, this.summary.pairs[gst].includes( prevAssignedGuest.guestKey ));
-					return this.summary.pairs[gst].includes( prevAssignedGuest.guestKey );
-				})
-			) {
-				if ( guestDrop ) {
-					const leaveArray = [];
-					transferArrayItem( guestDrop.previousContainer.data, guestDrop.container.data, guestDrop.previousIndex, guestDrop.currentIndex )	// CDK drag/drop magic
-					if ( guestDrop.previousContainer.id !== 'unassigned') {
-						const pushGuests	= guestDrop.previousContainer.data;																			// previous container guests
-						const pushGuest		= guestDrop.item.data;																						// dropped guest
-						leaveArray.push( ...pushGuests );
-						for ( const guest of leaveArray ) {
-							if (this.debug) console.log( 'assignGuest()\t\t\tadding back...', pushGuest.guestKey, '\t\tto:\t', guest.guestKey );
-							this.summary.pairs[guest.guestKey].push(pushGuest.guestKey);																// return un-assigned guests back to exiting guest pair list
-							if (this.debug) console.log( 'assignGuest()\t\t\tadding back...', guest.guestKey, '\t\tto:\t', pushGuest.guestKey );
-							this.summary.pairs[pushGuest.guestKey].push(guest.guestKey);																// ...and vice-versa
-						}
-					}
-				} else {
-					if ( this.aGs[evt][hst].push( ...this.unGs[evt].splice( gstIdx, 1 )) > 0 ) {
-						for ( let gst1 = 0, gst1Len = this.aGs[evt][hst].length;	gst1 > gst1Len;		gst1++ ) {
-							const prevAssignedGuest = this.aGs[evt][hst][gst1].guestKey;
-							this.aGs[evt][hst].every(( guest: any ) => { if (this.debug) console.log('\t\t', guest )});
-							this.aGs[evt][hst].every(( guest: any ) => this.summary.pairs[gst].splice(this.summary.pairs[prevAssignedGuest].indexOf(guest.guestKey), 1));
-						}
-						rtn = true;
-					} else { rtn = false }
-				}
-				this.pairsByMonth( evt );
-			} else {
-				if ( guestDrop ) { window.alert( 'derp!' + evt + hst + gst )}
-				rtn = false;
-			}
-		}
-		this.calcTotals();
-		return rtn;
-	}
-	
-	  /////////////////////
+	/////////////////////
 	//  DE-ASSIGN GUEST  ///////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	unDropGuest ( guestDrop: CdkDragDrop<any[]>, evt: string  ) {														// host -> unassigned ...or... unassigned -> unassigned
 		if ( guestDrop.previousContainer === guestDrop.container ) {
 			console.log( 'unDropGuest()\tevent summary:', this.summary, this.aGs, guestDrop );
@@ -217,107 +429,50 @@ export class VersionUpdateComponent implements OnInit {
 			this.deAssignGuest( evt, hostKey, guestKey, guestIdx, guestDrop  );
 		}
 	}
-	
 	deAssignGuest( evt: string, hst: string, gst: string, gstIdx: number, guestDrop?: CdkDragDrop<any[]> ) {
 		if ( guestDrop ) {
 			this.dePairGuest( evt, hst, gst, guestDrop )
 			transferArrayItem( guestDrop.previousContainer.data, guestDrop.container.data, guestDrop.previousIndex, guestDrop.currentIndex )		// CDK drag/drop magic
 		} else {
-			if (this.debug) console.log( 'deAssignGuest()\t\t\t\tNO DROP OBJECT FOUND -- manual push/enable -- re-assignment ready -- guest:', gst, 'event:', evt + '("unassigned")', 'idx:', gstIdx );
+			console.log( 'deAssignGuest()\t\t\t\tNO DROP OBJECT FOUND -- manual push/enable -- re-assignment ready -- guest:', gst, 'event:', evt + '("unassigned")', 'idx:', gstIdx );
 			this.dePairGuest( evt, hst, gst )
 			this.unGs[evt][this.unGs[evt].push( ...this.aGs[evt][hst].splice( gstIdx, 1)) - 1].isDisabled	= false;
 		}
-		this.calcTotals();
 	}
-	
 	dePairGuest(  evt: string, hst: string , gst: string, guestDrop?: CdkDragDrop<any[]> ) {
 		const leaveGuests = [];
-		if ( guestDrop ) {
-			leaveGuests.push( ... JSON.parse( JSON.stringify( guestDrop.previousContainer.data )));
-		} else {
-			leaveGuests.push( ... JSON.parse( JSON.stringify( this.aGs[evt][hst] )));
-		}
+		if ( guestDrop ) { leaveGuests.push( ... JSON.parse( JSON.stringify( guestDrop.previousContainer.data )))} else { leaveGuests.push( ... JSON.parse( JSON.stringify( this.aGs[evt][hst] )))}
 		for ( const guest of leaveGuests ) {
 			if ( gst !== guest.guestKey ) {
-				if (this.debug) console.log( 'dePairGuest()\t\t\t\tde-pairing guest:\t', gst, '\tfrom guest:\t', guest.guestKey );
+				console.log( 'dePairGuest()\t\t\t\tde-pairing guest:\t', gst, '\tfrom guest:\t', guest.guestKey );
 				this.summary.pairs[guest.guestKey].push( gst );																				// return un-assigned guests back to exiting guest pair list
-				if (this.debug) console.log( 'dePairGuest()\t\t... and vice-versa guest:\t', guest.guestKey, '\tfrom guest:\t', gst );
+				console.log( 'dePairGuest()\t\t... and vice-versa guest:\t', guest.guestKey, '\tfrom guest:\t', gst );
 				this.summary.pairs[gst].push(guest.guestKey);																				// ...and vice-versa
 			}
 		}
 	}
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//  GUEST HELPERS
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private pairsByMonth( evt: string ) {
-		this.debug = false;
-		const hsts = Object.keys( this.aGs[evt] );
-		for ( const hst of hsts ) {
-			const gsts		= this.aGs[evt][hst];
-			const pairs		= this.aGs[evt][hst];
-			for ( const gst of gsts ) {
-				for ( const pair of pairs ) {
-					if ( pair.guestKey !== gst.guestKey ) {
-						if ( this.summary.pairs[gst.guestKey].includes( pair.guestKey )) {
-							if (this.debug) console.log( 'pairsByMonth()\t\t\tremoving...', pair.guestKey, 'from: ', gst.guestKey );
-							this.summary.pairs[gst.guestKey].splice( this.summary.pairs[gst.guestKey].indexOf(pair.guestKey), 1);
-						}
-					}
-				}
-			}
-		}
-		this.debug = false;
-	}
-	
-	private auditPairsByMonth( evt: string ) {
-		this.debug = false;
-		const hsts = Object.keys( this.aGs[evt] );
-		for ( const hst of hsts ) {
-			const gsts = this.aGs[evt][hst];
-			const pairs = this.aGs[evt][hst];
-			for ( const gst of gsts ) {
-				for ( const pair of pairs ) {
-					if ( pair.guestKey !== gst.guestKey ) {
-						if ( this.summary.auditPairs[gst.guestKey].includes( pair.guestKey )) {
-							this.summary.auditPairs[gst.guestKey].splice( this.summary.auditPairs[gst.guestKey].indexOf( pair.guestKey ), 1);
-						}
-					}
-				}
-			}
-		}
-		this.debug = false;
-	}
-
-	pairsPredicate() {
-		return ( gstDrag: CdkDrag, hstDrop: CdkDropList ) => {
-			const guests: any	= [];
-			const gst			= gstDrag.data.guestKey
-			guests.push( ...hstDrop.data );
-			return guests.every((guest: { guestKey: string }) => this.summary.pairs[gst].includes(guest.guestKey)) || hstDrop.id === 'unassigned';
-		}
-	}
-																											  //////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////// HOST STUFF ///
-	  		///////////////////
-	////////  ALLOCATE HOST  //////////////////////////////////////////////////////////////////////////////////////////////
+	// 																										/////////////////
+	// 		////////////////////////////////////////////////////////////////////////////////////////////////  HOST STUFF  /////////
+	////////  AUTO HOST ASSIGNMENTS  //////////////////////////////////////////////////////////////////////////////////////////////
 	autoAllocateHosts( scope: string ) {
+		console.log( 'autoAllocateHosts() >>>' );
 		let events: string[];
 		if ( scope === 'all' ) { events = Object.keys( this.unHs )} else { events = [scope]}
 		events.every( event => this.unHs[event].sort(() => Math.random() - 0.5 ))											// randomize-ish auto-assign order
 		for ( const evt of events ) {
 			let hstIdx = 0;
-			while  ( this.summary[evt].allocatedSeats < this.summary[evt].totalGuests  &&  this.unHs[evt][hstIdx] !== undefined  ) {
+			while  ( this.summary[evt].allocatedSeatCnt < this.summary[evt].rsvps  &&  this.unHs[evt][hstIdx] !== undefined  ) {
 				if ( ! this.unHs[evt][hstIdx].isDisabled ) {
 					const hst =  this.unHs[evt][hstIdx].hostKey
 					this.allocateHost( evt, hst, hstIdx );
 				} else {
-					if (this.debug) console.log( 'autoAllocateHosts()\t!!!! Cannot assign host:\t', this.unHs[evt][hstIdx].hostKey, '\tto', evt, '...skipping' );
+					console.log( 'autoAllocateHosts() \t\t\t\t !!!! Cannot assign host:\t', this.unHs[evt][hstIdx].hostKey, '\tto', evt, '...skipping' );
 					hstIdx++
 				}
 			}
 		}
+		console.log( '<<< autoAllocateHosts()' )
 	}
-	
 	dropHost ( hostDrop: CdkDragDrop<any[]>, evt: string ) {
 		if ( hostDrop.previousContainer === hostDrop.container ) {
 			console.log( 'dropHost()\tevent summary:', this.summary, this.aGs, hostDrop );
@@ -328,21 +483,8 @@ export class VersionUpdateComponent implements OnInit {
 			this.allocateHost( evt, hostKey, hostIdx, hostDrop );
 		}
 	}
-	
-	allocateHost( evt: string, hst: string, hstIdx: number, hostDrop?: CdkDragDrop<any[]> ) {
-		this.debug = true;
-		if ( hostDrop ) {
-			transferArrayItem( hostDrop.previousContainer.data, hostDrop.container.data, hostDrop.previousIndex, hostDrop.currentIndex );
-		} else { this.aHs[evt].push( ...this.unHs[evt].splice( hstIdx, 1))}
-		this.otherHostEvents( evt, hst, true );
-		this.hostAsGuest( evt, hst );
-		this.calcTotals();
-		this.debug = false;
-	}
-	
-						////////////////////
-	//////////////////// DE-ALLOCATE HOST ////////////////////////////////////////////////////////////////////////////////
-	
+	// 						///////////////////////
+	////////////////////////  DE-ALLOCATE HOST  ////////////////////////////////////////////////////////////////////////////////
 	unDropHost ( hostDrop: CdkDragDrop<any[]>, evt: string ) {
 		if ( hostDrop.previousContainer === hostDrop.container ) {
 			console.log( 'dropHost()\tevent summary:', this.summary, this.aGs, hostDrop );
@@ -353,10 +495,12 @@ export class VersionUpdateComponent implements OnInit {
 			this.deAllocateHost( evt, hostKey, hostIdx, hostDrop )
 		}
 	}
-	
-	deAllocateHost( evt: string, hst: string, hstIdx: number, hostDrop?: CdkDragDrop<any[]> ) {
-		console.log( 'de-allocate -- event', evt, 'host:', hst, 'idx:', hstIdx, hostDrop );
+	deAllocateHost( evt: string, hst: string, prevHostIndex: number, hostDrop?: CdkDragDrop<any[]> ) {
+		console.log( 'de-allocate -- event', evt, 'host:', hst, 'idx:', prevHostIndex, hostDrop );
 		const unGuests = this.aGs[evt][hst]
+		// EVENT-specific		// this.summary[evt].allocatedSeatCnt	-= this.unHs[evt][prevHostIndex].seats;
+								// this.summary[evt].unAllocatedSeatCnt	+= this.unHs[evt][prevHostIndex].seats;
+		// HOST-specific		// this.summary[evt][hst].isAllocated	= false;
 		while ( unGuests.length > 0 ) {
 			console.log( 'de-assigning guest:', unGuests[0].guestKey )
 			this.deAssignGuest( evt, hst, unGuests[0].guestKey, 0 )
@@ -364,47 +508,56 @@ export class VersionUpdateComponent implements OnInit {
 		delete this.aGs[evt][hst];
 		if ( hostDrop ) {
 			transferArrayItem( hostDrop.previousContainer.data, hostDrop.container.data, hostDrop.previousIndex, hostDrop.currentIndex );
-		} else { this.unHs[evt].push( ...this.unHs[evt].splice( hstIdx, 1))}
-		this.otherHostEvents( evt, hst, false );
-		this.calcTotals();
+		} else { this.unHs[evt].push( ...this.unHs[evt].splice( prevHostIndex, 1))}
+		this.disableOtherHostings( evt, hst, false );
 	}
 	
 	////////////////////
-	//  HOST HELPERS  //////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	hostAsGuest( evt: string, hst: string ) {
-		this.debug = false;
-		let idxCnt = 0;
-		const unGuests = this.unGs[evt];
-		for ( const unGuest of unGuests ) {
-			const guestKey = unGuest.guestKey
-			if ( hst === guestKey ) {
-				this.aGs[evt][hst] = [];
-				if (this.debug) console.log( 'hostAsGuest()\t\t\t\tcalling assignGuest(), using:(event:', evt, 'host:', hst, 'guest:', guestKey, 'idx:', idxCnt + ')' );
-				this.assignGuest( evt, hst, guestKey, idxCnt );
-				break;
-			} else { idxCnt++ }
+	//  MISC HELPERS  //////////////////////////////////////////////////////////////////////////////////////////////////////
+	// loadVersion	( versionId: number ) { if (this.debug) console.log( 'Loading version , version ID:', versionId, 'see version-update->loadVersion()' )}
+	cancelVersion	() { this.toPlanUpdate()}
+	nextStep		() { this.step++ }
+	prevStep		() { this.step-- }
+	reviewVersion	() { this.router.navigate(['/plan', this.planId, 'schedule'	]).then(r => { if (this.debug) console.log(r)})}
+	toPlanUpdate	() { this.router.navigate(['/plan', this.planId, 'update'		]).then(r => { if (this.debug) console.log(r)})}
+	toVersions		() { this.router.navigate(['/plan', this.planId				]).then(r => { if (this.debug) console.log(r)})}
+	save			() { this.loadedVer = JSON.parse( JSON.stringify( this.ver )); this.planSvc.addVersion( this.ver ); this.reviewVersion()}
+	setStep			( index: number ) { this.step = index }
+	// canDeactivate(): Observable<boolean> | boolean { if ( JSON.stringify( this.loadedVer ) === JSON.stringify( this.ver )) { return true } else { return this.dialog.confirm( 'Abandon version changes?' )}}
+	deepEqual( object1: any, object2: any ) {
+		const keys1 = Object.keys( object1 );
+		const keys2 = Object.keys( object2 );
+		let rtnVal	= false
+		if ( keys1.length !== keys2.length ) { return false } else {
+			let val1: any;
+			let val2: any;
+			for ( const key1 of keys1 ) {
+				for ( const key2 of keys2 ) {
+					val1 = object1[key1];
+					val2 = object2[key2];
+					const areObjects = isObject( val1 )  &&  isObject( val2 );
+					if ( areObjects ) { rtnVal = true } else { return false }
+					// if (( areObjects  &&  ! this.deepEqual( val1, val2 ))  ||  ( ! areObjects  &&  val1 !== val2 )) { return false }
+				}
+			}
+			return rtnVal;
 		}
-		this.debug = false;
 	}
-	
-	otherHostEvents ( evt: string, hst: string, disable: boolean ) {
-		const events = JSON.parse( JSON.stringify( this.ver.events ));
-		const unEvents = events.map(( event: any ) => event.name );
-		for ( const unEvent of unEvents ) {
-			for ( const unH of this.unHs[unEvent] ) {
+	////////////////////
+	//  HOST HELPERS  //////////////////////////////////////////////////////////////////////////////////////////////////////
+	disableOtherHostings( evt: string, hst: string, disable: boolean ) {
+		console.log( '\t\t>>> disableOtherHostings() event:', evt, 'host:', hst, 'disable?', disable );
+		const events = Object.keys( this.unHs );
+		for ( const evt1 of events ) {
+			for ( const unH of this.unHs[evt1] ) {
 				if ( unH.hostKey ===  hst ) {
 					if ( ! disable ) {
 						console.log( '\n\nWARNING: Re-enabling this host will force guest de-assignments in other events!!!\n\n' );
-						const aEs = this.aGs[unEvent];
+						const aEs = this.aGs[evt1];
 						for ( const aH of aEs ) {
 							let idxCnt = 0;
 							for ( const aG of aH) {
-								if (this.debug) console.log( 'otherHostEvents()\t\t\t\t\tguest:', aG.guestKey )
-								if ( unH.hostKey === aG.guestKey ) {
-									if (this.debug) console.log( 'otherHostEvents()\t\t\t\t\t\tcalling deAssignGuest(), using -- event:', unEvent, 'host:', aH.hostKey, 'guest:', aG.guestKey, 'index:', idxCnt + ')' );
-									this.deAssignGuest( unEvent, aH.hostKey, aG.guestKey, idxCnt )
-								} else { idxCnt++ }
+								if ( unH.hostKey === aG.guestKey ) { this.deAssignGuest( evt1, aH.hostKey, aG.guestKey, idxCnt )} else { idxCnt++ }
 							}
 						}
 					}
@@ -413,108 +566,90 @@ export class VersionUpdateComponent implements OnInit {
 				}
 			}
 		}
+		console.log( '\t\t<<< disableOtherHostings()' );
 	}
-
-	assignAllUniqHosts () {
-		const assignmentArray	= Object.keys( this.unHs )
-		const uniqs				= this.schedSvc.findUniqHosts( assignmentArray );
-		uniqs.forEach( uniq => {
-			const event	= uniq.event;
-			const host	= uniq.host;
-			for ( let e = 0, eLen = this.ver.events.length; e < eLen; e++  ) {
-				const evt = this.ver.events[e].name;
-				if ( evt === event ) {
-					for ( let h = 0, hLen = this.unHs[evt].length; h < hLen; h++  ) {
-						if ( this.unHs[evt][h].hostKey === host ) {
-							this.allocateHost( evt, host, h );
-							break;
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//  GUEST HELPERS
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private pairsByMonth( evt: string ) {
+		const hosts: any[] = Object.keys( this.aGs[evt] );
+		for ( const hst of hosts ) {
+			for ( const gst of hst ) {
+				for ( const pair of hst ) {
+					if ( pair.guestKey !== gst.guestKey ) {
+						if ( this.summary.pairs[gst.guestKey].includes( pair.guestKey )) {
+							if (this.debug) console.log( 'pairsByMonth()\t\t\tremoving...', pair.guestKey, 'from: ', gst.guestKey );
+							this.summary.pairs[gst.guestKey].splice( this.summary.pairs[gst.guestKey].indexOf(pair.guestKey), 1);
 						}
 					}
 				}
 			}
-		})
-	}
-	
-	////////////////////
-	//  MISC HELPERS  //////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	loadVersion		( versionId: number ) { if (this.debug) console.log( 'Loading version , version ID:', versionId, 'see version-update->loadVersion()' )}
-	setStep			( index: number ) { this.step = index }
-	cancelVersion	( ) { this.toPlanUpdate()	}
-	nextStep		( ) { this.step++ 			}
-	prevStep		( ) { this.step-- 			}
-	reviewVersion	( ) { this.router.navigate(['/plan', this.planId, 'schedule'	]).then(r => { if (this.debug) console.log(r)})}
-	toPlanUpdate	( ) { this.router.navigate(['/plan', this.planId, 'update'	]).then(r => { if (this.debug) console.log(r)})}
-	toVersions		( ) { this.router.navigate(['/plan', this.planId				]).then(r => { if (this.debug) console.log(r)})}
-	canDeactivate	( ): Observable<boolean> | boolean { if ( JSON.stringify(this.loadedVer) === JSON.stringify(this.ver)) {return true} else {return this.dialog.confirm('Abandon version changes?')}}
-	save() {
-		this.loadedVer = JSON.parse( JSON.stringify( this.ver ));
-		this.planSvc.addVersion( this.ver );
-		this.reviewVersion()
-	}
-	deepEqual ( object1: any, object2: any ) {
-		const keys1 = Object.keys( object1 );
-		const keys2 = Object.keys( object2 );
-		if ( keys1.length !== keys2.length ) { return false }
-		for ( const key of keys1 ) {
-			const val1			= object1[key];
-			const val2			= object2[key];
-			const areObjects	= isObject( val1 ) && isObject( val2 );
-			if (( areObjects && !this.deepEqual( val1, val2 ))  ||  ( ! areObjects && val1 !== val2 )) { return false }
 		}
-		return true;
 	}
-	calcTotals () {
-		this.debug			= false;
-		this.allGs.guests	= [];
-		for ( let e = 0, eLen = this.ver.events.length; e < eLen; e++ ) {
-			const evt					= this.ver.events[e].name;
-			let nextHostToAssignCount	= 0;
-			this.allGs[evt]				= {};
-			this.allGs[evt].guests		= [];
-			this.summary[evt]			= {};
-			this.summary[evt].nextAutoAssignHost = '';
-			for ( let h1 = 0, h1Len = Object.keys( this.aGs[evt] ).length;   h1 < h1Len;   h1++ ) {
-				const hst					= Object.keys( this.aGs[evt] )[h1];
-				this.allGs[evt][hst]		= {};
-				this.allGs[evt][hst].guests	= [];
-				this.allGs[evt][hst].hosts	= [];
-				this.summary[evt][hst]		= [];
-				for ( let gst = 0, gstLen = this.aGs[evt][hst].length;   gst < gstLen;   gst++   ) {
-					if ( this.aGs[evt][hst][gst].guestKey  ===  hst ) { this.allGs[evt][hst].hosts.push( ...this.aGs[evt][hst][gst].guests )}
-					this.allGs.guests.push( ...this.aGs[evt][hst][gst].guests );
-					this.allGs[evt].guests.push( ...this.aGs[evt][hst][gst].guests );
-					this.allGs[evt][hst].guests.push( ...this.aGs[evt][hst][gst].guests );
-					this.summary[evt][hst].assignedSeats	= this.allGs[evt][hst].guests.length;
-					this.summary[evt][hst].hosts			= this.allGs[evt][hst].hosts.length;
+	pairsPredicate() {
+		return ( gstDrag: CdkDrag, hstDrop: CdkDropList ) => {
+			const guests: any	= [];
+			const gst			= gstDrag.data.guestKey
+			guests.push( ...hstDrop.data );
+			return guests.every((guest: { guestKey: string }) => this.summary.pairs[gst].includes(guest.guestKey)) || hstDrop.id === 'unassigned';
+		}
+	}
+	assignAllUniqHosts() {
+		console.log( '>>> assignAllUniqHosts()' );
+		const events	= Object.keys( this.unHs );
+		const uniqs		= [];
+		for ( const evt1 of events ) {
+			for ( const hst1 of this.unHs[evt1] ) {
+				const searchObj	= { event: hst1.event, host: hst1.hostKey, unique: true };
+				for ( const evt2 of events ) {
+					if ( evt1 !== evt2 ) {
+						for ( const hst2 of this.unHs[evt2] ) {
+							if ( searchObj.host === hst2.hostKey ) {
+								searchObj.unique = false;
+								break
+							}
+						}
+					}
+					if ( ! searchObj.unique ) break
 				}
-				for ( let hst2 = 0, hst2Len = this.aHs[evt].length;		hst2 < hst2Len;		hst2++ ) {
-					if ( this.aHs[evt][hst2].hostKey === hst ) { this.summary[evt][hst].totalSeats = this.aHs[evt][hst2].seats }
-				}
-				this.summary[evt][hst].unassignedSeats	= this.summary[evt][hst].totalSeats - this.summary[evt][hst].assignedSeats;
-				if ( this.summary[evt][hst].unassignedSeats > nextHostToAssignCount ) {
-					nextHostToAssignCount					= this.summary[evt][hst].unassignedSeats;
-					this.summary[evt].nextAutoAssignHost	= hst;
+				if ( searchObj.unique ) { uniqs.push( searchObj )}
+			}
+		}
+		console.log( '\tassignAllUniqHosts()\tunique hosts:', uniqs );
+		for ( const uniq of uniqs ) {
+			const uniqEvt	= uniq.event;
+			const uniqHst	= uniq.host;
+			for ( const evt of this.events ) {
+				if ( evt === uniqEvt ) {
+					let hCnt = 0;
+					for ( const hst of  this.unHs[evt] ) {
+						if ( hst.hostKey === uniqHst ) {
+							this.allocateHost( evt, uniqHst, hCnt );
+							break;
+						}
+						hCnt++;
+					}
 				}
 			}
-			let accum = 0;
-			for ( let gst = 0, gstLen = this.unGs[evt].length;	gst < gstLen;	gst++ ) { accum = accum + this.unGs[evt][gst].guests.length }
-			this.summary[evt].unassignedGuests = accum;
-			accum = 0;
-			for ( let hst = 0, hstLen = this.aHs[evt].length;	hst < hstLen;	hst++ ) { accum = accum + this.aHs[evt][hst].seats }
-			this.summary[evt].allocatedSeats = accum;
-			accum = 0;
-			for ( let hst = 0, hstLen = this.unHs[evt].length;	hst < hstLen;	hst++ ) { accum = accum + this.unHs[evt][hst].seats }
-			this.summary[evt].unallocatedSeats		= accum;
-			this.summary[evt].assignedSeats			= this.allGs[evt].guests.length;
-			this.summary[evt].assignedGuests		= this.allGs[evt].guests.length;
-			this.summary[evt].totalSeats			= this.summary[evt].unallocatedSeats	+ this.summary[evt].allocatedSeats;
-			this.summary[evt].totalGuests			= this.summary[evt].unassignedGuests	+ this.summary[evt].assignedSeats;
-			this.summary[evt].overAllocatedSeats	= this.summary[evt].allocatedSeats		- this.summary[evt].totalGuests;
-			this.summary[evt].unassignedSeats		= this.summary[evt].allocatedSeats		- this.summary[evt].assignedSeats;
 		}
-		this.summary.auditPairs = JSON.parse( JSON.stringify( this.summary.refreshPairs ));
-		this.ver.events.forEach( event => this.auditPairsByMonth( event.name ))
-		this.debug = false;
+		console.log( '<<< assignAllUniqHosts()' );
 	}
 }
+
+// private auditPairsByMonth( evt: string ) {
+// 	const hsts = Object.keys( this.aGs[evt] );
+// 	for ( const hst of hsts ) {
+// 		const gsts	= this.aGs[evt][hst];
+// 		const pairs	= this.aGs[evt][hst];
+// 		for ( const gst of gsts ) {
+// 			for ( const pair of pairs ) {
+// 				if ( pair.guestKey !== gst.guestKey ) {
+// 					if ( this.summary.auditPairs[gst.guestKey].includes( pair.guestKey )) {
+// 						this.summary.auditPairs[gst.guestKey].splice( this.summary.auditPairs[gst.guestKey].indexOf( pair.guestKey ), 1);
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// }

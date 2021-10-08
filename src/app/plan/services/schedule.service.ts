@@ -2,6 +2,7 @@
 
 import { environment	} from '../../../environments/environment';
 import { Injectable		} from '@angular/core';
+import { map			} from 'rxjs/operators';
 
 import { PresbyService	} from '../../presby/services/presby.service';
 import { Schedule		} from '../../../../.ARCHIVE/models/plan';
@@ -20,54 +21,63 @@ export class ScheduleService {
 	unHosts:	{[key: string]: any} = [];
 	aHosts:		{[key: string]: any} = [];
 	
-	constructor (
-		private presbySvc: PresbyService
-	) {
+	constructor ( private presbyS: PresbyService ) {
 		this.env	= environment;
-		this.debug	= this.env.debug
+		this.debug	= this.env.debug;
 	}
 	
 	loadVersion ( version: Version ) {
-		const actives	= this.presbySvc.getPresbyActive();
-		this.ver		= version;
-		for ( let e = 0, eLen = this.ver.events.length; e < eLen; e++ ) {												// event init
-			const evt = this.ver.events[e].name;
-			this.aHosts[evt]	= [];
-			this.unHosts[evt]	= [];
-			this.aGuests[evt]	= [];
-			this.unGuests[evt]	= []
-		}
-		
-		for ( let e = 0, eLen = this.ver.events.length; e < eLen; e++ ) {										// event loop
-			const evt = this.ver.events[e].name;
-			for ( let a = 0, aLen = actives.length; a < aLen; a++ ) {													// actives loop
-				for ( let h = 0, seats = 0, hLen = actives[a].hosting.length; h < hLen; h++, seats++ ) {				// host loop
-					if ( actives[a].hosting[h].eventName === evt ) {													// Push relevant fields from presby record to host record
-						actives[a].hosting[h].hostName	= actives[a].last;
-						actives[a].hosting[h].hostKey	= actives[a].last + '-' + actives[a].id + '-' + actives[a].hostSeats + '-' + actives[a].guests.length;
-						actives[a].hosting[h].seats		= actives[a].hostSeats;
-						actives[a].hosting[h].id		= JSON.parse( JSON.stringify( actives[a].id ));
-						actives[a].hosting[h].guests	= JSON.parse( JSON.stringify( actives[a].guests ));
-						this.unHosts[actives[a].hosting[h].eventName].push( actives[a].hosting[h])
+		console.log( 'LOADING VERSION:', version )
+		return this.presbyS.watch().valueChanges.pipe( map(result => {
+			const actives	= result.data.presbies;
+			this.ver		= version;
+			// for ( let e = 0, eLen = this.ver.events.length; e < eLen; e++ ) {
+			for ( const event of this.ver.events ) {
+				const evt = event.name;
+				this.aHosts[evt]	= [];
+				this.unHosts[evt]	= [];
+				this.aGuests[evt]	= [];
+				this.unGuests[evt]	= [];
+			}
+			
+			for ( const event of this.ver.events ) {
+				const evt = event.name;
+
+				for ( const active of actives )	{
+					let hCnt = 0;
+					let gCnt = 0;
+
+					for ( const hosting of active.hostings ) {
+						if ( hosting.event === evt ) {										// Push relevant fields from presby record to host record
+							
+							hosting.hostName	= active.last;
+							hosting.hostKey	= active.last + '-' + active.id + '-' + active.seats + '-' + active.guests.length;
+							hosting.seats		= active.seats;
+							hosting.id		= JSON.parse( JSON.stringify( active.id ));
+							hosting.guests	= JSON.parse( JSON.stringify( active.guests ));
+							
+							this.unHosts[hosting.event].push( hosting);
+						}
+						hCnt++;
 					}
-				}
-				if ( actives[a].guesting.length > 0 ) {
-					for ( let g = 0, gLen = actives[a].guesting.length; g < gLen; g++ ) {								// guest loop
-						if ( actives[a].guesting[g].eventName === evt ) {												// Add fields from presby record to unassigned guest record
-							if ( ! ( 'guests' in actives[a].guesting[g] )) {
-								actives[a].guesting[g].guests = JSON.parse( JSON.stringify( actives[a].guests ))
+					if ( active.guestings.length > 0 ) {
+						// for ( let g = 0, gLen = guestings.length; g < gLen; g++ ) {
+						for ( const guesting of active.guestings ) {
+							if ( guesting.event === evt ) {												// Add fields from presby record to unassigned guest record
+								if ( ! ( 'guests' in guesting )) { guesting.guests = JSON.parse( JSON.stringify( active.guests ))}
+								guesting.id		 	= JSON.parse( JSON.stringify( active.id		));
+								guesting.partyName 	= JSON.parse( JSON.stringify( active.last	));
+								guesting.guestKey	= active.last + '-' + active.id + '-' + active.seats + '-' + active.guests.length;
+								this.unGuests[guesting.event].push( guesting );
 							}
-							actives[a].guesting[g].id		 = JSON.parse( JSON.stringify( actives[a].id	));
-							actives[a].guesting[g].partyName = JSON.parse( JSON.stringify( actives[a].last	));
-							actives[a].guesting[g].guestKey	 = actives[a].last + '-' + actives[a].id + '-' + actives[a].hostSeats + '-' + actives[a].guests.length;
-							this.unGuests[actives[a].guesting[g].eventName].push( actives[a].guesting[g] )
+							gCnt++;
 						}
 					}
 				}
 			}
-		}
-		this.schedule = { aGuests: this.aGuests, aHosts: this.aHosts, unGuests: this.unGuests, unHosts: this.unHosts, actives };
-		return this.schedule
+			// this.schedule = { aGuests: this.aGuests, aHosts: this.aHosts, unGuests: this.unGuests, unHosts: this.unHosts, actives };
+			return this.schedule
+		}))
 	}
 	
 	findUniqHosts ( events: string[] ): any[] {
@@ -93,7 +103,7 @@ export class ScheduleService {
 				if ( searchObj.unique ) returnArray.push( searchObj )
 			}
 		}
-		if (this.debug) console.log( 'return array:', returnArray );
+		console.log( 'return array:', returnArray );
 		return returnArray
 	}
 }

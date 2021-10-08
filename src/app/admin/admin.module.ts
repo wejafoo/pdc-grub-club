@@ -10,8 +10,8 @@ import { AdminRoutingModule			} from './admin-routing.module';
 import { MaterialModule				} from '../sub-modules/material.module';
 
 @NgModule({
-	imports:	[CommonModule, AdminRoutingModule, MaterialModule],
-  declarations:	[AdminComponent, AdminDashboardComponent, ManagePlansComponent, ManagePresbiesComponent]
+	imports:		[CommonModule, AdminRoutingModule, MaterialModule],
+	declarations:	[AdminComponent, AdminDashboardComponent, ManagePlansComponent, ManagePresbiesComponent]
 })
 
 export class AdminModule {}

@@ -13,9 +13,6 @@ import { Version		} from '../../../../.ARCHIVE/models/plan';
 import { DialogService	} from '../../services/dialog.service';
 import { PlanService	} from '../services/plan.service';
 
-// import { MaterialModule	} from '../../sub-modules/material.module';
-// import { Event			} from '../../../../.ARCHIVE/models/plan';
-
 @Component({
 	selector: 'app-plan-update',
 	templateUrl: './plan-update.component.html',
@@ -43,19 +40,19 @@ export class PlanUpdateComponent implements OnInit {
 	}
 	
 	ngOnInit () {
-		this.route.paramMap.pipe(switchMap(params => of(params.get('planId')))).subscribe(planId => {
-			this.loadedPlan	= JSON.parse(JSON.stringify(this.ps.getPlan(+planId!)));
-			this.plan		= JSON.parse(JSON.stringify(this.ps.getPlan(+planId!)))
+		this.route.paramMap.pipe( switchMap(params => of( params.get( 'planId' )))).subscribe(planId => {
+			this.loadedPlan	= JSON.parse( JSON.stringify( this.ps.getPlan( +planId! )));
+			this.plan		= JSON.parse( JSON.stringify( this.ps.getPlan( +planId! )))
 		});
-		this.route.paramMap.pipe(switchMap(params => of(params.get('versionId')))).subscribe(versionId => this.versionId = +versionId!)
+		this.route.paramMap.pipe( switchMap(params => of( params.get( 'versionId' )))).subscribe(versionId => this.versionId = +versionId! )
 	}
 	
-	canDeactivate	( ): Observable<boolean> | boolean { if ( JSON.stringify(this.plan) === JSON.stringify(this.plan)) {return true} else {return this.dialog.confirm('Abandon changes?')}}
+	canDeactivate	( ): Observable<boolean> | boolean { if ( JSON.stringify( this.plan ) === JSON.stringify( this.plan )) { return true } else { return this.dialog.confirm( 'Abandon changes?' )}}
 	cancel			( ) { this.toPlans() }
 	reviewPlan		( ) { this.router.navigate([ '/plan', this.plan.id	]).then(r => console.log(r))}
 	toPlan			( ) { this.router.navigate([ '/plan', this.plan.id	]).then(r => console.log(r))}
 	toPlans			( ) { this.router.navigate([ '/plans'					]).then(r => console.log(r))}
-	updateVersion 	( versionId: number ) { this.router.navigate([ '/plan', this.plan.id, 'version', versionId, 'update']).then(r => console.log(r))}
+	updateVersion 	( versionId: number ) { this.router.navigate([ '/plan', this.plan.id, 'version', versionId, 'update']).then( r => console.log( r ))}
 	
 	addVersion ( ) {
 		const verId			= this.plan.versions.length;

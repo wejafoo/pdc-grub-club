@@ -34,7 +34,7 @@ export class VersionListComponent implements OnInit {
 	loadedVer!:	Version;
 	ver!:		Version;
 	
-	eventNameSlug	= 'Presby gotta new version - owwwww!'
+	eventSlug	= 'Presby gotta new version - owwwww!'
 	
 	constructor (
 		public	dialog:		DialogService,

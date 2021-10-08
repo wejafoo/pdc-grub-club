@@ -5,12 +5,14 @@ import { RouterModule				} from '@angular/router';
 import { Routes						} from '@angular/router';
 import { ComposeMessageComponent	} from './compose-message/compose-message.component';
 import { NoSoupComponent			} from './no-soup/no-soup.component';
+import { ContentComponent			} from './content/content.component';
 
 const appRoutes: Routes = [
 	{ path: 'compose', component: ComposeMessageComponent, outlet: 'popup'	},
 	{ path: 'plans',	redirectTo: '/plan', 	pathMatch: 'full' },
 	{ path: 'hosts',	redirectTo: '/host', 	pathMatch: 'full' },
 	{ path: 'guests',	redirectTo: '/guest',	pathMatch: 'full' },
+	{ path: 'content/:page', component: ContentComponent	},
 	{ path: '',			redirectTo: '/guest',	pathMatch: 'full' },
 	{ path: '**', component: NoSoupComponent }
 ];

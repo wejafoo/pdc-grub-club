@@ -5,9 +5,12 @@ import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { Observable		} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
+
+import {map, switchMap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+
 import { PresbyService	} from '../../../services/presby.service';
+import { Presbies		} from '../../../../../../.ARCHIVE/models/plan';
 import { Presby			} from '../../../../../../.ARCHIVE/models/plan';
 
 @Component({
@@ -18,18 +21,26 @@ import { Presby			} from '../../../../../../.ARCHIVE/models/plan';
 
 export class HostDetailComponent implements OnInit {
 	env:		any;
-	debug:		boolean;
-	host$!:		Observable<Presby>;
+	host!:		Presby;
+	hostId!:	string;
+	hosts!:		Observable<Presbies>;
 	
 	constructor (
-		private	route:	ActivatedRoute,
-		private	router:	Router,
-		private	ps:		PresbyService
+		private	presbyS:	PresbyService,
+		private	route:		ActivatedRoute,
+		private	router:		Router
 	) {
-		this.env	= environment;
-		this.debug	= this.env.debug;
+		this.env = environment
 	}
 	
-	ngOnInit	(				) { this.host$ = this.route.paramMap.pipe(switchMap(params => this.ps.getPresby(params.get('hostId')!)))}
-	toHosts		( host: Presby	) { this.router.navigate(['/host', {id: host.id}]).then(r => console.log(r))}
+	ngOnInit() {
+		this.hosts = this.presbyS.watch().valueChanges.pipe( map(result => {
+			this.route.paramMap.pipe( switchMap(params => of( params.get( 'hostId')))).subscribe(hostId => this.hostId = hostId!)
+			return result.data.presbies
+		}))
+	}
+	
+	toHost( host: Presby ) { this.router.navigate(['/host', {id: host.id}]).then( r => console.log(r))}
 }
+
+// ngOnInit	() { }

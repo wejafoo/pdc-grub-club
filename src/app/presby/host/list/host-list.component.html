@@ -7,19 +7,17 @@
 		<div style="text-align: center"><a (click)="toHosts()"> Back </a></div>
 	</nav>
 	<ul class="hosts">
-		<li *ngFor="let host of hosts$ | async">
+		<li *ngFor="let host of hosts">
 			<a [routerLink]="['/host', host['id']]">
-				
-				
 				<div style="display: flex; justify-content: space-between; align-items: center; ">
 					<div style="width: 1.5em; " class="badge"> {{ host["id"]	}} </div>
-					<div *ngIf="host['active']; else inactive"> &#9989; </div>
+					<div *ngIf="host['isActive']; else inactive"> &#9989; </div>
 					<ng-template #inactive><div> &#9940; </div></ng-template>
 					<div style="margin-left: 1em; text-align: left; width: 40%; "> {{ host["last"]+'-'+host['id'] }} </div>
 					<div style="text-align: right; width: 70%; ">
-						<div *ngFor="let hosting of host['hosting']">
+						<div *ngFor="let hosting of host['hostings']">
 							<div style="width: 5em; max-height: 2em; font-size: 9px; ">
-								{{ hosting["eventName"] }} <strong> {{ hosting["seats"] }} </strong>
+								{{ hosting["event"] }} <strong> {{ hosting["seats"] }} </strong>
 							</div>
 						</div>
 					</div>

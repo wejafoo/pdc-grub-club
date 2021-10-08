@@ -3,13 +3,15 @@
 import { environment	} from '../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
-import { ActivatedRoute	} from '@angular/router';
 import { Router			} from '@angular/router';
-import { Observable		} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
+import { map			} from 'rxjs/operators';
 import { PresbyService	} from '../../services/presby.service';
 import { Presby			} from '../../../../../.ARCHIVE/models/plan';
-																					// TODO: Feature Componetize like PlanningCenter
+
+// import { Observable		} from 'rxjs';
+// import { ActivatedRoute } from '@angular/router';
+// import { switchMap } from 'rxjs/operators';
+
 @Component({
 	selector: 'app-presby-list',
 	templateUrl: './host-list.component.html',
@@ -17,26 +19,27 @@ import { Presby			} from '../../../../../.ARCHIVE/models/plan';
 })
 
 export class HostListComponent implements OnInit {
-	env:		any;
-	debug:		any;
-	hosts$!:	Observable<Presby[]>;
+	env:	any;
+	hosts!:	Presby[];
+	
 	hostId = 0;
 	
 	constructor (
-		private	service:	PresbyService,
-		private	router:		Router,
-		private	route:		ActivatedRoute
+		public presbyS:	PresbyService,
+		public router:	Router,
 	) {
-		this.env	= environment;
-		this.debug	= this.env.debug
+		this.env = environment
 	}
 	
-	ngOnInit () {
-		this.hosts$ = this.route.paramMap.pipe( switchMap(params => {
-			this.hostId = parseInt( params.get( 'hostId' )!, 10 );
-			return this.service.getPresbies()
-		}))
+	ngOnInit() {
+		this.presbyS.watch().valueChanges.pipe( map(result => {
+			this.hosts = result.data.presbies
+		} ))
 	}
-	
-	toHosts () { this.router.navigate(['/guests']).then(r => console.log(r))}
+	toHosts		() { this.router.navigate(['/guests']).then(r => console.log(r))}
 }
+
+// this.route.paramMap.pipe( switchMap(params => {
+// this.hostId = parseInt( params.get( 'hostId' )!, 10 );
+// return this.service.getPresbies()
+// 	}))

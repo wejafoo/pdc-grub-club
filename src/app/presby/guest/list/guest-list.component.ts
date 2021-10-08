@@ -1,46 +1,37 @@
 
 
 import { environment	} from '../../../../environments/environment';
-
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { ActivatedRoute	} from '@angular/router';
 import { Router			} from '@angular/router';
-
-import { Observable		} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
-
+import { map			} from 'rxjs/operators';
 import { PresbyService	} from '../../services/presby.service';
+import { Presbies		} from '../../../../../.ARCHIVE/models/plan';
 
-import { Presby			} from '../../../../../.ARCHIVE/models/plan';
-																		// TODO: Feature Componetize like PlanningCenter ??????
-@Component({
-	selector: 'app-guest-list',
-	templateUrl: './guest-list.component.html',
-	styleUrls: ['./guest-list.component.sass']
-})
+@Component({ templateUrl: './guest-list.component.html' })
 
 export class GuestListComponent implements OnInit {
 	env:		any;
-	debug:		any;
-	guests$!:	Observable<Presby[]>;
-	guestId = 0;
+	guests!:	Presbies;
 	
 	constructor (
-		private	service:	PresbyService,
-		private router:		Router,
-		private	route:		ActivatedRoute
+		private	presbyS:	PresbyService,
+		private	route:		ActivatedRoute,
+		private router:		Router
 	) {
 		this.env	= environment;
-		this.debug	= this.env.debug
 	}
 	
-	ngOnInit () {
-		this.guests$ = this.route.paramMap.pipe( switchMap(params => {
-			this.guestId = parseInt(params.get('guestId')!, 10);
-			return this.service.getPresbies()
+	ngOnInit() {
+		this.presbyS.watch().valueChanges.pipe( map(result => {
+			this.guests = result.data.presbies
 		}))
 	}
-	
-	toHosts () { this.router.navigate(['/hosts']).then(r => console.log(r))}
+	toHosts() { this.router.navigate(['/hosts']).then(r => console.log(r))}
 }
+
+// this.guests$ = this.route.paramMap.pipe( switchMap(params => {
+// 	this.guestId = parseInt(params.get('guestId')!, 10);
+// 	return this.service.getPresbies()
+
