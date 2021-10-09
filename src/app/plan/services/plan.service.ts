@@ -10,9 +10,6 @@ import { Version			} from '../../../../.ARCHIVE/models/plan';
 import { Versions			} from '../../../../.ARCHIVE/models/plan';
 import { PLANS				} from '../../../../.ARCHIVE/models/mock-plans';
 
-// import { VERSIONS } from '../../../../.ARCHIVE/models/mock-plans';
-// import { Events } from '../../../../.ARCHIVE/models/plan';
-
 @Injectable({ providedIn: 'root' })
 
 export class PlanService {

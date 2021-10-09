@@ -17,9 +17,3 @@ const presbyRoutes: Routes = [
 
 @NgModule({ imports: [RouterModule.forChild(presbyRoutes)], exports: [RouterModule]})
 export class PresbyRoutingModule { }
-
-
-/*	{ path: 'guest/:guestId',	component: GuestDetailComponent,	data: {animation: 'heroes'}},
-	{ path: 'guests',			component: GuestListComponent,		data: {animation: 'heroes'}},
-	{ path: 'host/:hostId',		component: HostDetailComponent,		data: {animation: 'heroes'}},
-	{ path: 'hosts',			component: HostListComponent,		data: {animation: 'heroes'}},*/

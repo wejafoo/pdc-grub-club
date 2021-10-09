@@ -16,7 +16,6 @@ import { PresbyModule				} from './presby/presby.module';
 import { AppComponent				} from './app.component';
 import { ComposeMessageComponent	} from './compose-message/compose-message.component';
 import { NoSoupComponent			} from './no-soup/no-soup.component';
-import { ContentComponent			} from './content/content.component';
 
 import { NavPipe					} from './_pipes/nav.pipe';
 import { SafePipe					} from './_pipes/safe.pipe';
@@ -25,7 +24,6 @@ import { SafePipe					} from './_pipes/safe.pipe';
 	declarations:	[
 		AppComponent,
 		ComposeMessageComponent,
-		ContentComponent,
 		NoSoupComponent,
 		NavPipe,
 		SafePipe,

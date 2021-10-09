@@ -3,10 +3,9 @@
 import 'angular-server-side-configuration/process';
 
 // V7
-import { fb		} from "./fb.stage";
-import { remote	} from "./remote";
-import { local	} from "./local";
-
+import { fb		} from './fb.stage';
+import { remote	} from './remote';
+import { local	} from './local';
 
 const thisHost		= local.default.THIS_HOST;
 const privateMife	= process.env.PRIVATE_MIFE	|| local.default.PRIVATE_MIFE;			// DEFINES THIS MIFE
