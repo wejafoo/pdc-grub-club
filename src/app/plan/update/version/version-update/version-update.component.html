@@ -5,23 +5,23 @@
 	<nav id="page-title-2">
 		<div><h3> Schedule </h3></div>
 		<div *ngIf="deepEqual(ver, ver); else changes_made"><a style="background-color: floralwhite; color: gainsboro; "> Save </a><a (click)="toVersions()"> Back </a></div>
-			<ng-template #changes_made><div><a style="background-color: #425; color: white; " (click)="save()"> Save </a><a (click)="toVersions()"> Cancel </a></div></ng-template>
+		<ng-template #changes_made><div><a style="background-color: #425; color: white; " (click)="save()"> Save </a><a (click)="toVersions()"> Cancel </a></div></ng-template>
 	</nav><hr/><div>
-		<mat-accordion>																																																			<!--
+	<mat-accordion>																																																			<!--
 					###########
 			#### SUMMARY #####################################################################################################-->
-			<mat-expansion-panel>
-				<mat-expansion-panel-header>
-					<mat-panel-title><strong> Summary Information </strong></mat-panel-title>
-					<mat-panel-description> General stats reflective of this version <mat-icon> info </mat-icon></mat-panel-description>
-				</mat-expansion-panel-header>
-				<!-- div *ngIf="deepEqual( loadedVer, ver ); else changes_made_2"> Loaded version: <strong> {{ver['id']}} </strong></div><ng-template #changes_made_2><div><h3><span class="mat-warn"> Unsaved new version: </span><strong> {{ver['id'] + 1}} </strong></h3></div></ng-template -->
-				<div>	Total active hosts: <strong> 20	</strong></div>
-				<div>	RSVPs: <strong> 20 </strong></div>
-				<div> <br/> Host seats available by event <br/> <hr/>
-					<div style="display: flex; justify-content: space-evenly; "><div> January: <strong> 110 </strong></div><div> February: <strong> 80 </strong></div><div> March: <strong> 135 </strong></div></div>
-				</div>
-			</mat-expansion-panel>																																													<!--
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title><strong> Summary Information </strong></mat-panel-title>
+				<mat-panel-description> General stats reflective of this version <mat-icon> info </mat-icon></mat-panel-description>
+			</mat-expansion-panel-header>
+			<!-- div *ngIf="deepEqual( loadedVer, ver ); else changes_made_2"> Loaded version: <strong> {{ver['id']}} </strong></div><ng-template #changes_made_2><div><h3><span class="mat-warn"> Unsaved new version: </span><strong> {{ver['id'] + 1}} </strong></h3></div></ng-template -->
+			<div>	Total active hosts: <strong> 20	</strong></div>
+			<div>	RSVPs: <strong> 20 </strong></div>
+			<div> <br/> Host seats available by event <br/> <hr/>
+				<div style="display: flex; justify-content: space-evenly; "><div> January: <strong> 110 </strong></div><div> February: <strong> 80 </strong></div><div> March: <strong> 135 </strong></div></div>
+			</div>
+		</mat-expansion-panel>																																													<!--
 					####################
 			#### VERSION METADATA ###########################################################################################
 			<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
@@ -40,194 +40,172 @@
 				########################
 		####  HOST CONFIGURATIONS  #########################################################################################-->
 		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
-				<mat-expansion-panel-header>
-					<mat-panel-title><strong> Host Configuration </strong></mat-panel-title>
-					<mat-panel-description> Schedule hosts for this event <mat-icon> person </mat-icon></mat-panel-description>
-				</mat-expansion-panel-header>
-				<hr/>
-				
-				<div class="events" *ngFor="let evt of events">
-					<div class="event-heading">
-						<div><h4><strong>{{ evt }}</strong> Hosts </h4></div>
-						<div>
-							Auto-assign:
-							<button (click)="autoAllocateHosts('all')"> All </button>
-							<button (click)="autoAllocateHosts(evt)">{{ evt }}</button>
-						</div>
+			<mat-expansion-panel-header>
+				<mat-panel-title><strong> Host Configuration </strong></mat-panel-title>
+				<mat-panel-description> Schedule hosts for this event <mat-icon> person </mat-icon></mat-panel-description>
+			</mat-expansion-panel-header>
+			<hr/>
+			<div class="events" *ngFor="let evt of events">
+				<div class="event-heading">
+					<div><h4><strong>{{ evt }}</strong> Hosts </h4></div>
+					<div>
+						Auto-assign:
+						<button (click)="autoAllocateHosts('all')"> All </button>
+						<button (click)="autoAllocateHosts(evt)">{{ evt }}</button>
 					</div>
-					<table cdkDropListGroup>
-						<tr><th> Unallocated </th><th> Allocated </th></tr>
-						<tr>
-							
-							<!-- UN-ASSIGNED HOSTS -->
-							<td cdkDropList id="unallocated" class="unassigned list" [cdkDropListData]="unHs[evt]" (cdkDropListDropped)="unDropHost( $event, evt )">
-								<div *ngFor="let unH of unHs[evt]">
-									<mat-card cdkDrag [cdkDragData]="unH" [cdkDragDisabled]="unH['isDisabled']">
-										<mat-icon> menu </mat-icon> {{ unH['hostKey'] }}
-									</mat-card>
-								</div>
-							</td>
-							
-							<!--EVENT HOSTING SUMMARY -->
-							<td *ngIf="loaded || summary[evt]" class="vertical-info">
-								
-								<hr/><div> Seats </div><hr/>
-								
-								<div> <<< UNALLOCATED </div>
-								<!-- div><strong>{{ calcTotals('unAllocatedSeatCnt', evt) }}</strong></div -->
-								<div><strong>{{summary[evt]['unAllocatedSeatCnt']}}</strong></div>
-								
-								<div> ALLOCATED >>> </div>
-								<div><strong>{{ summary[evt]['allocatedSeatCnt'] }}</strong></div><hr/>
-								
-								<div> RSVPs </div>
-								<div><strong> {{summary[evt]['rsvps']}} </strong></div><hr/>
-
-								<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
-									OVER / UNDER
-								</div>
-								<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
-									<strong>
-										{{	summary[evt]['overAllocatedSeatCnt'] > 0 ? '+' +	summary[evt]['overAllocatedSeatCnt'] :
-					  						summary[evt]['overAllocatedSeatCnt'] < 0 ? 				summary[evt]['overAllocatedSeatCnt'] : '-'	}}
-									</strong>
-								</div><hr/>
-								
-							</td>
-							
-							<!-- ASSIGNED HOSTS -->
-							<td *ngIf="loaded  ||  summary[evt] !== undefined" cdkDropList id="allocated" [cdkDropListData]="aHs[evt]" (cdkDropListDropped)="dropHost($event, evt)"
-								[class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'assigned list full' : 'assigned list not-full'">
-								<div *ngFor="let aH of aHs[evt]">
-									<mat-card cdkDrag [cdkDragData]="aH" id="{{ aH['hostKey'] }}"><mat-icon> menu </mat-icon>{{ aH['hostKey'] }}</mat-card>
-								</div>
-							</td>
-						</tr>
-					</table>
 				</div>
-				<mat-action-row><button mat-button (click)="prevStep()"> Previous </button><button mat-button (click)="nextStep()"> Next </button></mat-action-row>
-			</mat-expansion-panel>
-																																																												<!--
-					########################
-			####  GUEST CONFIGURATION  #######################################################################################-->
-			<mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
-				<mat-expansion-panel-header>
-					<mat-panel-title><strong> Guest Configuration </strong></mat-panel-title>
-					<mat-panel-description> Schedule guests for this event <mat-icon> people </mat-icon></mat-panel-description>
-				</mat-expansion-panel-header>
-				<hr/>
-				
-				<div  class="events" *ngFor="let evt of events">
-					<div class="event-heading">
-						<div><h4><strong> {{evt}} </strong></h4></div>
-						<div> Auto-assign: <button (click)="autoAssignGuests('all')"> All </button> <button (click)="autoAssignGuests(evt)">{{ evt }}</button></div>
-					</div>
-					<!-- table cdkDropListGroup -->
-					<table cdkDropListGroup  *ngIf="this.summary[evt]">
-						<tr>
-							<th style="width: 45%;"> Unassigned Guests </th>
-							<th style="width: 20%;"><button (click)="isOpen=!isOpen">{{ isOpen ? "Peeps View" : "Card View" }}</button></th>
-							<th style="width: 45%;"> Assigned Guests </th></tr>
-						<tr>
+				<table cdkDropListGroup>
+					<tr><th> Unallocated </th><th> Allocated </th></tr>
+					<tr>
+						<!-- UN-ASSIGNED HOSTS -->
+						<td cdkDropList id="unallocated" class="unassigned list" [cdkDropListData]="unHs[evt]" (cdkDropListDropped)="unDropHost( $event, evt )">
+							<div *ngFor="let unH of unHs[evt]">
+								<mat-card cdkDrag [cdkDragData]="unH" [cdkDragDisabled]="unH['isDisabled']">
+									<mat-icon> menu </mat-icon> {{ unH['hostKey'] }}
+								</mat-card>
+							</div>
+						</td>
+						<!--EVENT HOSTING SUMMARY -->
+						<td *ngIf="loaded || summary[evt]" class="vertical-info">
 							
-							<!-- UN-ASSIGNED GUESTS -->
-							<td cdkDropList class="unassigned list" id="unassigned" [cdkDropListData]="unGs[evt]" (cdkDropListDropped)="unDropGuest($event, evt)">
-								<div *ngFor="let unG of unGs[evt]">
-									<mat-card cdkDrag id="{{ unG['guestKey'] }}" [cdkDragData]="unG" [cdkDragDisabled]="unG['isDisabled']">
-										<mat-icon> menu </mat-icon> {{ unG['guestKey'] }}
-									</mat-card>
-								</div>
-							</td>
-							<!-- EVENT GUEST SUMMARY -->
-							<td class="vertical-info">
-								<hr/><div><strong> Guest Status </strong></div><hr/>
-
-								<div> <---- UNASSIGNED </div>
-								<div><strong> {{summary[evt]['unAssignedGuestCnt']}} </strong></div>
-								<div> ASSIGNED ----> </div>
-								<div><strong> {{summary[evt]['assignedSeatCnt']}} </strong></div><hr/>
-								
-								<div><strong> Seat Status </strong></div><hr/>
-								<div> ALLOCATED </div>
-								<div><strong>{{ summary[evt]['allocatedSeatCnt'] }}</strong></div>
-								
-								<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
-									OVER / UNDER
-								</div>
-								<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
-									<strong>
-										{{	summary[evt]['overAllocatedSeatCnt'] > 0 ? '+' +	summary[evt]['overAllocatedSeatCnt'] :
-					  						summary[evt]['overAllocatedSeatCnt'] < 0 ? 				summary[evt]['overAllocatedSeatCnt'] : '-'	}}
-									</strong>
-								</div><hr/>
-								
-								<div> RSVPs </div>
-								<div><strong> {{summary[evt]['rsvps']}} </strong></div><hr/>
-								
-								<div> ASSIGNED </div>
-								<div><strong> {{summary[evt]['assignedSeatCnt']}} </strong></div>
-								
-								<div [class]="summary[evt]['overAssignedGuestCnt'] >= 0 ? 'full' : 'not-full'">
-									OVER / UNDER
-								</div>
-								<div [class]="summary[evt]['overAssignedGuestCnt'] >= 0 ? 'full' : 'not-full'">
-									<strong>
-										{{	summary[evt]['overAssignedGuestCnt'] > 0 ? '+' +	summary[evt]['overAssignedGuestCnt'] :
-												summary[evt]['overAssignedGuestCnt'] < 0 ? 				summary[evt]['overAssignedGuestCnt'] : '-'	}}
-									</strong>
-								</div><hr/>
-								
-							</td>
-							<!-- ASSIGNED GUESTS -->
-							<td>
-								<div cdkDropList *ngFor="let aH of aHs[evt]" [id]="aH['hostKey']" style="border-style: inset; padding: .25em;"
-										[cdkDropListData]="aGs[evt][aH['hostKey']]" (cdkDropListDropped)="dropGuest($event, evt)" [cdkDropListEnterPredicate]="pairsPredicate()">
-									
-									{{ aH['hostKey'] }}
-									
-									<!-- Event assigned guests - peeps view -->
-									<div *ngIf="summary[evt][aH['hostKey']]">
-										
-										<!-- div	*ngIf="!isOpen; else boxView" [class]="calcTotals('assignedSeatCnt', evt, aH['hostKey']) >= aH['seats'] ?	'polyBase poly-' + aH['seats'] + ' full-host' : 'polyBase poly-' + aH['seats'] + ' not-full-host'" -->
-										<div	*ngIf="!isOpen; else boxView" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt'] >= aH['seats'] ?	'polyBase poly-' + aH['seats'] + ' full-host' : 'polyBase poly-' + aH['seats'] + ' not-full-host'">
-
-											<div [class]="'poly-content-' + aH['seats']">
-												<div *ngFor="let cnt of [].constructor( aH['seats']); let i = index">
-													<mat-icon id="peep-1"  class="assigned-guest-host peep" *ngIf="i <= ( summary[evt][aH['hostKey']]['hosts']-1 ); else notHost">
+							<hr/><div> Seats </div><hr/>
+							
+							<div> <<< UNALLOCATED </div>
+							<div><strong>{{summary[evt]['unAllocatedSeatCnt']}}</strong></div>
+							
+							<div> ALLOCATED >>> </div>
+							<div><strong>{{ summary[evt]['allocatedSeatCnt'] }}</strong></div><hr/>
+							
+							<div> RSVPs </div>
+							<div><strong> {{summary[evt]['rsvps']}} </strong></div><hr/>
+							
+							<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
+								OVER / UNDER
+							</div>
+							<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
+								<strong>
+									{{	summary[evt]['overAllocatedSeatCnt'] > 0 ? '+' +	summary[evt]['overAllocatedSeatCnt'] :
+					summary[evt]['overAllocatedSeatCnt'] < 0 ? 				summary[evt]['overAllocatedSeatCnt'] : '-'	}}
+								</strong>
+							</div><hr/>
+						</td>
+						<!-- ASSIGNED HOSTS -->
+						<td *ngIf="loaded  ||  summary[evt] !== undefined" cdkDropList id="allocated" [cdkDropListData]="aHs[evt]" (cdkDropListDropped)="dropHost($event, evt)"
+								[class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'assigned list full' : 'assigned list not-full'">
+							<div *ngFor="let aH of aHs[evt]">
+								<mat-card cdkDrag [cdkDragData]="aH" id="{{ aH['hostKey'] }}"><mat-icon> menu </mat-icon>{{ aH['hostKey'] }}</mat-card>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<mat-action-row><button mat-button (click)="prevStep()"> Previous </button><button mat-button (click)="nextStep()"> Next </button></mat-action-row>
+		</mat-expansion-panel>
+<!--			########################
+			####  GUEST CONFIGURATION  #######################################################################################-->
+		<mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+			<mat-expansion-panel-header>
+				<mat-panel-title><strong> Guest Configuration </strong></mat-panel-title>
+				<mat-panel-description> Schedule guests for this event <mat-icon> people </mat-icon></mat-panel-description>
+			</mat-expansion-panel-header>
+			<hr/>
+			
+			<div  class="events" *ngFor="let evt of events">
+				<div class="event-heading">
+					<div><h4><strong> {{evt}} </strong></h4></div>
+					<div> Auto-assign: <button (click)="autoAssignGuests('all')"> All </button> <button (click)="autoAssignGuests(evt)">{{ evt }}</button></div>
+				</div>
+				<!-- table cdkDropListGroup -->
+				<table cdkDropListGroup  *ngIf="this.summary[evt]">
+					<tr>
+						<th style="width: 45%;"> Unassigned Guests </th>
+						<th style="width: 20%;"><button (click)="isOpen=!isOpen">{{ isOpen ? "Peeps View" : "Card View" }}</button></th>
+						<th style="width: 45%;"> Assigned Guests </th></tr>
+					<tr>
+						
+						<!-- UN-ASSIGNED GUESTS -->
+						<td cdkDropList class="unassigned list" id="unassigned" [cdkDropListData]="unGs[evt]" (cdkDropListDropped)="unDropGuest($event, evt)">
+							<div *ngFor="let unG of unGs[evt]">
+								<mat-card cdkDrag id="{{ unG['guestKey'] }}" [cdkDragData]="unG" [cdkDragDisabled]="unG['isDisabled']">
+									<mat-icon> menu </mat-icon> {{ unG['guestKey'] }}
+								</mat-card>
+							</div>
+						</td>
+						<!-- EVENT GUEST SUMMARY -->
+						<td class="vertical-info">
+							<hr/><div><strong> Guest Status </strong></div><hr/>
+							<div> <---- UNASSIGNED </div>
+							<div><strong> {{summary[evt]['unAssignedGuestCnt']}} </strong></div>
+							<div> ASSIGNED ----> </div>
+							<div><strong> {{summary[evt]['assignedSeatCnt']}} </strong></div><hr/>
+							
+							<div><strong> Seat Status </strong></div><hr/>
+							<div> ALLOCATED </div>
+							<div><strong>{{ summary[evt]['allocatedSeatCnt'] }}</strong></div>
+							
+							<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
+								OVER / UNDER
+							</div>
+							<div [class]="summary[evt]['overAllocatedSeatCnt'] >= 0 ? 'full' : 'not-full'">
+								<strong>
+									{{	summary[evt]['overAllocatedSeatCnt'] > 0 ? '+' +	summary[evt]['overAllocatedSeatCnt'] :
+											summary[evt]['overAllocatedSeatCnt'] < 0 ? 				summary[evt]['overAllocatedSeatCnt'] : '-'	}}
+								</strong>
+							</div><hr/>
+							<div> RSVPs </div>
+							<div><strong> {{summary[evt]['rsvps']}} </strong></div><hr/>
+							<div> ASSIGNED </div>
+							<div><strong> {{summary[evt]['assignedSeatCnt']}} </strong></div>
+							<div [class]="summary[evt]['overAssignedGuestCnt'] >= 0 ? 'full' : 'not-full'"> OVER / UNDER </div>
+							<div [class]="summary[evt]['overAssignedGuestCnt'] >= 0 ? 'full' : 'not-full'"><strong>
+									{{	summary[evt]['overAssignedGuestCnt'] > 0 ? '+' +	summary[evt]['overAssignedGuestCnt'] :
+											summary[evt]['overAssignedGuestCnt'] < 0 ? 				summary[evt]['overAssignedGuestCnt'] : '-'	}}
+							</strong></div><hr/>
+						</td>
+						<!-- ASSIGNED GUESTS -->
+						<td>
+							<div cdkDropList *ngFor="let aH of aHs[evt]" [id]="aH['hostKey']" style="border-style: inset; padding: .25em;"
+									 [cdkDropListData]="aGs[evt][aH['hostKey']]" (cdkDropListDropped)="dropGuest($event, evt)" [cdkDropListEnterPredicate]="pairsPredicate()">
+								{{ aH['hostKey'] }}
+								<!-- Event assigned guests - peeps view -->
+								<div *ngIf="summary[evt][aH['hostKey']]">
+									<div	*ngIf="!isOpen; else boxView" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt'] >= aH['seats'] ?	'polyBase poly-' + aH['seats'] + ' full-host' : 'polyBase poly-' + aH['seats'] + ' not-full-host'">
+										<div [class]="'poly-content-' + aH['seats']">
+											<div *ngFor="let cnt of [].constructor( aH['seats']); let i = index">
+												<mat-icon id="peep-1"  class="assigned-guest-host peep" *ngIf="i <= ( summary[evt][aH['hostKey']]['hosts'].length-1 ); else notHost">
+													person
+												</mat-icon>
+												<ng-template #notHost>
+													<mat-icon id="peep-2" class="assigned-guest-guest peep" *ngIf="i <= ( summary[evt][aH['hostKey']]['assignedSeatCnt'] - 1 ); else notAssigned">
 														person
 													</mat-icon>
-													<ng-template #notHost>
-														<mat-icon id="peep-2" class="assigned-guest-guest peep" *ngIf="i <= ( summary[evt][ aH['hostKey']]['assignedSeatCnt'] - 1 ); else notAssigned">
-															person
+													<ng-template #notAssigned>
+														<mat-icon id="peep-o" class="unassigned-guest peep">
+															person_outline
 														</mat-icon>
-														<ng-template #notAssigned>
-															<mat-icon id="peep-o" class="unassigned-guest peep">
-																person_outline
-															</mat-icon>
-														</ng-template>
 													</ng-template>
-												</div>
+												</ng-template>
 											</div>
 										</div>
-										<!-- Event assigned guests - card view -->
-										<ng-template #boxView>
-											<div [class]="summary[evt][ aH['hostKey']]['assignedSeatCnt'] >= aH['seats'] ? 'polyBase list full-host' : 'polyBase list not-full-host'">
-												<div *ngFor="let aG of aGs[evt][aH['hostKey']]">
-													<!-- div *ngFor="let aG of aH" -->
-													<mat-card cdkDrag id="{{ aG['guestKey'] }}" [cdkDragData]="aG" [cdkDragDisabled]="aG['isDisabled']" >
-														<mat-icon> menu </mat-icon> {{ aG['guestKey'] }}
-													</mat-card>
-												</div>
-											</div>
-										</ng-template>
 									</div>
+									<!-- Event assigned guests - card view -->
+									<ng-template #boxView>
+										<div [class]="summary[evt][ aH['hostKey']]['assignedSeatCnt'] >= aH['seats'] ? 'polyBase list full-host' : 'polyBase list not-full-host'">
+											<div *ngFor="let aG of aGs[evt][aH['hostKey']]">
+												<mat-card cdkDrag id="{{ aG['guestKey'] }}" [cdkDragData]="aG" [cdkDragDisabled]="aG['isDisabled']" >
+													<mat-icon> menu </mat-icon> {{ aG['guestKey'] }}
+												</mat-card>
+											</div>
+										</div>
+									</ng-template>
 								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<mat-action-row><button mat-button (click)="prevStep()"> Previous </button><button mat-button (click)="nextStep()"> End </button></mat-action-row>
-			</mat-expansion-panel>
-		</mat-accordion>
-	</div>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<mat-action-row><button mat-button (click)="prevStep()"> Previous </button><button mat-button (click)="nextStep()"> End </button></mat-action-row>
+		</mat-expansion-panel>
+	</mat-accordion>
+</div>
 </div>
