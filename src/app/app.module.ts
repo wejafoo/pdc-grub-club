@@ -1,5 +1,6 @@
 
 
+import { environment 				} from '../environments/environment';
 import { NgModule					} from '@angular/core';
 import { BrowserAnimationsModule	} from '@angular/platform-browser/animations';
 import { BrowserModule				} from '@angular/platform-browser';
@@ -19,6 +20,7 @@ import { NoSoupComponent			} from './no-soup/no-soup.component';
 
 import { NavPipe					} from './_pipes/nav.pipe';
 import { SafePipe					} from './_pipes/safe.pipe';
+import { ServiceWorkerModule 		} from '@angular/service-worker';
 
 @NgModule({
 	declarations:	[
@@ -37,8 +39,9 @@ import { SafePipe					} from './_pipes/safe.pipe';
 		HttpClientModule,
 		MaterialModule,
 		PlanModule,
-		PresbyModule,
-		AppRoutingModule	// this absolutely MUST remain last!!!!!
+		PresbyModule,					// Register the ServiceWorker below asap app is stable or after 30 seconds (whichever comes first).
+		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerWhenStable:30000' }),
+		AppRoutingModule				// this absolutely MUST remain last!!!!!
 	],
 	bootstrap:	[AppComponent]
 })
