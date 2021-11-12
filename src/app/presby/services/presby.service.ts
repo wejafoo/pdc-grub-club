@@ -8,5 +8,6 @@ import { PresbyQuery	} from '../../../../.ARCHIVE/models/plan';
 @Injectable({ providedIn: 'root' })
 
 export class PresbyService extends Query<PresbyQuery> {
-	document = gql`{presbies{key id isActive last guests guestings{event seats key} hostings{event seats key} seats U S email home cell smail city st zip mmail}}`
+	// document = gql`{ presbies { key id isActive last guests guestings{event seats key} hostings{event seats key} seats U S email home cell smail city st zip mmail}}`
+	document = gql`{ presbies { id isActive last guests guestings hostings seats unknown1 unknown2 email home cell smail city st zip mmail }}`
 }

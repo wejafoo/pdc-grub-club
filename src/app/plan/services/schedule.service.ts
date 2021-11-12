@@ -48,23 +48,24 @@ export class ScheduleService {
 					let gCnt = 0;
 
 					for ( const hosting of active.hostings ) {
-						if ( hosting.event === evt ) {										// Push relevant fields from presby record to host record
-							
+						if ( hosting.event === evt ) {																	// presby record --> hosting record
 							hosting.hostName	= active.last;
-							hosting.hostKey	= active.last + '-' + active.id + '-' + active.seats + '-' + active.guests.length;
+							hosting.hostKey		= active.last + '-' + active.id + '-' + active.seats + '-' + active.guests.length;
 							hosting.seats		= active.seats;
-							hosting.id		= JSON.parse( JSON.stringify( active.id ));
-							hosting.guests	= JSON.parse( JSON.stringify( active.guests ));
-							
-							this.unHosts[hosting.event].push( hosting);
+							hosting.isDisabled	= false
+							hosting.id			= JSON.parse( JSON.stringify( active.id		));
+							hosting.guests		= JSON.parse( JSON.stringify( active.guests ));
+							this.unHosts[hosting.event].push( hosting );
 						}
 						hCnt++;
 					}
 					if ( active.guestings.length > 0 ) {
-						// for ( let g = 0, gLen = guestings.length; g < gLen; g++ ) {
-						for ( const guesting of active.guestings ) {
-							if ( guesting.event === evt ) {												// Add fields from presby record to unassigned guest record
-								if ( ! ( 'guests' in guesting )) { guesting.guests = JSON.parse( JSON.stringify( active.guests ))}
+						for ( const guesting of active.guestings ) {													// for ( let g = 0, gLen = guestings.length; g < gLen; g++ ) {
+							if ( guesting.event === evt ) {																// presby record --> guest record
+								
+								// if ( !( 'guests' in guesting ))  guesting.guests = JSON.parse( JSON.stringify( active.guests ));
+								guesting.guests		= [...active.guests]
+								
 								guesting.id		 	= JSON.parse( JSON.stringify( active.id		));
 								guesting.partyName 	= JSON.parse( JSON.stringify( active.last	));
 								guesting.guestKey	= active.last + '-' + active.id + '-' + active.seats + '-' + active.guests.length;

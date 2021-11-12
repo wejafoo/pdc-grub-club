@@ -25,7 +25,7 @@ const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsAlias		= 'stage-EN_US';
 const cmsSheet		= 'https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8/edit#gid=1463760381';
-const cmsService	= 'http://localhost:8080';
+const cmsService	= 'http://localhost:5430/query';
 // const cmsService	= 'http://localhost:8001';
 // const cmsService	= 'https://foo.fb.weja.us/cms';
 

@@ -60,15 +60,15 @@ export interface PresbyQuery { presbies: Presbies }
 export type Presbies = Presby[];
 export interface Presby {
 	key:		string;
-	isActive:	boolean;
 	id:			number;
+	isActive:	boolean;
 	last:		string;
 	guests:		string[];
 	guestings:	Guests;
 	hostings:	Hosts;
 	seats?:		number;
-	U?:			boolean;
-	S?:			boolean;
+	unknown1?:	boolean;
+	unknown2?:	boolean;
 	email?:		string;
 	home?:		string;
 	cell?:		string;

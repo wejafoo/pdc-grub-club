@@ -23,7 +23,8 @@ const publicMife	= process.env.PUBLIC_MIFE	|| remote.default.PUBLIC_MIFE;
 const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
-const cmsService	= 'https://foo.fb.weja.us/cms';
+// const cmsService	= 'https://foo.fb.weja.us/cms';
+const cmsService	= 'http://localhost:5430/query';
 const cmsSheet		= 'https://docs.google.com/spreadsheets/d/14T-GM6Cx-OpT_s4MCytc1VL8fQax8eOC8IHdne-1Wf4/edit#gid=1055269632';
 const cmsAlias		= 'stage-EN_US';
 
