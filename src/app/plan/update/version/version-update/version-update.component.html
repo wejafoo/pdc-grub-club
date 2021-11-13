@@ -61,7 +61,7 @@
 					<label for="allocationSetting3"> I want a new boat </label>
 				</div>
 			</div>
-			<!-- ######################################################################################  guest SETTINGS  ##-->
+			<!-- ############################################################################################  SETTINGS  ##-->
 			<div style="display: flex; justify-content: space-between; align-items: center">
 				<div style="display: flex; background-color: aliceblue">
 					Assignment Settings:
@@ -83,11 +83,8 @@
 				</div>
 			</div>
 			
-			
-			
-			
-			
 			<!-- div *ngIf="deepEqual(loadedVer, ver); else changes_made_2">Loaded version:<strong>{{ver['id']}}</strong></div><ng-template #changes_made_2><div><h3><span class="mat-warn"> Unsaved new version: </span><strong> {{ver['id'] + 1}} </strong></h3></div></ng-template -->
+			
 			<div>	Total active hosts: <strong> 20	</strong></div>
 			<div>	RSVPs: <strong> 20 </strong></div>
 			<div><br/> Host seats available by event <br/><hr/>
@@ -98,6 +95,7 @@
 				</div>
 			</div>
 		</mat-expansion-panel>
+		
 		<!-- #####################################################################################  VERSION METADATA  ## -->
 		<!-- mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"><mat-expansion-panel-header><mat-panel-title><strong> Version Metadata </strong></mat-panel-title><mat-panel-description> Misc info to help identify this version <mat-icon> more </mat-icon></mat-panel-description></mat-expansion-panel-header><div><h4><label for="next-labels"> Labels: </label><input type="text" id="next-labels" [(ngModel)]="ver['labels']" placeholder="labels(comma-separated)" /></h4></div></mat-expansion-panel-->
 		<!-- ############################################################################  EVENT DATE CONFIGURATIONS  ## -->
@@ -106,6 +104,7 @@
 			<div style="text-align: center; width: 100%;"><mat-form-field appearance="fill" floatLabel="always"><mat-label> event: February	</mat-label><input matInput [matDatepicker]="picker2" (focus)="picker2.open()"></mat-form-field><mat-datepicker #picker2></mat-datepicker></div>
 			<div style="text-align: center; width: 100%;"><mat-form-field appearance="fill" floatLabel="always"><mat-label> event: March	</mat-label><input matInput [matDatepicker]="picker3" (focus)="picker3.open()"></mat-form-field><mat-datepicker #picker3></mat-datepicker></div>
 		</mat-expansion-panel -->
+		
 		<!-- ###################################################################################  HOST CONFIGURATIONS  ##-->
 		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
 			<mat-expansion-panel-header>
@@ -126,18 +125,14 @@
 						<button (click)="autoAllocate(evt)">{{evt}}</button>
 					</div>
 				</div>
-				<table cdkDropListGroup>
+				<table *ngIf="loaded" cdkDropListGroup>
 					<tr>
-						<th style="background-color: #425; color: white; padding: 0 0.5em;">
-							<strong> Unallocated </strong>
-						</th>
-						<th style="background-color: #425; color: white; padding: 0 0.5em;">
-							<strong> Allocated 	</strong>
-						</th>
+						<th style="background-color: #425; color: white; padding: 0 0.5em;"><strong> Unallocated </strong></th>
+						<th style="background-color: #425; color: white; padding: 0 0.5em;"><strong> Allocated 	</strong></th>
 					</tr>
 					<tr>
 						<!-- ############################################################################  UN-ASSIGNED HOSTS  ###-->
-						<td cdkDropList id="unallocated" class="unassigned list"
+						<td cdkDropList id="unallocated" class="gutter unassigned list"
 								[cdkDropListData]			= "unHs[evt]"
 								(cdkDropListDropped)	= "unDropHost( $event, evt )"
 						>
@@ -148,38 +143,72 @@
 							</div>
 						</td>
 						<!-- ########################################################################  EVENT HOSTING SUMMARY  ###-->
-						<td *ngIf="loaded || summary[evt]" class="vertical-info">
-							<div style="background-color: aliceblue; margin: 0;">
-								<strong> Seats </strong>
+						
+						
+						
+						<td class="vertical-info">
+							<div class="vertical-info">
+								<div style="margin-top: 0" class="info-head"><span style="font-weight: 900"> Guests </span></div>
+								<div> RSVPs: <span style="font-weight: 900">{{summary[evt]['rsvps']}}</span></div>
+								<div class="info-head"><span style="font-weight: 900"> Seats </span></div>
+								<div style="padding: 0 .5em; text-align: justify-all;">
+									<div style="display: inline-block; text-align: center; margin-bottom: 1em;">
+										Total Available: <span style="font-weight: 900">{{summary[evt]['seats']}}</span>
+									</div>
+									<div style="text-align: left">
+										<<<  Unallocated: <span style="font-weight: 900">{{summary[evt]['unAllocatedSeatCnt']}}</span>
+									</div>
+									<div style="text-align: right">
+										Allocated: <span style="font-weight: 900">{{summary[evt]['allocatedSeatCnt']}}</span> >>>
+									</div>
+								</div>
+								<div class="info-head"><span style="font-weight: 900"> Allocation Over/Under </span></div>
+								<div [class]="summary[evt]['overAllocatedSeats'] >= 0? 'full': 'not-full'">
+									<div style="text-align: justify-all;">
+										<div style="display: inline-block; text-align: left;"> RSVPs: </div>
+										<div style="display: inline-block; text-align: left;"> </div>
+										<div style="display: inline-block; text-align: right;"><span style="font-weight: 900">{{
+													summary[evt]['overAllocatedSeats'] > 0? '+'+summary[evt]['overAllocatedSeats'] :
+															summary[evt]['overAllocatedSeats'] < 0?	summary[evt]['overAllocatedSeats'] :
+																	'---'
+											}}</span>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div>
-								Total: <strong>{{ summary[evt]['seats']}}</strong>
-							</div>
-							<div>
-								< &nbsp;&nbsp; UNALLOCATED
-							</div>
-							<div>
-								<strong>{{summary[evt]['unAllocatedSeatCnt']}}</strong>
-							</div>
-							<div>
-								ALLOCATED	&nbsp;&nbsp;&nbsp; >
-							</div>
-							<div>
-								<strong>{{summary[evt]['allocatedSeatCnt']}}</strong>
-							</div>
-							<div style="background-color: aliceblue">
-								RSVPs: <strong>{{summary[evt]['rsvps']}}</strong>
-							</div>
-							<div [class]="summary[evt]['overAllocatedSeats'] >= 0 ? 'full' : 'not-full'">
-								O/U RSVPs: <strong>{{
-										summary[evt]['overAllocatedSeats'] > 0 ? '+' +	summary[evt]['overAllocatedSeats'] :
-										summary[evt]['overAllocatedSeats'] < 0 ?				summary[evt]['overAllocatedSeats'] : '-'
-								}}</strong>
+							<div class="vertical-info">
+								<hr style="width: 100%;"/>
+								<div class="info-head"><span style="font-weight: 900"> Status Key </span></div>
+								<div class="cdk-drag-disabled" style="margin: .25em;">
+									host disabled
+								</div>
+								<div style="background-color: aliceblue; color: #425; margin: .25em;">
+									host active
+								</div>
+								<div style="background-color: gainsboro; color: #425; margin: .25em; border-style: solid; border-color: green">
+									event fully allocated
+								</div>
+								<div style="background-color: gainsboro; color: #425; margin: .25em; border-style: solid; border-color: red">
+									event under allocated
+								</div>
 							</div>
 						</td>
+						
+						<!-- td *ngIf="loaded || summary[evt]" class="vertical-info">
+							<div style="background-color: aliceblue; margin: 0;"><strong> Seats </strong></div><div>Total: <strong>{{ summary[evt]['seats']}}</strong></div><div>< &nbsp;&nbsp; UNALLOCATED</div><div><strong>{{summary[evt]['unAllocatedSeatCnt']}}</strong></div>
+							<div>ALLOCATED	&nbsp;&nbsp;&nbsp; ></div><div><strong>{{summary[evt]['allocatedSeatCnt']}}</strong></div>
+							<div style="background-color: aliceblue">RSVPs: <strong>{{summary[evt]['rsvps']}}</strong></div>
+							<div [class]="summary[evt]['overAllocatedSeats'] >= 0 ? 'full' : 'not-full'"> O/U RSVPs: <strong>{{summary[evt]['overAllocatedSeats'] > 0 ? '+' +	summary[evt]['overAllocatedSeats'] : summary[evt]['overAllocatedSeats'] < 0 ?				summary[evt]['overAllocatedSeats'] : '-'}}</strong></div>
+						</td -->
+						
+						
+						
+						
+						
+						
 						<!-- ###############################################################################  ASSIGNED HOSTS  ###-->
 						<td cdkDropList id="allocated" [class] = "
-									summary[evt]['overAllocatedSeats'] >= 0? 'assigned list full': 'assigned list not-full'
+									summary[evt]['overAllocatedSeats'] >= 0? 'gutter assigned list full': 'gutter assigned list not-full'
 								"
 								*ngIf									= "loaded || summary[evt] !== undefined"
 								[cdkDropListData]			= "aHs[evt]"
@@ -210,7 +239,7 @@
 				</mat-panel-description>
 			</mat-expansion-panel-header>
 			<hr/>
-			<div  class="events" *ngFor="let evt of events">
+			<div *ngFor="let evt of events" class="events">
 				<div class="event-heading">
 					<div><h4><strong>{{evt}} Guestings </strong></h4></div>
 					<div>
@@ -220,7 +249,7 @@
 					</div>
 				</div>
 				<!-- table cdkDropListGroup -->
-				<table cdkDropListGroup *ngIf="this.summary[evt]">
+				<table *ngIf="loaded" cdkDropListGroup>
 					<tr>
 						<th style="background-color: #425; color: white; padding: 0 0.5em;">
 							<strong> Unassigned </strong>
@@ -231,7 +260,7 @@
 					</tr>
 					<tr>
 						<!-- ##########################################################################  UN-ASSIGNED GUESTS  ### -->
-						<td cdkDropList id="unassigned" class="unassigned list"
+						<td cdkDropList id="unassigned" class="gutter unassigned list"
 								[cdkDropListData]			= "unGs[evt]"
 								(cdkDropListDropped)	= "unDropGuest($event, evt)"
 						>
@@ -245,55 +274,70 @@
 							</div>
 						</td>
 						<!-- ##########################################################################  EVENT GUEST SUMMARY  ###-->
+					
+					
+					
+					
+					
 						<td class="vertical-info">
-							<div style="background-color: aliceblue; margin: 0;"><strong> Guests </strong></div>
-							<div>
-								RSVPs: <strong>{{summary[evt]['rsvps']}}</strong>
+							
+							<div class="vertical-info">
+								<div style="margin-top: 0;" class="info-head"><span style="font-weight: 900;"> Guests </span></div>
+								<div style="margin-bottom: 1em;">
+									RSVPs: <span style="font-weight: 900">{{summary[evt]['rsvps']}}</span>
+								</div>
+								<div style="text-align: left">
+									<<<  Unassigned: <span style="font-weight: 900">{{summary[evt]['unAssignedGuestCnt']}}</span>
+								</div>
+								<div style="text-align: right">
+									Assigned: <span style="font-weight: 900;">{{summary[evt]['assignedGuestCnt']}}</span> >>>
+								</div>
+								<div class="info-head"><span style="font-weight: 900"> Seats </span></div>
+								<div style="padding: 0 .5em; text-align: justify-all;">
+									<div style="display: inline-block; text-align: left;"> Total Available: <span style="font-weight: 900">{{summary[evt]['seats']}}</span></div>
+									<div style="display: inline-block; text-align: left;"> Allocated: <span style="font-weight: 900">{{summary[evt]['allocatedSeatCnt']}}</span></div>
+								</div>
+								<div class="info-head"><span style="font-weight: 600"> Allocation Over/Under </span></div>
+									<div [class]="summary[evt]['overAllocatedSeats'] >= 0? 'full': 'not-full'">
+										<div style="text-align: justify-all;">
+											<div style="display: inline-block; text-align: left;"> RSVPs: </div>
+											<div style="display: inline-block; text-align: right;"><span style="font-weight: 900">{{
+														 summary[evt]['overAllocatedSeats'] > 0? '+'+summary[evt]['overAllocatedSeats'] :
+																 summary[evt]['overAllocatedSeats'] < 0?	summary[evt]['overAllocatedSeats'] :
+																			 '---'
+											}}</span>
+										</div>
+									</div>
+									<div [class]="summary[evt]['overAssignedGuests'] >= 0? 'full': 'not-full'">
+										Assigned: <span style="font-weight: 900">{{
+												summary[evt]['overAssignedGuests'] > 0? '+'+summary[evt]['overAssignedGuests']:
+														summary[evt]['overAssignedGuests'] < 0? summary[evt]['overAssignedGuests']:
+																'---'
+										}}</span>
+									</div>
+									<div>
+										<button style="margin-top: 2em;" (click)="isOpen=!isOpen">{{isOpen? "Peeps View": "Card View"}}</button>
+									</div>
+								</div>
 							</div>
-							<div>
-								< &nbsp; UNASSIGNED
-							</div>
-							<div>
-								<strong>{{summary[evt]['unAssignedGuestCnt']}}</strong>
-							</div>
-							<div>
-								ASSIGNED &nbsp;&nbsp;&nbsp;&nbsp; >
-							</div>
-							<div>
-								<strong>{{summary[evt]['assignedGuestCnt']}}</strong>
-							</div>
-							<div style="background-color: aliceblue; margin: 0;">
-								<strong> Seats </strong>
-							</div>
-							<div>
-								TOTAL: <strong>{{summary[evt]['seats']}}</strong>
-							</div>
-							<div>
-								ALLOCATED: <strong>{{summary[evt]['allocatedSeatCnt']}}</strong>
-							</div>
-							<div [class]="summary[evt]['overAllocatedSeats'] >= 0? 'full': 'not-full'">
-								O/U RSVPs: <strong>{{
-										summary[evt]['overAllocatedSeats'] > 0 ? '+' +	summary[evt]['overAllocatedSeats'] :
-										summary[evt]['overAllocatedSeats'] < 0 ?				summary[evt]['overAllocatedSeats'] : '-'
-								}}</strong>
-							</div>
-							<div [class]="summary[evt]['overAssignedGuests'] >= 0? 'full': 'not-full'">
-								O/U ASSIGNED: <strong>{{
-										summary[evt]['overAssignedGuests'] > 0 ? '+' +	summary[evt]['overAssignedGuests'] :
-										summary[evt]['overAssignedGuests'] < 0 ?				summary[evt]['overAssignedGuests'] : '-'
-								}}</strong>
-							</div>
-							<div>
-								<button style="margin-top: 2em;" (click)="isOpen=!isOpen">
-									{{isOpen? "Peeps View": "Card View"}}
-								</button>
-							</div>
+							<div class="vertical-info">
+								<hr style="width: 100%;"/>
+								<div class="info-head"><span style="font-weight: 900"> Status Key </span></div>
+									<div style="background-color: orange; color: #425; margin: .25em;"><strong> under assigned	</strong></div>
+									<div style="background-color: darkgreen; color: yellow; margin: .25em;"><strong> fully assigned	</strong></div>
+									<div style="background-color: red; color: aliceblue; margin: .25em;"><strong> over assigned		</strong></div>
+								</div>
 						</td>
+					
+					
+					
+					
+					
 						<!-- ##############################################################################  ASSIGNED GUESTS  ###-->
-						<td>
-							<!-- div cdkDropList [id]="aH['hostKey']" style="border-style: inset; padding: .25em;" -->
-							<div cdkDropList [id]="aH['hostKey']" style="text-align: center; max-width: 10em; height: 12em; max-height: 12em; padding: .5em;"
-									 *ngFor="let aH of aHs[evt]"
+						<td class="gutter">
+							<div cdkDropList style="text-align: center; max-width: 10em; height: 12em; max-height: 12em; padding: .5em;"
+									 [id]													= "aH['hostKey']"
+									 *ngFor												= "let aH of aHs[evt]"
 									 [cdkDropListData]						= "aGs[evt][aH['hostKey']]"
 									 (cdkDropListDropped)					= "dropGuest($event, evt)"
 									 [cdkDropListEnterPredicate]	= "pairsPredicate()"
