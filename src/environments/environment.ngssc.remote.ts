@@ -5,10 +5,9 @@ import 'angular-server-side-configuration/process';
 // V7
 import { fb		} from './fb.stage';
 import { remote	} from './remote';
-// import { local } from './local';
 
-const realmBase		= process.env.REALM_BASE	|| 'https://too.fb.weja.us';
-const routeBase		= process.env.ROUTE_BASE	|| '/private-element/';
+const realmBase		= process.env.REALM_BASE	|| 'https://too.weja.us';
+const routeBase		= process.env.ROUTE_BASE	|| '/pdc/';
 const privateMife	= process.env.PRIVATE_MIFE	|| realmBase + routeBase + '#/';		// DEFINES THIS MIFE
 const thisMife		= privateMife;
 
@@ -25,10 +24,8 @@ const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsAlias		= 'stage-EN_US';
 const cmsSheet		= 'https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8/edit#gid=1463760381';
-const cmsService	= 'http://localhost:5430/query';
-// const cmsService	= 'http://localhost:8001';
-// const cmsService	= 'https://foo.fb.weja.us/cms';
-
+const cmsService	= 'https://foo.weja.us/cms';										// const cmsService	= 'http://localhost:5430/query';
+const rosterService = 'http://localhost:5430/query';
 
 export const environment = {
 	production: Boolean(alias	=== 'prod'),
@@ -48,15 +45,8 @@ export const environment = {
 		public:		publicMife,
 		register:	authMife + 'register'
 	},
-	service: {
-		auth:		authService,
-		cms:		cmsService
-	},
-	cms: {
-		service:	cmsService,
-		sheet:		cmsSheet,
-		alias:		cmsAlias
-	},
+	service: {auth: authService, cms: cmsService, roster: rosterService},
+	cms: {service: cmsService, sheet: cmsSheet, alias: cmsAlias},
 	authGuardRemoteFallbackURL:	authMife + 'login',
 	authGuardRemoteLoggedInURL:	authMife + 'home',
 	firebase: {

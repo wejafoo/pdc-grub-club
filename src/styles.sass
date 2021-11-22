@@ -2,22 +2,29 @@
 
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
 
-// Global Styles
-*
-	font-family:		Roboto, sans-serif
-	font-weight:		200
-
+.mat-button-wrapper
+	display:			flex
+	align-items:		center
+img
+	height:				auto
+	max-width: 			275px
+#contact-button
+	cursor:				pointer
+	display:			inline-block
+	padding:			0.333em 2.5em
+	text-decoration:	none
+	overflow-wrap:		break-word
+	text-transform:		uppercase
 #page-body
-	padding:				.5rem
+	padding:			.5rem
 	ul
-		display:			flex
-		flex-direction: 	column
-		
+		display:		flex
+		flex-direction: column
 #page-title
-	background-color:		gainsboro
-	display:				flex
-	justify-content:		space-between
-	align-items:			center
+	background-color:	gainsboro
+	display:			flex
+	justify-content:	space-between
+	align-items:		center
 	a
 		background-color:	aliceblue
 		color:				black
@@ -29,12 +36,12 @@
 	a:hover
 		background-color:	gainsboro
 		color:				#425
-
 #page-title-2
 	padding:				0
 	display:				flex
 	justify-content:		space-between
 	align-items:			center
+	background-color:		inherit
 	a
 		padding:			5px 10px
 		text-decoration:	none
@@ -47,18 +54,15 @@
 		color:				gainsboro
 	h3
 		margin:				0
-
 strong
 	margin:					0 .5rem
 	font-weight:			600
-	
 .guests, .hosts
 	list-style-type:		none
 	padding:				0
 	div
 		display:			inline-block
 		text-align:			center
-		// height:				100%
 	a
 		color:				black
 		display:			inline-block
@@ -79,7 +83,6 @@ strong
 		margin-right:		1em
 		width:				2rem
 		padding:			.25em
-
 .plans
 	list-style-type:	none
 	padding:			0
@@ -98,7 +101,6 @@ strong
 			color:				white
 			border-radius:		10px 0 0 10px
 	a:hover
-		// color:				white
 		background-color:	gainsboro
 		border-radius:		10px 0 0 10px
 	.badge
@@ -117,79 +119,167 @@ strong
 		display:			flex
 		align-items:		center
 
-h1
-	font-size:			2.5rem
-	text-align:			center
+		
+		
+		
+		
 
-h1, h2, h3
-	color:				#425
-
-h2
-	margin:				0 0 0 1rem
-	
-h3
-	font-size:			1.3rem
-
+html
+	font-family:			Roboto, sans-serif
+	font-weight:			200
 body
-	padding:			.5rem
-	max-width:			1000px
-	margin:				auto
-
-@media (min-width: 600px)
-	body
-		padding:		2rem
-
-body, input[text]
-	color:				#333
-	font-family:		Roboto, serif
-
+	margin: 				0
+	width:					100%
+.body
+	margin:					0 2em
+h1
+	font-size:				2.5rem
+	text-align:				center
+h1, h2, h3
+	color:					#425
+h2
+	margin:					0 0 0 1rem
+h3
+	font-size:				1.3rem
 a
-	cursor:				pointer
-
-// button
-	background-color:	aliceblue
-	border:				none
-	cursor:				pointer
-	color:				black
-	font-size:			1.2rem
-	padding:			.5rem
-	margin-right:		.5rem
-	margin-bottom:		.5rem
-	margin-top:			.5rem
-
-// button:hover
-	background-color:	#425
-	color:				white
-
-// button:disabled
-	background-color:	aliceblue
-	color:				gainsboro
-	cursor:				auto
-
-// Navigation link styles
+	cursor:					pointer
 hr
 	margin:				.5rem 0
-	
-nav a
-	padding:			5px 10px
-	text-decoration:	none
-	margin-right:		10px
-	display:			inline-block
-	background-color:	aliceblue
-	color:				#425
-	
-nav a:hover
-	background-color:	#425
-	color:				white
-
-nav a.active
-	background-color:	gainsboro
-	color:				#425
-
+nav
+	a.pdc-nav-item
+		padding:			5px 10px
+		text-decoration:	none
+		margin-right:		10px
+		display:			inline-block
+		background-color:	aliceblue
+		color:				#425
+	a.pdc-nav-item.active
+		background-color:	gainsboro
+		color:				#425
+	a.pdc-nav-item:hover
+		background-color:	#425
+		color:				white
 input[type="text"]
 	box-sizing:			border-box
 	width:				100%
 	padding:			.5rem
-
 table
 	padding:			.5rem
+	
+	
+
+section
+	display:			flex
+	font-weight:		600 !important
+	width:				100%
+nav
+	background:			#526b94
+	width:				100%
+a
+	color:				white
+	text-decoration:	none
+.menu
+	.submenu
+		list-style-type:	none
+.item.button
+	padding: 9px 5px
+.item:not(.button) a:hover
+	.item a:hover::after
+		color: #ccc
+.menu 												/* Mobile menu */
+	display:			flex
+	justify-content:	space-evenly
+	padding:			0
+	margin:				.688em 0
+.menu li.subitem a
+	padding: 15px
+.toggle
+	order: 1
+	font-size: 20px
+.item.button
+	order: 2
+.item
+	order: 3
+	width: 100%
+	text-align: center
+	display: none
+.item:hover
+	display: block
+.submenu
+	display: none
+.submenu:hover
+	ul
+		display: block
+.social-icon
+	height: 24px
+	display: inline-block
+	font: normal normal normal 14px/1 FontAwesome
+	font-size: inherit
+	text-rendering: auto
+	-webkit-font-smoothing: antialiased
+	-moz-osx-font-smoothing: grayscale
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////        Mobile Styles       ///////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@media all and (min-width: 700px)
+	.item.button
+		width: auto
+		order: 1
+		display: block
+	.toggle
+		flex: 1
+		text-align: right
+		order: 2
+	.menu li.button a 											/* Button up from tablet screen */
+		padding: 10px 15px
+		margin: 5px 0
+	.button a
+		background: #0080ff
+		border: 1px royalblue solid
+	.button.secondary
+		border: 0
+	.button.secondary a
+		background: transparent
+		border: 1px #0080ff solid
+	.button:not(.secondary)
+		a:hover
+			background: royalblue
+			border-color: darkblue
+@media all and (min-width: 960px) 					/* Desktop menu */
+	.item
+		order: 1
+		position: relative
+		display: block
+		width: auto
+		font-weight:	600
+	.button
+		order: 2
+	.toggle
+		display: none
+@media only screen and (max-device-width : 47.99rem)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////                PRESBY OLDNESS                ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@media only screen and (max-device-width : 59.99rem)
+	body .g-content																											 	/* RESPONSIVE OVERRIDES */
+		padding: 20px 15px																																				/* All Mobile up to Small Desktop */
+	#g-footer .g-content
+		padding: 10px 0
+		margin: 0 0.625rem
+@media only screen and (min-device-width : 48rem) and (max-device-width : 59.99rem)
+	body.home #g-bottom
+		text-align: center
+		padding: 2rem !important
+	body.home #g-bottom .g-container:nth-child(1)
+		max-width: 90%
+@media only all and (min-width: 60rem) and (max-width: 74.99rem)
+	.g-container
+		width: 60rem
+	.g-container
+		width: 75rem
+	.g-container
+		margin: 0 auto
+		padding: 0

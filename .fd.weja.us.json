@@ -2,7 +2,7 @@
     "FdTest":               false,
     "FdVerbose":            false,
     "FdBuildContext":       "angular",
-    "FdRepo":               "pdc",
+    "FdRepo":               "pdc-grub-club",
     "FdService":            "pdc",
     "FdRouteBase":          "/pdc/",
     "FdTitle":              "PDC-Admin",

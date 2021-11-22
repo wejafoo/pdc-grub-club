@@ -6,17 +6,19 @@ import { APOLLO_OPTIONS	} from 'apollo-angular';
 import { InMemoryCache	} from '@apollo/client/core';
 import { HttpLink		} from 'apollo-angular/http';
 
-const uri = 'http://localhost:8080/query';
+const uri = environment.service.roster;
 
 @NgModule({providers: [{provide: APOLLO_OPTIONS, useFactory(httpLink: HttpLink) {return {cache: new InMemoryCache(), link: httpLink.create({uri})}}, deps: [HttpLink]}]})
-
 export class GraphQLModule {
-	env: any;
-	uri: string;
+	env:	any;
+	cms:	string;
+	roster:	string;
 	constructor() {
-		this.env = environment;
-		this.uri = this.env.cms.service;
-		console.log('CMS:', this.uri)
+		this.env	= environment;
+		this.roster	= this.env.service.roster;
+		this.cms	= this.env.service.cms;
+		console.log('Roster:',	this.roster	);
+		console.log('CMS:',		this.cms	);
 	}
 }
 

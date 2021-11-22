@@ -1,8 +1,8 @@
 
 
-import { browser	} from 'protractor';
-import { by			} from 'protractor';
-import { element	} from 'protractor';
+import { browser } from 'protractor';
+import { by		 } from 'protractor';
+import { element } from 'protractor';
 
 export class AppPage {
   async navigateTo():	Promise<unknown>	{ return browser.get( browser.baseUrl )}

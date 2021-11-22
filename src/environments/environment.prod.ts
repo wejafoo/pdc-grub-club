@@ -7,7 +7,7 @@ import { fb		} from './fb.stage';
 import { remote	} from './remote';
 // import { local	} from "./local";
 
-const realmBase		= process.env.REALM_BASE	|| 'https://too.fb.weja.us';
+const realmBase		= process.env.REALM_BASE	|| 'https://too.weja.us';
 const routeBase		= process.env.ROUTE_BASE	|| '/private-element/';
 const privateMife	= process.env.PRIVATE_MIFE	|| realmBase + routeBase + '#/';		// DEFINES THIS MIFE
 const thisMife		= privateMife;
@@ -23,10 +23,12 @@ const publicMife	= process.env.PUBLIC_MIFE	|| remote.default.PUBLIC_MIFE;
 const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
-// const cmsService	= 'https://foo.fb.weja.us/cms';
-const cmsService	= 'http://localhost:5430/query';
 const cmsSheet		= 'https://docs.google.com/spreadsheets/d/14T-GM6Cx-OpT_s4MCytc1VL8fQax8eOC8IHdne-1Wf4/edit#gid=1055269632';
 const cmsAlias		= 'stage-EN_US';
+const cmsService	= 'https://foo.weja.us/cms';										// const cmsService	= 'http://localhost:5430/query';
+// const rosterService = 'http://localhost:5430/query';
+// const rosterService = 'https://graphql--micro-server-go-graphql--weja-us--stage-rztmaxtwva-uc.a.run.app//query';
+const rosterService	= 'https://foo.weja.us/api/pdc/query';
 
 export const environment = {
 	production: Boolean(alias	=== 'prod'),
@@ -48,7 +50,8 @@ export const environment = {
 	},
 	service: {
 		auth:		authService,
-		cms:		cmsService
+		cms:		cmsService,
+		roster:		rosterService
 	},
 	cms: {
 		service:	cmsService,

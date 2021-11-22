@@ -1,19 +1,13 @@
 
 
-
-
-<!-- weja-element-dev-head	[hostEnv]="env"></weja-element-dev-head>
-<weja-element-nav				[hostEnv]="env"></weja-element-nav -->
-
 <div class="wrapper">
 	<h1 class="title" style="margin: 0"> Presby Grub Club </h1>
-	<hr/>
-	<nav>
-		<a routerLink="/plan"		routerLinkActive="active" 	> Plans  </a>
-		<a routerLink="/guest"	routerLinkActive="active" 	> Guests </a>
-		<a routerLink="/host"		routerLinkActive="active" 	> Hosts	 </a>
-		<a routerLink="/login"	routerLinkActive="active" 	> Login	 </a>
-		<a [routerLink]="[{outlets: {popup: ['compose']}}]"	> Help!	 </a>
+	<nav  style="background-color: white;">
+		<a class="pdc-nav-item" routerLink="/plan"	routerLinkActive="active" 	> Plans  </a>
+		<a class="pdc-nav-item" routerLink="/guest"	routerLinkActive="active" 	> Guests </a>
+		<a class="pdc-nav-item" routerLink="/host"	routerLinkActive="active" 	> Hosts	 </a>
+		<a class="pdc-nav-item" routerLink="/login"	routerLinkActive="active" 	> Login	 </a>
+		<a class="pdc-nav-item" [routerLink]="[{outlets: {popup: ['compose']}}]"> Help!	 </a>
 	</nav>
 	
 	<router-outlet name="popup"></router-outlet>

@@ -1,0 +1,15 @@
+
+
+<div id="page-title"><h2 style="margin: 0.5em 0 0.5em 1em;"> Login </h2></div>
+
+<mat-card class="">
+	<mat-card-content>
+		<ngx-auth-firebaseui [tabindex]		= "0"
+							 signOutText	= {{signOutText}}
+							 (onSuccess)	= "onSuccess($event)"
+							 (onError)		= "onError($event)"
+							 [providers]	= "[providers.Google, providers.Facebook, providers.Twitter]"
+		></ngx-auth-firebaseui>
+	</mat-card-content>
+</mat-card>
+

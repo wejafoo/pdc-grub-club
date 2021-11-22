@@ -21,9 +21,8 @@ const authService	= process.env.AUTH_SERVICE	|| remote.default.AUTH_SERVICE;
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsSheet		= 'https://docs.google.com/spreadsheets/d/14T-GM6Cx-OpT_s4MCytc1VL8fQax8eOC8IHdne-1Wf4/edit#gid=1055269632';
 const cmsAlias		= 'stage-EN_US';
-
-// const cmsService	= 'http://localhost:5430/query';
-const cmsService	= 'http://localhost:8080/query';
+const cmsService	= 'https://foo.weja.us/cms';										// const cmsService	= 'http://localhost:5430/query';
+const rosterService	= 'http://localhost:5430/query';
 
 export const environment = {
 	production: Boolean(alias	=== 'prod'),
@@ -33,8 +32,8 @@ export const environment = {
 	local:		true,
 	remote:		false,
 	title,
-	assets: { bucket:	assetsBucket	},
-	this:	{ host:		thisHost		},
+	assets: { bucket: assetsBucket },
+	this:	{ host: thisHost },
 	mife: {
 		this:		thisMife,
 		private:	thisMife,
@@ -44,20 +43,20 @@ export const environment = {
 		public:		publicMife,
 		register:	authMife + 'register'
 	},
-	service: { auth: authService, cms: cmsService },
+	service: { auth: authService, cms: cmsService, roster: rosterService },
 	cms: { service: cmsService, sheet: cmsSheet, alias: cmsAlias },
 	authGuardRemoteFallbackURL:	thisMife + 'login',
 	authGuardRemoteLoggedInURL:	thisMife + 'home',
 	firebase: {
 		creds: {
-			appId:				fb.APP_ID,
-			apiKey:				fb.API_KEY,
-			authDomain:			fb.AUTH_DOMAIN,
-			databaseURL:		fb.DATABASE_URL,
-			measurementId:		fb.GA4_MID,
-			messagingSenderId:	fb.MESSAGING_SENDER_ID,
-			projectId:			fb.PROJECT_ID,
-			storageBucket:		fb.STORAGE_BUCKET,
+			appId:						fb.APP_ID,
+			apiKey:						fb.API_KEY,
+			authDomain:					fb.AUTH_DOMAIN,
+			databaseURL:				fb.DATABASE_URL,
+			measurementId:				fb.GA4_MID,
+			messagingSenderId:			fb.MESSAGING_SENDER_ID,
+			projectId:					fb.PROJECT_ID,
+			storageBucket:				fb.STORAGE_BUCKET
 		},
 		configs: {
 			authGuardFallbackURL:		thisMife + 'login',
@@ -70,7 +69,7 @@ export const environment = {
 			passwordMinLength:			8,
 			toastMessageOnAuthSuccess:	false,
 			toastMessageOnAuthError:	true,
-			guardProtectedRoutesUntilEmailIsVerified:	true,
+			guardProtectedRoutesUntilEmailIsVerified: true
 		},
 	},
 	google: { analytics: { trackingCode: fb.GA4_MID }},

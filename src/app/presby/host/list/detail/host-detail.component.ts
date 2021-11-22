@@ -13,12 +13,7 @@ import { PresbyService	} from '../../../services/presby.service';
 import { Presbies		} from '../../../../../../.ARCHIVE/models/plan';
 import { Presby			} from '../../../../../../.ARCHIVE/models/plan';
 
-@Component({
-	selector: 'app-host-detail',
-	templateUrl: './host-detail.component.html',
-	styleUrls: ['./host-detail.component.sass']
-})
-
+@Component({selector: 'app-host-detail', templateUrl: './host-detail.component.html', styleUrls: ['./host-detail.component.sass']})
 export class HostDetailComponent implements OnInit {
 	env:		any;
 	host!:		Presby;
@@ -29,9 +24,7 @@ export class HostDetailComponent implements OnInit {
 		private	presbyS:	PresbyService,
 		private	route:		ActivatedRoute,
 		private	router:		Router
-	) {
-		this.env = environment
-	}
+	) { this.env = environment }
 	
 	ngOnInit() {
 		this.hosts = this.presbyS.watch().valueChanges.pipe( map(result => {
@@ -40,7 +33,5 @@ export class HostDetailComponent implements OnInit {
 		}))
 	}
 	
-	toHost( host: Presby ) { this.router.navigate(['/host', {id: host.id}]).then( r => console.log(r))}
+	toHost(host: Presby) { this.router.navigate(['/host', {id: host.id}]).then( r => console.log(r))}
 }
-
-// ngOnInit	() { }
