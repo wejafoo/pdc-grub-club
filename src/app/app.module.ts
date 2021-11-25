@@ -11,15 +11,14 @@ import { FormsModule				} from '@angular/forms';
 import { AngularFireModule			} from '@angular/fire';																// AUTH
 import { HttpClientModule			} from '@angular/common/http';														// AUTH
 import { NgxAuthFirebaseUIModule	} from 'ngx-auth-firebaseui';														// AUTH
-
 import { AppRoutingModule			} from './app-routing.module';
 import { GraphQLModule				} from './sub-modules/graphql.module';
 import { MaterialModule				} from './sub-modules/material.module';
 import { PlanModule					} from './plan/plan.module';
 import { PresbyModule				} from './presby/presby.module';
-
 import { AppComponent				} from './app.component';
 import { ComposeMessageComponent	} from './compose-message/compose-message.component';
+import { HomeComponent				} from './home/home.component';
 import { LoginComponent				} from './login/login.component';
 import { LogoutComponent			} from './logout/logout.component';
 import { NoSoupComponent			} from './no-soup/no-soup.component';
@@ -33,6 +32,7 @@ export function firebaseAppNameFactory() { return `weja-us` }
 @NgModule({
 	declarations:	[
 		AppComponent,
+		HomeComponent,
 		LoginComponent,
 		LogoutComponent,
 		ComposeMessageComponent,

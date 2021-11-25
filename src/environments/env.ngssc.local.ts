@@ -2,18 +2,20 @@
 
 import 'angular-server-side-configuration/process';
 
-// V7
+// V8
 import { fire } from './env.stage';
 
-const alias			= process.env.ALIAS	|| 'stage'
-const title			= process.env.TITLE	|| 'Default Private Website Title';
-const debug			= process.env.DEBUG	|| 'true';
-const logs			= process.env.LOGS	|| 'true';
-const thisHost		= 'http://localhost:4200/';
+const alias			= process.env.ALIAS				|| 'stage'
+const title			= process.env.TITLE				|| 'Default Private Website Title';
+const debug			= process.env.DEBUG				|| 'true';
+const logs			= process.env.LOGS				|| 'true';
+const realmBase		= process.env.REALM_BASE		|| 'http://localhost';
+const routeBase		= process.env.TARGET_LOCAL_PORT	|| ':7777/';
+const thisHost		= realmBase + routeBase;
 const thisMife		= thisHost + '#/';
 const authMife		= thisMife;
-const authService	= authMife;
-const assetsBucket	= 'https://storage.googleapis.com/weja.us';
+const authService	= 'login';
+const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsService	= 'https://foo.weja.us/cms';
 const rosterService = 'http://localhost:5430/query';
 
@@ -22,14 +24,14 @@ export const environment = {
 	debug: Boolean(debug === 'true'),
 	logs: Boolean(logs === 'true'),
 	alias,
-	local:	true,
-	remote:	false,
-	test:	false,
+	local: true,
+	remote: false,
+	test: false,
 	title,
 	assets: { bucket: assetsBucket	},
 	mifen: { this: thisMife, private: thisMife, auth: authMife, register: authMife + 'register' },
 	service: { auth: authService, cms: cmsService, roster: rosterService	},
-	authGuardRemoteFallbackURL:	authMife,
+	authGuardRemoteFallbackURL:	authMife + 'login',
 	authGuardRemoteLoggedInURL:	thisMife + 'logout',
 	firebase: {
 		creds: {

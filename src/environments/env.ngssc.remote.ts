@@ -2,18 +2,20 @@
 
 import 'angular-server-side-configuration/process';
 
-// V7
+// V8
 import { fire } from './env.stage';
 
-const alias			= process.env.ALIAS	|| 'stage'
-const title			= process.env.TITLE	|| 'Default Private Website Title';
-const debug			= process.env.DEBUG	|| 'true';
-const logs			= process.env.LOGS	|| 'true';
-const thisHost		= 'http://localhost:4200/';
-const thisMife		= thisHost + '#/';
-const authMife		= thisMife;
-const authService	= authMife;
-const assetsBucket	= 'https://storage.googleapis.com/weja.us';
+const alias			= process.env.ALIAS			|| 'stage'
+const title			= process.env.TITLE			|| 'Default Private Website Title';
+const debug			= process.env.DEBUG			|| 'true';
+const logs			= process.env.LOGS			|| 'true';
+const realmBase		= process.env.REALM_BASE	|| 'https://too.weja.us';
+const routeBase		= process.env.ROUTE_BASE	|| '/pdc/';
+const thisHost		= realmBase + routeBase;
+const thisMife		= thisHost + '#';
+const authService	= '/login';
+const authMife		= thisMife + authService;
+const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsService	= 'https://foo.weja.us/cms';
 const rosterService = 'http://localhost:5430/query';
 
@@ -22,15 +24,15 @@ export const environment = {
 	debug: Boolean(debug === 'true'),
 	logs: Boolean(logs === 'true'),
 	alias,
-	local:	true,
-	remote:	false,
-	test:	false,
+	local: false,
+	remote: true,
+	test: false,
 	title,
-	assets: { bucket: assetsBucket	},
+	assets: { bucket: assetsBucket },
 	mifen: { this: thisMife, private: thisMife, auth: authMife, register: authMife + 'register' },
-	service: { auth: authService, cms: cmsService, roster: rosterService	},
+	service: { auth: authService, cms: cmsService, roster: rosterService },
 	authGuardRemoteFallbackURL:	authMife,
-	authGuardRemoteLoggedInURL:	thisMife + 'logout',
+	authGuardRemoteLoggedInURL:	thisMife,
 	firebase: {
 		creds: {
 			appId:				fire.APP_ID,
@@ -42,8 +44,8 @@ export const environment = {
 			storageBucket:		fire.STORAGE_BUCKET
 		},
 		configs: {
-			authGuardFallbackURL:		authMife + 'login',
-			authGuardLoggedInURL:		authMife + 'home',
+			authGuardFallbackURL:		authMife,
+			authGuardLoggedInURL:		thisMife + 'home',
 			enableEmailVerification:	true,
 			enableFirestoreSync:		true,
 			nameMaxLength:				50,

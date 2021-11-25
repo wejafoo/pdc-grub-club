@@ -9,8 +9,8 @@
         "test":  "ng test",
         "lint":  "ng lint",
         "e2e":   "ng e2e",
-        "build:ngssc:stage": "ng run pdc:ngsscbuild:production",
-        "build:ngssc:local": "ng run pdc:ngsscbuild:production"
+        "build:ngssc:local": "ng run pdc:ngsscbuild:local",
+        "build:ngssc:stage": "ng run pdc:ngsscbuild:production"
     },
     "private": true,
     "dependencies": {

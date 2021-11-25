@@ -1,5 +1,6 @@
 
 
+import { environment		} from '../environments/environment';
 import { Component			} from '@angular/core';
 import { RouterOutlet		} from '@angular/router';
 
@@ -13,7 +14,13 @@ import { slideInAnimation	} from './animations';
 })
 
 export class AppComponent {
-	getAnimationData(outlet: RouterOutlet) {
+	env: any;
+	constructor() {
+		this.env = environment;
+		console.log( 'env:', this.env );
+	}
+	getAnimationData( outlet: RouterOutlet ) {
+		// console.log( 'outlet:', outlet );
 		return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation
 	}
 }

@@ -12,6 +12,6 @@
     "FdTargetLocalPort":    "7777",
     "FdTargetLogLevel":     "info",
     "FdTargetProjectId":    "weja-us",
-    "FdTargetRealm":        "too.fb.",
+    "FdTargetRealm":        "too.",
     "FdTargetRemotePort":   "8080"
 }
