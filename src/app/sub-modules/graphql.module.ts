@@ -8,11 +8,21 @@ import { HttpLink		} from 'apollo-angular/http';
 
 const uri = environment.service.roster;
 
-@NgModule({providers: [{provide: APOLLO_OPTIONS, useFactory(httpLink: HttpLink) {return {cache: new InMemoryCache(), link: httpLink.create({uri})}}, deps: [HttpLink]}]})
+@NgModule({
+	providers: [{
+		provide:	APOLLO_OPTIONS,
+		deps:		[HttpLink],
+		useFactory( httpLink: HttpLink ) { return {
+			cache:	new InMemoryCache(),
+			link:	httpLink.create({ uri })
+		}}
+	}]
+})
 export class GraphQLModule {
 	env:	any;
 	cms:	string;
 	roster:	string;
+	
 	constructor() {
 		this.env	= environment;
 		this.roster	= this.env.service.roster;

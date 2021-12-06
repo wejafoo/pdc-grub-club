@@ -9,10 +9,10 @@
 	<div><textarea id="message" [(ngModel)]="message" rows="3" cols="35" [disabled]="sending"></textarea></div>
 </div>
 <div style="text-align: right">
-	<nav *ngIf="!sending">
-		<a (click)="send()"		> Send		</a>
-		<a (click)="cancel()"	> Cancel	</a>
-	</nav>
+	<div *ngIf="!sending">
+		<button class="mat-button" (click)="send()"		> Send		</button>
+		<button class="mat-button" (click)="cancel()"	> Cancel	</button>
+	</div>
 </div>
 
 <p></p>

@@ -2,14 +2,12 @@
 
 import { environment	} from '../../../environments/environment';
 import { Injectable		} from '@angular/core';
-import { map			} from 'rxjs/operators';
-
-import { PresbyService	} from '../../presby/services/presby.service';
 import { Schedule		} from '../../../../.ARCHIVE/models/plan';
 import { Version		} from '../../../../.ARCHIVE/models/plan';
 
-@Injectable({ providedIn: 'root' })
+// import { map			} from 'rxjs/operators';
 
+@Injectable({ providedIn: 'root' })
 export class ScheduleService {
 	env:		any;
 	debug:		boolean;
@@ -21,11 +19,11 @@ export class ScheduleService {
 	unHosts:	{[key: string]: any} = [];
 	aHosts:		{[key: string]: any} = [];
 	
-	constructor ( private presbyS: PresbyService ) {
+	constructor() {
 		this.env	= environment;
 		this.debug	= this.env.debug;
 	}
-	
+/*
 	loadVersion ( version: Version ) {
 		console.log( 'LOADING VERSION:', version )
 		return this.presbyS.watch().valueChanges.pipe( map(result => {
@@ -80,7 +78,7 @@ export class ScheduleService {
 			return this.schedule
 		}))
 	}
-	
+*/
 	findUniqHosts ( events: string[] ): any[] {
 		const returnArray = [];
 		for ( let e1 = 0, e1Len = events.length; e1 < e1Len; e1++ ) {											// requested event loop
@@ -99,9 +97,9 @@ export class ScheduleService {
 							}
 						}
 					}
-					if ( ! searchObj.unique ) break
+					if (!searchObj.unique) break
 				}
-				if ( searchObj.unique ) returnArray.push( searchObj )
+				if (searchObj.unique) returnArray.push(searchObj)
 			}
 		}
 		console.log( 'return array:', returnArray );

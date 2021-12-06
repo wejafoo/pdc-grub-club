@@ -8,19 +8,12 @@ import { Router			} from '@angular/router';
 import { of				} from 'rxjs';
 import { switchMap		} from 'rxjs/operators';
 import { Version		} from '../../../../../../.ARCHIVE/models/plan';
-import { DialogService	} from '../../../../services/dialog.service';
 import { PlanService	} from '../../../services/plan.service';
-import { PresbyService	} from '../../../../presby/services/presby.service';
-
-// import { Input} from '@angular/core';
-// import { Observable		} from 'rxjs';
-// import { Plan	 } from '../../../../../../.ARCHIVE/models/plan';
-// import { Versions } from '../../../../../../.ARCHIVE/models/plan';
 
 @Component({
-	selector: 'app-version-detail',
-	templateUrl: './version-detail.component.html',
-	styleUrls: ['./version-detail.component.sass']
+	selector:		'app-version-detail',
+	templateUrl:	'./version-detail.component.html',
+	styleUrls:		['./version-detail.component.sass']
 })
 
 export class VersionDetailComponent implements OnInit {
@@ -33,9 +26,7 @@ export class VersionDetailComponent implements OnInit {
 	JSON:		JSON = JSON;
 
 	constructor (
-		public	dialog:		DialogService,
 		public	planSvc:	PlanService,
-		public	presbySvc:	PresbyService,
 		public	route:		ActivatedRoute,
 		public	router:		Router
 	) {

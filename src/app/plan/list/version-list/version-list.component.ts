@@ -13,8 +13,8 @@ import { Version		} from '../../../../../.ARCHIVE/models/plan';
 import { Versions		} from '../../../../../.ARCHIVE/models/plan';
 import { DialogService	} from '../../../services/dialog.service';
 import { PlanService	} from '../../services/plan.service';
-import { PresbyService	} from '../../../presby/services/presby.service';
 
+// import { PresbyService	} from '../../../presby/services/presby.service';
 // import { Input } from '@angular/core';
 
 @Component({
@@ -26,7 +26,6 @@ import { PresbyService	} from '../../../presby/services/presby.service';
 export class VersionListComponent implements OnInit {
 	env:		any;
 	debug:		boolean;
-	eventId!:	number;
 	planId!:	number;
 	versionId!:	number;
 	plan!:		Plan;
@@ -34,12 +33,12 @@ export class VersionListComponent implements OnInit {
 	loadedVer!:	Version;
 	ver!:		Version;
 	
-	eventSlug	= 'Presby gotta new version - owwwww!'
+// 	eventId!:	number;
+// 	eventSlug	= 'Presby gotta new version - owwwww!'
 	
 	constructor (
 		public	dialog:		DialogService,
 		public	planSvc:	PlanService,
-		public	presbySvc:	PresbyService,
 		public	route:		ActivatedRoute,
 		public	router:		Router
 	) {

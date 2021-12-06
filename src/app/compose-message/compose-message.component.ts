@@ -21,7 +21,6 @@ export class ComposeMessageComponent {
 		this.env	= environment;
 		this.debug	= this.env.debug
 	}
-	
 	send() {
 		this.sending = true;
 		this.details = 'Sending Message...';
@@ -30,7 +29,10 @@ export class ComposeMessageComponent {
 			this.closePopup()
 		}, 1000 )
 	}
-	
-	cancel() { this.closePopup() }
-	closePopup() { this.router.navigate([{ outlets: { popup: null }}]).then(r => { if (this.debug) console.log(r)})}
+	cancel() {
+		this.closePopup()
+	}
+	closePopup() {
+		this.router.navigate([{ outlets: { popup: null }}]).then(r => {console.log(r)})
+	}
 }

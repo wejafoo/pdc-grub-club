@@ -10,6 +10,8 @@ import { HostListComponent		} from './host/list/host-list.component';
 import { PresbyRoutingModule	} from './presby-routing.module';
 import { MaterialModule			} from '../sub-modules/material.module';
 
+// import { PresbyService } from './services/presby.service';
+
 @NgModule({
 	imports: [CommonModule, FormsModule, MaterialModule, PresbyRoutingModule],
 	declarations: [GuestDetailComponent, GuestListComponent, HostDetailComponent, HostListComponent]

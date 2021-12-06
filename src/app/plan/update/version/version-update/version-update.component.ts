@@ -2,6 +2,7 @@
 
 import { environment		} from '../../../../../environments/environment';
 import { Component			} from '@angular/core';
+import { OnDestroy			} from '@angular/core';
 import { OnInit				} from '@angular/core';
 import { ActivatedRoute		} from '@angular/router';
 import { Router				} from '@angular/router';
@@ -13,6 +14,7 @@ import { CdkDragDrop		} from '@angular/cdk/drag-drop';
 import { Apollo		 		} from 'apollo-angular';
 import { gql		 		} from 'apollo-angular';
 import { isObject	 		} from 'lodash';
+import { PresbyService 		} from '../../../../presby/services/presby.service';
 import { PlanService 		} from '../../../services/plan.service';
 import { Presby		 		} from '../../../../../../.ARCHIVE/models/plan';
 import { Schedule	 		} from '../../../../../../.ARCHIVE/models/plan';
@@ -22,7 +24,7 @@ import { Presbies	 		} from '../../../../../../.ARCHIVE/models/plan';
 export type Query = { presbies: Presbies }
 
 @Component({ selector: 'app-version-update', templateUrl: './version-update.component.html', styleUrls: ['./version-update.component.sass'] })
-export class VersionUpdateComponent implements OnInit {
+export class VersionUpdateComponent implements OnInit, OnDestroy {
 	env:		any;
 	debug:		boolean;
 	error:		any;
@@ -32,7 +34,8 @@ export class VersionUpdateComponent implements OnInit {
 	loadedVer!:	Version;
 	ver!:		Version;
 	sched!:		Schedule
-	presbies:	Array<Presby> = [];
+	// presbies:	Array<Presby> = [];
+	presbies:	Presbies = [];
 	actives:	Array<Presby> = [];
 	aHs:		{ [key: string]: any[]	} = {};		// assigned		hosts
 	unHs:		{ [key: string]: any[]	} = {};		// unassigned	hosts
@@ -42,42 +45,71 @@ export class VersionUpdateComponent implements OnInit {
 	loaded	= false;
 	step	= 1;									// accordion panel previous/next order control default
 	isOpen	= false;								// toggle between peeps/card views
+	
 	QUERY	= gql`{ presbies { key id isActive last guests guestings hostings seats unknown1 unknown2 email home cell smail city st zip mmail }}`;
 	
-	constructor( public route: ActivatedRoute, public router: Router, public apollo: Apollo, public planSvc: PlanService ) {
+	constructor(
+		private	route:		ActivatedRoute,
+		private	router:		Router,
+		private	apollo:		Apollo,
+		private	planSvc:	PlanService,
+		private	presby:		PresbyService
+	) {
 		this.env	= environment;
 		this.debug	= this.env.debug;
 	}
 	
-	ngOnInit		() {
-		this.planId		= Number(this.route.snapshot.paramMap.get('planId'));
-		this.versionId	= Number(this.route.snapshot.paramMap.get('versionId'));
+	ngOnDestroy(): void {}
+	ngOnInit() {
+		this.planId		= Number( this.route.snapshot.paramMap.get( 'planId'	));
+		this.versionId	= Number( this.route.snapshot.paramMap.get( 'versionId'	));
 		this.planSvc.setPlanVersion(this.planId, this.versionId);
-		this.ver		= JSON.parse(JSON.stringify(this.planSvc.getVersion()));
-		this.events		= this.ver.events.map(event => event.name);
+		this.ver		= JSON.parse( JSON.stringify( this.planSvc.getVersion()));
+		this.events		= this.ver.events.map( event => event.name );
 		for (const evt of this.events) {
 			this.aHs	[evt] = [];
 			this.unHs	[evt] = [];
 			this.aGs	[evt] = {};
 			this.unGs	[evt] = [];
 		}
-		this.apollo.watchQuery<Query>({ query: this.QUERY }).valueChanges.subscribe(result => {
-			this.error		= result.error;
-			this.presbies	= result.data.presbies;
-			this.actives	= this.presbies.filter( presby => presby.isActive );
-			this.sched		= { aGs: this.aGs, aHs: this.aHs, unGs: this.unGs, unHs: this.unHs, actives: this.actives };
-			const pairs: {[key: string]: string[]} = {};
-			for ( const a1 of this.actives ) {
-				pairs[a1.key] = [];
-				for (const a2 of this.actives) { if (a1 !== a2) { pairs[a1.key].push(a2.key)}}
-			}
-			this.summary.pairs = JSON.parse(JSON.stringify(pairs));
-			for (const evt of this.events) this.loadEvent(evt);
-			this.allocateUniqs();
-			this.autoAllocate('all');
-			this.autoAssign('all');
-			this.loaded = true;
-		})
+		
+		
+		// *** Pulling begins
+		this.presbies = this.presby.getData()
+		console.log( 'RECEIVED PRESBIES in VERSION UPDATE:', typeof this.presbies, Array.isArray(this.presbies), this.presbies )
+		this.actives	= this.presbies.filter( presby => presby.isActive );
+		this.sched		= { aGs: this.aGs, aHs: this.aHs, unGs: this.unGs, unHs: this.unHs, actives: this.actives };
+		const pairs: {[key: string]: string[]} = {};
+		for ( const a1 of this.actives ) {
+			pairs[a1.key] = [];
+			for (const a2 of this.actives) { if (a1 !== a2) { pairs[a1.key].push(a2.key)}}
+		}
+		this.summary.pairs = JSON.parse(JSON.stringify(pairs));
+		for (const evt of this.events) this.loadEvent(evt);
+		this.allocateUniqs();
+		this.autoAllocate('all');
+		this.autoAssign('all');
+		this.loaded = true;
+		// *** Pulling over
+		
+		
+		// this.apollo.watchQuery<Query>({ query: this.QUERY }).valueChanges.subscribe(result => {
+		// 	this.error		= result.error;
+		// 	this.presbies	= result.data.presbies;
+		// 	this.actives	= this.presbies.filter( presby => presby.isActive );
+		// 	this.sched		= { aGs: this.aGs, aHs: this.aHs, unGs: this.unGs, unHs: this.unHs, actives: this.actives };
+		// 	const pairs: {[key: string]: string[]} = {};
+		// 	for ( const a1 of this.actives ) {
+		// 		pairs[a1.key] = [];
+		// 		for (const a2 of this.actives) { if (a1 !== a2) { pairs[a1.key].push(a2.key)}}
+		// 	}
+		// 	this.summary.pairs = JSON.parse(JSON.stringify(pairs));
+		// 	for (const evt of this.events) this.loadEvent(evt);
+		// 	this.allocateUniqs();
+		// 	this.autoAllocate('all');
+		// 	this.autoAssign('all');
+		// 	this.loaded = true;
+		// })
 	}
 	loadEvent		(evt: string) {
 		/////////////////////////////////////////////////////////////////////////////////////  LOAD HOSTING OBJECTS  //
