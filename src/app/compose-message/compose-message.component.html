@@ -1,18 +1,19 @@
 
-
-<h3> Contact Support </h3>
-
-<div *ngIf="details"> {{ details }} </div>
-
-<div>
-	<div><label for="message"> Enter your message: </label></div>
-	<div><textarea id="message" [(ngModel)]="message" rows="3" cols="35" [disabled]="sending"></textarea></div>
-</div>
-<div style="text-align: right">
-	<div *ngIf="!sending">
-		<button class="mat-button" (click)="send()"		> Send		</button>
-		<button class="mat-button" (click)="cancel()"	> Cancel	</button>
+<div style="background-color: aliceblue; padding: .5rem;">
+	<h3 style="margin: 0;">
+		Contact Support
+	</h3>
+	<div *ngIf="details">
+		{{details}}
+	</div>
+	<div>
+		<div><label for="message"> Enter your message: </label></div>
+		<div><textarea id="message" [(ngModel)]="message" rows="3" cols="35" [disabled]="sending"></textarea></div>
+	</div>
+	<div style="text-align: right">
+		<div *ngIf="!sending">
+			<button class="mat-button" (click)="send()"		> Send		</button>
+			<button class="mat-button" (click)="cancel()"	> Cancel	</button>
+		</div>
 	</div>
 </div>
-
-<p></p>

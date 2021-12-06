@@ -17,8 +17,8 @@ import { NgxAuthFirebaseUIModule	} from 'ngx-auth-firebaseui';														// A
 import { AppRoutingModule			} from './app-routing.module';
 import { GraphQLModule				} from './sub-modules/graphql.module';
 import { MaterialModule				} from './sub-modules/material.module';
-import { PlanModule					} from './plan/plan.module';
-import { PresbyModule				} from './presby/presby.module';
+import { PlanModule					} from './sub-modules/plan/plan.module';
+import { PresbyModule				} from './sub-modules/presby/presby.module';
 import { AppComponent				} from './app.component';
 import { ComposeMessageComponent	} from './compose-message/compose-message.component';
 import { HomeComponent				} from './home/home.component';

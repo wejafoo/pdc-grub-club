@@ -16,7 +16,6 @@
             "allowedCommonJsDependencies": ["lodash", "hammerjs", "zen-observable", "firebase", "@firebase"],
               "aot":             true,
               "buildOptimizer":  false,
-              "extractCss":      true,
               "extractLicenses": false,
               "namedChunks":     false,
               "optimization":    false,

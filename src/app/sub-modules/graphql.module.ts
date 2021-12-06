@@ -18,6 +18,7 @@ const uri = environment.service.roster;
 		}}
 	}]
 })
+
 export class GraphQLModule {
 	env:	any;
 	cms:	string;
