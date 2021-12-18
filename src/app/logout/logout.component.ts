@@ -1,11 +1,12 @@
 
 
 import { environment		} from '../../environments/environment';
-import { ActivatedRoute		} from '@angular/router';
 import { AngularFireAuth	} from '@angular/fire/auth';
 import { Component			} from '@angular/core';
 import { OnInit				} from '@angular/core';
 import { Router				} from '@angular/router';
+
+// import {ActivatedRoute} from '@angular/router';
 
 @Component({
 	selector: 'app-logged-out',
@@ -21,21 +22,17 @@ export class LogoutComponent implements OnInit {
 	title		= 'Authentication Demo';
 	
 	constructor(
-		private route:		ActivatedRoute,
 		private fireAuth:	AngularFireAuth,
 		public	router:		Router
 	) {
 		this.env = environment;
+		console.log('>>> LogoutComponent');
 	}
 	
-	ngOnInit(): void	{
-		this.fireAuth.authState.subscribe(auth => {
-			console.log( '>> LogoutComponent -> authState change:', auth );
-			this.loggedIn = ! auth === null;
-		});
-	}
-	
+	ngOnInit():			void { this.fireAuth.authState.subscribe(auth => {this.loggedIn = ( !auth === null )})}	// console.log( '>> LogoutComponent -> authState change:', auth );
 	logout():			void { this.fireAuth.signOut().then( r => console.log( '>> HomeComponent -> logged out:', r ))}
 	onSignOut():		void { console.log( 'Sign-out successful!'	)}
 	onAccountDeleted():	void { console.log( 'Account Delete successful!' )}
 }
+
+// private route: ActivatedRoute

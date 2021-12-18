@@ -8,7 +8,6 @@ import { slideInAnimation	} from './animations';
 @Component({
 	selector: 'app-root',
 	templateUrl: 'app.component.html',
-	styleUrls: ['app.component.sass'],
 	animations: [slideInAnimation]
 })
 export class AppComponent {
@@ -18,5 +17,8 @@ export class AppComponent {
 		this.env = environment;
 		console.log( 'env:', this.env );
 	}
-	getAnimationData( outlet: RouterOutlet ) { return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation }
+	
+	getAnimationData(outlet: RouterOutlet) {
+		return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation
+	}
 }

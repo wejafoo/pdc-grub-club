@@ -20,7 +20,7 @@ import { Plan					} from '../../../../../.ARCHIVE/models/plan';
 
 @Injectable({ providedIn: 'root' })
 
-export class PlanDetailResolverService implements Resolve<Plan> {
+export class PlanResolver implements Resolve<Plan> {
 	env:	any;
 	debug:	boolean;
 	

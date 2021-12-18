@@ -1,23 +1,54 @@
 
-
-<!-- h1 class="title" style="margin: 0">  </h1 -->
-<div style="background: #526b94; color: white; display: flex; height: 2.5rem; justify-content: space-between;">
-	<div class="navbar">
-		<a style="margin-left: 1rem;" class="pdc-nav-item"	routerLink="/plan"	routerLinkActive="active" 	>Plans</a>
-		<a class="pdc-nav-item"	routerLink="/guest"	routerLinkActive="active" 	>Guests</a>
-		<a class="pdc-nav-item"	routerLink="/host"	routerLinkActive="active" 	>Hosts</a>
-		<a class="pdc-nav-item"	routerLink="/login"	routerLinkActive="active" 	>Login</a>
-		<a class="pdc-nav-item"	[routerLink]="[{outlets: {popup: ['compose']}}]">Help!</a>
-		<a style="margin: 0;" class="pdc-nav-item" routerLink="/admin" routerLinkActive="active" 	>
-			<span style="display: flex;" title="Settings"><mat-icon> settings </mat-icon></span>
+<div style="
+	background: #526b94; color: white; display: flex; height: 2.5rem; justify-content: space-between;
+">
+	<div class="pgc-nav">
+		<a class="pgc-tab" [routerLink]="['/plan']" routerLinkActive="active"
+			 [routerLinkActiveOptions]="{exact: false}"
+		>
+			Plans
+		</a>
+		<a class="pgc-tab" [routerLink]="['/guests']"
+			 routerLinkActive="active"
+		>
+			Guests
+		</a>
+		<a class="pgc-tab" routerLink="/hosts"
+			 routerLinkActive="active"
+		>
+			Hosts
+		</a>
+		<a class="pgc-tab" [routerLink]="['/login']"
+			 routerLinkActive="active"
+		>
+			Login
+		</a>
+		<a class="pgc-tab" [routerLink]="['/admin']"
+			 routerLinkActive="active"
+		>
+			<span style="display: flex;" title="Settings"><mat-icon>settings</mat-icon></span>
+		</a>
+		<a class="pgc-tab" routerLink="/admin"
+			 [routerLink]="[{outlets: {popup: ['compose']}}]"
+		>
+			<span style="display: flex;" title="Settings"><mat-icon>support</mat-icon></span>
 		</a>
 	</div>
 	<div id="app-name"> Grub Club </div>
 </div>
 <router-outlet name="popup"></router-outlet>
 <div [@routeAnimation]="getAnimationData( routerOutlet )">
+
 	<router-outlet #routerOutlet="outlet"></router-outlet>
+	
+	<div style="text-align: center;">
+		<img alt="Go Wildcats!" src="./assets/powercat.png" style="
+				 	opacity: 0.05; width: 30vw; position: fixed; bottom: 0; right: 0; z-index: -1;
+		">
+	</div>
+
 	<router-outlet></router-outlet>
+	
 </div>
 
 

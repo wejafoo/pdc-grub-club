@@ -5,7 +5,11 @@
   "projects": {
     "pdc": {
       "projectType": "application",
-      "schematics": { "@schematics/angular:application": { "strict": false }},
+      "schematics": {
+        "@schematics/angular:application": {
+          "strict": false
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,70 +17,165 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["lodash", "hammerjs", "zen-observable", "firebase", "@firebase"],
-              "aot":             true,
-              "buildOptimizer":  false,
-              "extractLicenses": false,
-              "namedChunks":     false,
-              "optimization":    false,
-              "outputHashing":   "none",
-              "progress":        false,
-              "sourceMap":       false,
-              "statsJson":       false,
-              "vendorChunk":     true,
-              "showCircularDependencies": true,
-            "index":        "src/index.html",
-            "outputPath":   ".dist",
-            "main":         "src/main.ts",
-            "polyfills":    "src/polyfills.ts",
-            "tsConfig":     "tsconfig.app.json",
-            "assets":       ["src/favicon.ico", "src/assets"],
-            "styles":       ["src/styles.sass", "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"],
-            "scripts":      [],
-            "budgets":      [
-                { "type": "initial",             "maximumWarning": "2mb",    "maximumError": "4mb"   },
-                { "type": "anyComponentStyle",   "maximumWarning": "16kb",   "maximumError": "32kb"  }
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "hammerjs",
+              "zen-observable",
+              "firebase",
+              "@firebase"
+            ],
+            "aot": true,
+            "buildOptimizer": false,
+            "extractLicenses": false,
+            "namedChunks": false,
+            "optimization": false,
+            "outputHashing": "none",
+            "progress": false,
+            "sourceMap": true,
+            "statsJson": false,
+            "vendorChunk": true,
+            "showCircularDependencies": true,
+            "index": "src/index.html",
+            "outputPath": ".dist",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.sass",
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
+            ],
+            "scripts": [],
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "2mb",
+                "maximumError": "4mb"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "16kb",
+                "maximumError": "32kb"
+              }
             ]
           },
           "configurations": {
-              "production": {
-                  "fileReplacements":   [{"replace": "src/environments/environment.ts", "with": "src/environments/env.ngssc.remote.ts"}],
-                  "outputPath":     ".dist/pdc",
-                  "baseHref":       "/pdc/",
-                  "optimization":   true, "sourceMap": false, "vendorChunk": false
-              }
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/env.ngssc.remote.ts"
+                }
+              ],
+              "outputPath": ".dist/pdc",
+              "baseHref": "/pdc/",
+              "optimization": true,
+              "sourceMap": false,
+              "vendorChunk": false
+            }
           }
         },
-          "ngsscbuild": {
-              "builder": "angular-server-side-configuration:ngsscbuild",
-              "options": {"additionalEnvironmentVariables": ["ROUTE_BASE","TARGET_REMOTE_REALM", "TARGET_PROJECT_ID"]},
-              "configurations": {
-                  "local":      {"browserTarget": "pdc:build",              "ngsscEnvironmentFile": "src/environments/env.ngssc.local.ts"},
-                  "production": {"browserTarget": "pdc:build:production",   "ngsscEnvironmentFile": "src/environments/env.ngssc.remote.ts"  }
-              }
+        "ngsscbuild": {
+          "builder": "angular-server-side-configuration:ngsscbuild",
+          "options": {
+            "additionalEnvironmentVariables": [
+              "ROUTE_BASE",
+              "TARGET_REMOTE_REALM",
+              "TARGET_PROJECT_ID"
+            ]
           },
-        "serve":        {"builder": "@angular-devkit/build-angular:dev-server",     "options": { "browserTarget": "pdc:build" }, "configurations": { "production": { "browserTarget": "pdc:build:production" }}},
-        "extract-i18n": {"builder": "@angular-devkit/build-angular:extract-i18n",   "options": { "browserTarget": "pdc:build" }},
-        "test":         {
+          "configurations": {
+            "local": {
+              "browserTarget": "pdc:build",
+              "ngsscEnvironmentFile": "src/environments/env.ngssc.local.ts"
+            },
+            "production": {
+              "browserTarget": "pdc:build:production",
+              "ngsscEnvironmentFile": "src/environments/env.ngssc.remote.ts"
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "pdc:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "pdc:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "pdc:build"
+          }
+        },
+        "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main":         "src/test.ts",
-            "polyfills":    "src/polyfills.ts",
-            "tsConfig":     "tsconfig.spec.json",
-            "karmaConfig":  "karma.conf.js",
-            "assets":       ["src/favicon.ico", "src/assets"],
-            "styles":       ["src/styles.sass", "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"],
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.sass",
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
+            ],
             "scripts": []
           }
         },
-        "lint":         {
+        "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
-          "options": {"tsConfig": ["tsconfig.app.json", "tsconfig.spec.json", "e2e/tsconfig.json"], "exclude": ["**/node_modules/**"]}
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "cypress/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
         },
-        "e2e":          {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": { "protractorConfig": "e2e/protractor.conf.js", "devServerTarget": "pdc:serve" },
-          "configurations": { "production": { "devServerTarget": "pdc:serve:production" }}
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "pdc:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "pdc:serve:production"
+            }
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "pdc:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "pdc:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false
+          }
         }
       }
     }

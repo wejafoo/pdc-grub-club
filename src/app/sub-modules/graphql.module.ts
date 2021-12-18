@@ -10,12 +10,9 @@ const uri = environment.service.roster;
 
 @NgModule({
 	providers: [{
-		provide:	APOLLO_OPTIONS,
-		deps:		[HttpLink],
-		useFactory( httpLink: HttpLink ) { return {
-			cache:	new InMemoryCache(),
-			link:	httpLink.create({ uri })
-		}}
+		provide: APOLLO_OPTIONS,
+		deps: [HttpLink],
+		useFactory(httpLink: HttpLink) { return { cache: new InMemoryCache(), link: httpLink.create({ uri })}}
 	}]
 })
 
@@ -28,8 +25,8 @@ export class GraphQLModule {
 		this.env	= environment;
 		this.roster	= this.env.service.roster;
 		this.cms	= this.env.service.cms;
-		console.log('Roster:',	this.roster	);
-		console.log('CMS:',		this.cms	);
+		console.log('Roster:', this.roster);
+		console.log('CMS:', this.cms);
 	}
 }
 

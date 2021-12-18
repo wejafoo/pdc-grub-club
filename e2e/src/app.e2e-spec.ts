@@ -15,18 +15,18 @@ describe('Router', () => {
 	
 	function getPageStruct() {
 		const hrefEles		= element.all( by.css( 'nav a'));
-		const planDetail	= element.all( by.css( 'app-planning-center > app-plan-list > app-plan-detail > div' )).first();
-		const presbyDetail	= element( by.css( 'app-presby-detail'));
+		const planDetail	= element.all( by.css( 'app-planning-center > app-plan-plan-list > app-plan-host-detail > div' )).first();
+		const presbyDetail	= element( by.css( 'app-presby-host-detail'));
 		
 		return {
 			hrefs:					hrefEles,
 			activeHref:				element( by.css( 'nav a.active' )),
 			planHref:				hrefEles.get( 0 ),
-			planList:				element.all( by.css( 'app-planning-center app-plan-list li')),
+			planList:				element.all( by.css( 'app-planning-center app-plan-plan-list li')),
 			planDetail,
 			planDetailTitle:		planDetail.element( by.xpath('*[1]')),
 			presbiesHref:			hrefEles.get( 1 ),
-			presbiesList:			element.all( by.css( 'app-presby-list li' )),
+			presbiesList:			element.all( by.css( 'app-presby-plan-list li' )),
 			presbyDetail,
 			presbyDetailTitle:		presbyDetail.element( by.xpath( '*[2]' )),
 			adminHref:				hrefEles.get( 2 ),
@@ -36,7 +36,7 @@ describe('Router', () => {
 			loginButton:			element.all( by.css( 'app-login > p > button'	)),
 			contactHref:			hrefEles.get( 4 ),
 			contactCancelButton:	element.all( by.buttonText('Cancel'	)),
-			primaryOutlet:			element.all( by.css( 'app-presby-list'			)),
+			primaryOutlet:			element.all( by.css( 'app-presby-plan-list'			)),
 			secondaryOutlet:		element.all( by.css( 'app-compose-message' 		))
 		};
 	}
@@ -60,24 +60,24 @@ describe('Router', () => {
 		const page = getPageStruct();
 		await page.planHref.click();
 		expect( await page.activeHref.getText()).toEqual('Planning Center' );
-		expect( await page.planList.cnt()).toBe( numPlans, 'plan list count' );
+		expect( await page.planList.cnt()).toBe( numPlans, 'plan plan-list count' );
 	});
 	
 	it('has presby items', async () => {
 		const page = getPageStruct();
 		await page.presbiesHref.click();
 		expect( await page.activeHref.getText()).toEqual('Presbies');
-		expect( await page.presbiesList.cnt()).toBe(numPresbies, 'presby list count');
+		expect( await page.presbiesList.cnt()).toBe(numPresbies, 'presby plan-list count');
 	});
 	
 	it('toggles views', async () => {
 		const page = getPageStruct();
 		await page.planHref.click();
 		expect( await page.activeHref.getText()).toEqual('Planning Center' );
-		expect( await page.planList.cnt()).toBe( numPlans, 'plan list count' );
+		expect( await page.planList.cnt()).toBe( numPlans, 'plan plan-list count' );
 		await page.presbiesHref.click();
 		expect( await page.activeHref.getText()).toEqual('Presbies' );
-		expect( await page.presbiesList.cnt()).toBe( numPresbies, 'presby list count' );
+		expect( await page.presbiesList.cnt()).toBe( numPresbies, 'presby plan-list count' );
 	});
 	
 	it('saves changed plan details', async () => {
@@ -105,8 +105,8 @@ describe('Router', () => {
 		const presbyText = text.substr( text.indexOf( ' ' )).trim();													// remove leading id from text
 		await presbyEle.click();
 		await browser.sleep(600 );
-		expect( await page.presbiesList.cnt()).toBe(0, 'presby list count' );
-		expect( await page.presbyDetail.isPresent()).toBe(true, 'presby detail' );
+		expect( await page.presbiesList.cnt()).toBe(0, 'presby plan-list count' );
+		expect( await page.presbyDetail.isPresent()).toBe(true, 'presby host-detail' );
 		expect( await page.presbyDetailTitle.getText()).toContain( presbyText );
 		
 		const inputEle = page.presbyDetail.element( by.css( 'input' ));
@@ -160,7 +160,7 @@ describe('Router', () => {
 		const planText = text.substr( text.indexOf( ' ' )).trim();
 		
 		await planEle.click();
-		expect( await page.planDetail.isPresent()).toBe(true, 'plan detail present' );
+		expect( await page.planDetail.isPresent()).toBe(true, 'plan host-detail present' );
 		expect( await page.planDetailTitle.getText()).toContain( planText );
 		const inputEle = page.planDetail.element( by.css( 'input' ));
 		await inputEle.sendKeys( '-foo' );

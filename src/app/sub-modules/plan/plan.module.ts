@@ -3,18 +3,17 @@
 import { NgModule				} from '@angular/core';
 import { CommonModule			} from '@angular/common';
 import { FormsModule			} from '@angular/forms';
-import { EventDetailComponent	} from './list/version-list/event/event-detail/event-detail.component';
-import { EventListComponent		} from './list/version-list/event/event-list.component';
-import { VersionListComponent	} from './list/version-list/version-list.component';
-import { VersionUpdateComponent	} from './update/version/version-update/version-update.component';
-import { EventUpdateComponent	} from './update/version/version-update/event-update/event-update.component';
-import { PlanDetailComponent	} from './list/plan-detail/plan-detail.component';
-import { PlanUpdateComponent	} from './update/plan-update.component';
-import { PlanListComponent		} from './list/plan-list.component';
-import { PlanHomeComponent		} from './list/plan-home/plan-home.component';
+import { EventDetailComponent	} from './version/event/event-detail/event-detail.component';
+import { EventListComponent		} from './version/event/event-list/event-list.component';
+import { VersionListComponent	} from './version/version-list/version-list.component';
+import { VersionUpdateComponent	} from './version/version-update/version-update.component';
+import { EventUpdateComponent	} from './version/version-update/event-update/event-update.component';
+import { PlanDetailComponent	} from './plan-detail/plan-detail.component';
+import { PlanUpdateComponent	} from './plan-update/plan-update.component';
+import { PlanListComponent		} from './plan-list/plan-list.component';
 import { PlanRoutingModule		} from './plan-routing.module';
 import { MaterialModule			} from '../material.module';
-import { VersionDetailComponent	} from './update/version/version-detail/version-detail.component';
+import { VersionDetailComponent	} from './version/version-detail/version-detail.component';
 import { OrderByPipe 			} from './services/order-by.pipe';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { OrderByPipe 			} from './services/order-by.pipe';
 		VersionUpdateComponent,
 		EventUpdateComponent,
 		PlanDetailComponent,
-		PlanHomeComponent,
 		PlanListComponent,
 		PlanUpdateComponent,
 		VersionDetailComponent,

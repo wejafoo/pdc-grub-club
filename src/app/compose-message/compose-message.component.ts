@@ -10,7 +10,7 @@ import { Router			} from '@angular/router';
 	styleUrls: ['./compose-message.component.sass']
 })
 
-export class ComposeMessageComponent {
+export class MessageComponent {
 	env:	any;
 	debug:	boolean;
 	details	= '';
