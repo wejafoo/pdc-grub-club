@@ -5,11 +5,13 @@ import { ActivatedRoute	} from '@angular/router';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { of				} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
-import { Plan			} from '../../../../../../.ARCHIVE/models/plan';
-import { Version		} from '../../../../../../.ARCHIVE/models/plan';
-import { Versions		} from '../../../../../../.ARCHIVE/models/plan';
+
+import { of			} from 'rxjs';
+import { switchMap	} from 'rxjs/operators';
+
+import { Plan			} from '../../../models/plan';
+import { Version		} from '../../../models/plan';
+import { Versions		} from '../../../models/plan';
 import { PlanService	} from '../../services/plan.service';
 
 @Component({ templateUrl: './version-list.component.html' })
@@ -34,15 +36,22 @@ export class VersionListComponent implements OnInit {
 	}
 	
 	ngOnInit () {
-		this.route.paramMap.pipe( switchMap(params => of( params.get( 'planId')))).subscribe(planId => {
-			this.planId	= +planId!
-			this.plan 	= JSON.parse( JSON.stringify( this.planS.setPlan(+planId!)));
+		this.route.paramMap.pipe(
+			switchMap(params => of( params.get( 'planId')))
+		).subscribe(planId => {
+			this.planId	= +planId;
+			this.plan =
+				JSON.parse( JSON.stringify( this.planS.setPlan(+planId)));
 		})
 		
-		this.route.paramMap.pipe( switchMap(params => of( params.get( 'versionId')))).subscribe(versionId => {
-			this.planS.setVersion(+versionId!);
-			this.loadedVer	= JSON.parse( JSON.stringify( this.planS.getVersion()))
-			this.ver		= JSON.parse( JSON.stringify( this.planS.getVersion()))
+		this.route.paramMap.pipe(
+			switchMap(params => of( params.get('versionId')))
+		).subscribe(versionId => {
+			this.planS.setVersion(+versionId);
+			this.loadedVer =
+				JSON.parse( JSON.stringify( this.planS.getVersion()))
+			this.ver =
+				JSON.parse( JSON.stringify( this.planS.getVersion()))
 		})
 	}
 	
@@ -51,15 +60,21 @@ export class VersionListComponent implements OnInit {
 	}
 	
 	loadVersion(versionId: number) {
-		this.router.navigate(['/plan', this.planId, 'schedule', versionId, 'update']).then(r => console.log(r))
+		this.router.navigate(
+			['/plan', this.planId, 'schedule', versionId, 'update']
+		).then()
 	}
 	
 	rmVer(versionId: number) {
-		if ( this.planS.rmVer(versionId) ) { console.log('Remove version -> SUCCESS!')} else {console.log( 'Remove version -> Boooo!')}
-		this.router.navigate(['/plan', this.planId, 'schedule']).then(r => console.log(r))
+		if ( this.planS.rmVer(versionId) ) {
+			console.log('Remove version -> SUCCESS!')
+		} else {
+			console.log( 'Remove version -> Boooo!')
+		}
+		this.router.navigate(
+			['/plan', this.planId, 'schedule']
+		).then()
 	}
-	
-	
 }
 
 // import { Observable } from 'rxjs';

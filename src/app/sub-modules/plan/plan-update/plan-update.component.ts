@@ -9,9 +9,9 @@ import { of				} from 'rxjs';
 import { switchMap		} from 'rxjs/operators';
 import { PlanService	} from '../services/plan.service';
 import { PresbyService	} from '../../presby/presby.service';
-import { Plan			} from '../../../../../.ARCHIVE/models/plan';
-import { Presbies		} from '../../../../../.ARCHIVE/models/plan';
-import { Version		} from '../../../../../.ARCHIVE/models/plan';
+import { Plan			} from '../../models/plan';
+import { Version		} from '../../models/plan';
+import { Presbies		} from '../../models/roster';
 
 @Component({ templateUrl: './plan-update.component.html' })
 export class PlanUpdateComponent implements OnInit {

@@ -2,12 +2,15 @@
 
 .ARCHIVE
 **/mock*
+**/models/*.ts
+.run
 
 # compiled output
 .dist
 dist
 tmp
 out-tsc
+
 # Only exists if Bazel was run
 bazel-out
 

@@ -1,23 +1,54 @@
 
-
+// ID
 #unassigned,
 #allocated,
 #unallocated
 	div
-		font-size:		1em
+		font-size:	1em
 
+// CLASS
+.cdk-drag-animating
+	transition:		transform 250ms cubic-bezier(0, 0, 0.2, 1)
+.cdk-drag-disabled
+	background:		floralwhite
+	color:			darkgoldenrod
+.cdk-drag-disabled:hover
+	cursor:			not-allowed
+.cdk-drag-placeholder
+	opacity:		0
+.cdk-drag-placeholder #unassigned
+	opacity:		.5
+.cdk-drag-preview
+	align-items:		center
+	background-color:	pink
+	border-color: 		red
+	border-radius:		50px
+	border-style: 		solid
+	box-shadow:			0 15px 15px 15px rgba(0, 0, 0, 0.5)
+	display:			flex
+	height:				1.75em
+	justify-content:	space-between
+	padding:			0 .25em
+	mat-icon
+		display:		flex
+		font-size:		xx-small
+		align-items:	center
+.cdk-drop-list-dragging
+	background-color:	greenyellow
+.cdk-drop-list-dragging:hover
+	border-color:		red
+	border-style:		inset
+	border-collapse:	collapse
+.cdk-drop-list-receiving
+	background-color:	lightgreen
 .event-heading
 	color:				#425
-	display:			flex
 	justify-content:	space-between
 	align-items:		center
-	background-color:	aliceblue
 	padding:			0 1em
 	margin:				.75em 0 .5em 0
 .full
 	color:				green
-.not-full
-	color:				red
 .list
 	display:			flex
 	justify-content:	center
@@ -27,96 +58,18 @@
 		font-size:		9px
 		width:			90%
 		padding:		0 10px
-
-
-.cdk-drag-preview
-	border-radius:		50px
-	border-color: 		red
-	border-style: 		solid
-	box-shadow:			0 15px 15px 15px rgba(0, 0, 0, 0.5)
-.cdk-drag-placeholder
-	opacity:			0
-.cdk-drag-placeholder #unassigned
-	opacity:			.5
-.cdk-drag-animating
-	transition:			transform 250ms cubic-bezier( 0, 0, 0.2, 1 )
-.cdk-drop-list-receiving
-	background-color:	lightgreen
-.cdk-drop-list-dragging
-	background-color:	greenyellow
-.cdk-drop-list-dragging:hover
-	border-color:		red
-	border-style:		inset
-	border-collapse:	collapse
-.cdk-drag-disabled
-	background:			floralwhite
-	color:				darkgoldenrod
-	font-weight:		bolder
-	
-	
-.mat-expansion-panel-header-description, .mat-expansion-indicator::after
-	color:				#425
-.mat-expansion-panel-header-title
-	color:				#425
 .mat-card
-	margin:				.25em
-.mat-card.cdk-drag-preview
-	align-items:		center
-	background-color:	pink
-	display:			flex
-	justify-content:	space-between
-	padding:			0 .25em
-	height:				1.75em
-	mat-icon
-		display:		flex
-		font-size:		xx-small
-		align-items:	center
-mat-card:active
-	cursor:				grabbing
-mat-card:hover
-	cursor:				grab
-mat-card:hover.cdk-drag-disabled
-	cursor:				not-allowed
-mat-card:active.cdk-drag-disabled
-	cursor:				none
-mat-icon.unassigned-guest
-	color:				white
-	float:				right
-mat-icon.assigned-guest-guest
-	color:				lime
-	float:				right
-mat-icon.assigned-guest-host
-	color:				black
-	float:				right
-mat-accordion .mat-expansion-panel-header-title,
-mat-accordion .mat-expansion-panel-header-description
-	flex-basis:			0
-	align-items:		center
-	justify-content:	space-between
+	margin:				.25rem
 .mat-form-field + .mat-form-field
 	margin-left:		8px
-mat-grid-tile
-	background:			gainsboro
 .mat-grid-tile-content
 	flex-direction:		column
 	align-items:		flex-start
 	justify-content:	flex-start
 	margin:				1em 0 0 1em
 	display:			flex
-mat-card
-	align-items:		center
-	background-color:	aliceblue
-	color:				#425
-	display:			flex
-	justify-content:	space-between
-	padding: 			0 .25em
-	height:				1.75em
-	mat-icon
-		display:		flex
-		font-size:		xx-small
-		align-items:	center
-
-
+.not-full
+	color:				red
 .polyBase
 	height:				10em
 	width:				10em
@@ -138,7 +91,7 @@ mat-card
 	justify-content:	center
 .poly-6
 	align-items:		flex-end
-	clip-path:			polygon( 50% 0%,	5% 90%,		95% 90% )
+	clip-path:	polygon(50% 0%,  5% 90%,  95% 90%)
 .poly-content-6
 	display:			flex
 	flex-flow:			row wrap
@@ -146,7 +99,7 @@ mat-card
 	margin:				0 31%
 	padding-top:		31%
 .poly-8
-	clip-path:			polygon( 50% 0%,  95% 50%,  50% 100%,  5% 50% )
+	clip-path:	polygon(50% 0%,  95% 50%,  50% 100%,  5% 50%)
 .poly-content-8
 	display:			flex
 	flex-flow:			row wrap
@@ -154,7 +107,7 @@ mat-card
 	margin:				0 23%
 	padding-top:		28%
 .poly-10
-	clip-path:			polygon( 50% 0%,	95% 40%,	75% 90%,	25% 90%,	5% 40% )
+	clip-path:	polygon(50% 0%,  95% 40%,  75% 90%,  25% 90%,  5% 40%)
 .poly-content-10
 	display:			flex
 	flex-flow:			row wrap
@@ -162,7 +115,7 @@ mat-card
 	margin:				0 10%
 	padding-top:		30%
 .poly-12
-	clip-path:			polygon( 50% 0%,	95% 25%,	95% 75%,	50% 100%,	5% 75%,		5% 25% )
+	clip-path:	polygon(50% 0%,	95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)
 .poly-content-12
 	display:			flex
 	flex-flow:			row wrap
@@ -171,22 +124,46 @@ mat-card
 	padding-top:		24%
 
 
-h3
-	margin:				0 0 0 1.25em
-h4
-	margin:				0.75em 0
+// TAG
+// button
+	color:				#425
+// button:hover
+	font-weight:		750
+div.vertical-info
+	color:				#425
+	text-align:			center
+
+mat-card
+	align-items:		center
+	display:			flex
+	font-size:			x-small
+	justify-content:	space-between
+	padding: 			0 .25em
+	height:				1.75em
+	mat-icon
+		align-items:	center
+		display:		flex
+		font-size:		xx-small
+mat-card:active
+	cursor:				grabbing
+mat-card:hover
+	cursor:				grab
+
+mat-grid-tile
+	background:			gainsboro
+mat-icon.unassigned-guest
+	color:				white
+	float:				right
+mat-icon.assigned-guest-guest
+	color:				lime
+	float:				right
+mat-icon.assigned-guest-host
+	color:				black
+	float:				right
 table
 	border-collapse:	collapse
 	padding:			0
 	width: 				100%
-tr
-	display:			flex
-	justify-content:	space-between
-button
-	color:				#425
-button:hover
-	font-weight:		750
-
 td.gutter
 	display:			flex
 	flex-wrap:			wrap
@@ -201,10 +178,6 @@ td.vertical-info
 	flex-direction:		column
 	justify-content:	space-between
 	width:				20%
-div.vertical-info
-	color:				#425
-	text-align:			center
-	.info-head
-		background-color:	aliceblue
-		text-align:			center
-		margin:				1em 0
+tr
+	display:			flex
+	justify-content:	space-between

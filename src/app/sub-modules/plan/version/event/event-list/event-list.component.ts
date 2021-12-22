@@ -5,16 +5,15 @@ import { Component		} from '@angular/core';
 import { Input			} from '@angular/core';
 import { Router			} from '@angular/router';
 import { PlanService	} from '../../../services/plan.service';
-import { Events			} from '../../../../../../../.ARCHIVE/models/plan';
-import { Plans			} from '../../../../../../../.ARCHIVE/models/plan';
+import { Events			} from '../../../../models/plan';
+import { Plans			} from '../../../../models/plan';
 
 @Component({templateUrl: './event-list.component.html'})
 export class EventListComponent {
-	env:	any;
-	debug:	boolean;
-	events:	Events;
-	
-	@Input() plans!: Plans;
+	env:			any;
+	debug:			boolean;
+	events:			Events;
+	@Input() plans:	Plans;
 
 	selectedEventId	= 0;
 	selectedPlanId	= 0;

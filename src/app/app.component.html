@@ -1,49 +1,62 @@
 
-<div style="
-	background: #526b94; color: white; display: flex; height: 2.5rem; justify-content: space-between;
+<div class="f" style="
+	background: #526b94; color: white; height: 2.5rem; justify-content: space-between;
 ">
 	<div class="pgc-nav">
-		<a class="pgc-tab" [routerLink]="['/plan']" routerLinkActive="active"
+		<a class="pgc-tab c"
+			 [routerLink]="['/plan']"
+			 routerLinkActive="active"
 			 [routerLinkActiveOptions]="{exact: false}"
 		>
 			Plans
 		</a>
-		<a class="pgc-tab" [routerLink]="['/guests']"
+		<a class="pgc-tab c" [routerLink]="['/guests']"
 			 routerLinkActive="active"
 		>
 			Guests
 		</a>
-		<a class="pgc-tab" routerLink="/hosts"
+		<a class="pgc-tab c" routerLink="/hosts"
 			 routerLinkActive="active"
 		>
 			Hosts
 		</a>
-		<a class="pgc-tab" [routerLink]="['/login']"
+		<a class="pgc-tab c" [routerLink]="['/login']"
 			 routerLinkActive="active"
 		>
 			Login
 		</a>
-		<a class="pgc-tab" [routerLink]="['/admin']"
+		<a class="pgc-tab c" [routerLink]="['/admin']"
 			 routerLinkActive="active"
 		>
-			<span style="display: flex;" title="Settings"><mat-icon>settings</mat-icon></span>
+			<span class="f" title="Settings">
+				<mat-icon>settings</mat-icon>
+			</span>
 		</a>
-		<a class="pgc-tab" routerLink="/admin"
+		<a class="pgc-tab c" routerLink="/admin"
 			 [routerLink]="[{outlets: {popup: ['compose']}}]"
 		>
-			<span style="display: flex;" title="Settings"><mat-icon>support</mat-icon></span>
+			<span class="f" title="Settings">
+				<mat-icon>support</mat-icon>
+			</span>
 		</a>
 	</div>
-	<div id="app-name"> Grub Club </div>
+	<div id="app-name">
+		Grub Club
+	</div>
 </div>
-<router-outlet name="popup"></router-outlet>
+<div>
+
+	<router-outlet name="popup"></router-outlet>
+
+</div>
 <div [@routeAnimation]="getAnimationData( routerOutlet )">
 
 	<router-outlet #routerOutlet="outlet"></router-outlet>
 	
 	<div style="text-align: center;">
 		<img alt="Go Wildcats!" src="./assets/powercat.png" style="
-				 	opacity: 0.05; width: 30vw; position: fixed; bottom: 0; right: 0; z-index: -1;
+			opacity: 0.05; width: 30vw; position: fixed;
+				bottom: 0; right: 0; z-index: -1;
 		">
 	</div>
 

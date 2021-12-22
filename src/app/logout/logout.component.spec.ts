@@ -5,7 +5,7 @@ import { ComponentFixture	} from '@angular/core/testing';
 import { TestBed			} from '@angular/core/testing';
 import { LogoutComponent	} from './logout.component';
 
-describe('HomeComponent', () => {
+describe('LogoutComponent', () => {
 	let component:	LogoutComponent;
 	let fixture:	ComponentFixture<LogoutComponent>;
 	beforeEach( waitForAsync(() => TestBed.configureTestingModule({ declarations: [LogoutComponent]}).compileComponents()));

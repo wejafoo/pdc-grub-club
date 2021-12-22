@@ -1,16 +1,17 @@
 
 
-import { environment		} from '../../../../environments/environment';
-import { Injectable			} from '@angular/core';
+import { environment	} from '../../../../environments/environment';
+import { Injectable		} from '@angular/core';
+
 import { BehaviorSubject	} from 'rxjs';
-import { Event				} from '../../../../../.ARCHIVE/models/plan';
-import { Plan				} from '../../../../../.ARCHIVE/models/plan';
-import { Plans				} from '../../../../../.ARCHIVE/models/plan';
-import { Version			} from '../../../../../.ARCHIVE/models/plan';
-import { PLANS				} from '../../../../../.ARCHIVE/models/mock-plans';
+
+import { Event		} from '../../models/plan';
+import { Plan		} from '../../models/plan';
+import { Plans		} from '../../models/plan';
+import { Version	} from '../../models/plan';
+import { PLANS		} from '../../models/mock-plans';
 
 @Injectable({ providedIn: 'root' })
-
 export class PlanService {
 	env:		any;
 	debug:		boolean;
@@ -112,9 +113,3 @@ export class PlanService {
 		this.planSubject.next(this.plans)
 	}
 }
-
-// import {Versions} from '../../../../../.ARCHIVE/models/plan';
-// const versionIndex = this.plan.versions.findIndex(version => version.id === versionId);
-// planNameSlug = 'Presbies gotta brand new PLAN - owwwww!'
-// getVersions(): Versions	{ return this.plan!.versions }
-// getEventIndex(plan: Plan, eventId: number): number { return this.version.events.findIndex(event => event.id === eventId)}

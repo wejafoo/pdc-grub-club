@@ -5,15 +5,17 @@ import { ActivatedRoute	} from '@angular/router';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { of				} from 'rxjs';
-import { switchMap		} from 'rxjs/operators';
-import { Version		} from '../../../../../../.ARCHIVE/models/plan';
+
+import { of			} from 'rxjs';
+import { switchMap	} from 'rxjs/operators';
+
+import { Version		} from '../../../models/plan';
 import { PlanService	} from '../../services/plan.service';
 
 @Component({
-	selector:		'app-version-host-detail',
-	templateUrl:	'./version-detail.component.html',
-	styleUrls:		['./version-detail.component.sass']
+	selector: 'app-version-host-detail',
+	templateUrl: './version-detail.component.html',
+	styleUrls: ['./version-detail.component.sass']
 })
 
 export class VersionDetailComponent implements OnInit {
@@ -31,15 +33,22 @@ export class VersionDetailComponent implements OnInit {
 		public	router:		Router
 	) {
 		this.env	= environment;
-		this.debug	= this.env.debug
+		this.debug	= this.env.debug;
+		console.log('>>> VersionDetailComponent');
 	}
 	
 	ngOnInit () {
-		this.route.paramMap.pipe(switchMap(params => of(params.get('planId')))).subscribe( planId => this.planId = +planId!	)
-		this.route.paramMap.pipe(switchMap(params => of(params.get('versionId')))).subscribe( versionId => {
-			this.planSvc.setVersion( +versionId! );
-			this.loadedVer 	= JSON.parse(JSON.stringify(this.planSvc.getVersion()));
-			this.ver		= JSON.parse(JSON.stringify(this.loadedVer))
+		this.route.paramMap.pipe(
+			switchMap(params => of(params.get('planId')))
+		).subscribe(
+			planId => this.planId = +planId
+		)
+		this.route.paramMap.pipe(
+			switchMap(params => of(params.get('versionId')))
+		).subscribe( versionId => {
+			this.planSvc.setVersion(+versionId);
+			this.loadedVer 	= JSON.parse( JSON.stringify( this.planSvc.getVersion()));
+			this.ver		= JSON.parse( JSON.stringify(this.loadedVer));
 		})
 	}
 }

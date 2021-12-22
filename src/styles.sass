@@ -2,475 +2,313 @@
 
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
 
-
-// mat-card:active.cdk-drag-disabled
-	cursor:					none
-// mat-card:hover.cdk-drag-disabled
-	cursor:					not-allowed
-// table
-	padding:				.5rem
-// .button.secondary
-	border: 0
-// .button.secondary a
-	background: transparent
-	border: 1px #0080ff solid
-// .button:not(.secondary)
-	a:hover
-		background: royalblue
-		border-color: darkblue
-	// button
-		background-color:		aliceblue
-		color:					#425
-	// button:hover
-		background-color:		gainsboro !important
-		font-weight:			750
-
-#allocated,
-#unassigned,
-#unallocated
-	div
-		font-size:				1em
-#app-name
-	font-family:				serif
-	font-size:					2em
-	margin-right:				1rem
-	overflow:					auto
-#contact-button
-	cursor:						pointer
-	display:					inline-block
-	padding:					0.333em 2.5em
-	text-decoration:			none
-	overflow-wrap:				break-word
-	text-transform:				uppercase
-#page-body
-	padding:					1rem
-	ul
-		display:				flex
-		flex-direction: 		column
-		margin-top:				0
+.f, li, ul, a, button
+	display:			flex
+.fc
+	display:			flex
+	flex-direction:		column
+.fr
+	display:			flex
+	flex-direction:		row
+	justify-content:	space-between
+.c
+	align-items:		center
+	text-align:			center
+.bg
+	background-color:	aliceblue		!important
+	color:				#425			!important
+.bg-d
+	background-color:	#425
+	color:				aliceblue
+.bg-m
+	background-color:	gainsboro
+	color:				#425
+.no-bg
+	background-color:	white
+	color:				#425
+.gc-disabled, .gc-disabled:hover
+	background-color:	floralwhite		!important
+	color:				darkgoldenrod	!important
+	cursor:				not-allowed		!important
+a, button
+	background-color:	aliceblue
+	color:				#425
+	cursor:				pointer
+	text-decoration:	none
+a:hover, button:hover
+	background-color:	gainsboro
+	color:				#425
+a.active
+	background-color:		#425	!important
+	color:					white	!important
+	font-weight:			400
+a.active:hover
+	background-color:		#425	!important
+	color:					white	!important
+	font-weight:			600
+	
 #page-title
-	align-items:				center
-	background-color:			#425
-	display:					flex
-	justify-content:			space-between
-	padding:					0 1rem
-	height:						2.5rem
 	a
-		background-color:		aliceblue
-		color:					black
-		display: 				flex
 		padding: 				0
 		border-style: 			double
 		border-color: 			#425
-	a:hover
-		background-color:		gainsboro
-		color:					#425
-	h2
-		color: 					aliceblue
 #page-title-2
-	padding:					0
-	display:					flex
-	justify-content:			space-between
-	align-items:				center
-	background-color:			inherit
 	a
-		padding:				5px 10px
-		text-decoration:		none
-		margin-right:			10px
-		display:				inline-block
-		background-color:		aliceblue
-		color:					#425
-	a:hover
-		background-color:		#425
-		color:					gainsboro
-	h3
-		margin:					0
-
-
-
-.active-span
-	background-color: 			red
-.app-body
-	padding:					1rem 2rem
-.cdk-drag-preview
-	border-radius:				50px
-	border-color: 				red
-	border-style: 				solid
-	box-shadow:					0 15px 15px 15px rgba(0, 0, 0, 0.5)
-.cdk-drag-placeholder
-	opacity:					0
-.cdk-drag-placeholder #unassigned
-	opacity:					.5
-.cdk-drag-animating
-	transition:					transform 250ms cubic-bezier( 0, 0, 0.2, 1 )
-.cdk-drop-list-receiving
-	background-color:			lightgreen
-.cdk-drop-list-dragging
-	background-color:			greenyellow
-.cdk-drop-list-dragging:hover
-	border-color:				red
-	border-style:				inset
-	border-collapse:			collapse
-.cdk-drag-disabled
-	background:					floralwhite
-	color:						darkgoldenrod
-	font-weight:				bolder
-.event-heading
-	color:						#425
-	display:					flex
-	justify-content:			space-between
-	align-items:				center
-	background-color:			aliceblue
-	padding:					0 1em
-	margin:						.75em 0 .5em 0
-.full
-	color:						green
+		padding:			5px 10px
+		margin-right:		10px
+		display:			inline-block
 .guests, .hosts
-	list-style-type:			none
-	padding:					0
-	div
-		display:				inline-block
-		text-align:				center
 	a
-		color:					black
-		display:				inline-block
-		text-decoration:		none
-		font-size:				1.2rem
-		background-color:		aliceblue
-		margin:					.1em
-		width:					100%
-	a:hover
-		color:					white
-		background-color:		#425
-	.badge
-		color:					#425
-		background-color:		gainsboro
-		margin-right:			1em
-		width:					2rem
-		padding:				.25em
-.item
-	order:						3
-	width:						100%
-	text-align:					center
-	display:					none
-.item:hover
-	display:					block
-.item:not(.button) a:hover
+		display:			inline-block
+		font-size:			1.2rem
+		margin:				.1em
+		width:				100%
+// .item:not(.button) a:hover
 	.item a:hover::after
-		color:					#ccc
+		color: #ccc
 .item.button
-	padding:					9px 5px
-	order:						2
-.list
-	display:					flex
-	justify-content:			center
-	flex-wrap:					wrap
-	align-items:				center
-	div
-		font-size:				9px
-		width:					90%
-		padding:				0 10px
-.mat-button
-	padding:					0.25rem 0.5rem
-.mat-card
-	box-shadow:					unset
-	margin:						.25em
-	.cdk-drag-preview
-		align-items:			center
-		background-color:		pink
-		display:				flex
-		justify-content:		space-between
-		padding:				0 .25em
-		height:					1.75em
-		mat-icon
-			display:			flex
-			font-size:			xx-small
-			align-items:		center
-.mat-expansion-panel-header-description,
-.mat-expansion-indicator::after,
-.mat-expansion-panel-header-title
-	color:						#425
-.mat-form-field + .mat-form-field
-	margin-left:				8px
-.mat-grid-tile-content
-	flex-direction:				column
-	align-items:				flex-start
-	justify-content:			flex-start
-	margin:						1em 0 0 1em
-	display:					flex
-.menu 												// mobile menu
-	display:					flex
-	justify-content:			space-evenly
-	padding:					0
-	margin:						.688em 0
-	.submenu
-		list-style-type:		none
-		a
-			padding:			15px
-.not-full
-	color:						red
+	padding:				9px 5px
+	order:					2
 .pgc
-	.badge
-		color:					#425
-		background-color:		gainsboro
-		justify-content:		center
-		margin-right:			1em
-		width:					2rem
-		padding:				0.25em
-	list-style-type:			none
-	padding:					0
-	div
-		display:				flex
-		align-items:			center
 	a
-		color:					#425
-		display:				flex
-		text-decoration:		none
-		font-size:				1.1rem
-		background-color:		aliceblue
-		width:					100%
+		font-size:			1.1rem
+		width:				100%
 		button
 			border-color:		#625
-			color:				#425
-			display:			flex
-			text-decoration:	none
 			font-size:			1.2rem
-			background-color:	aliceblue
 			width:				100%
-		button:hover
-			background-color:	gainsboro !important
-	a:hover
-		background-color:		gainsboro !important
-	a.active
-		background-color:		#425 !important
-		color:					white !important
-		font-weight:			400
-	a.active:hover
-		background-color:		#425 !important
-		color:					white !important
-		font-weight:			600
-	a#changed
-		background-color:		#425
-		color:					white
-	a#changed:hover
-		background-color:		aliceblue
-		color:					black
-	li
-		margin:					.25em 0
-		display:				flex
-		align-items:			center
+.menu 														/*  mobile menu   */
+	.submenu
+		a
+			padding:	15px
 .pgc-nav
-	align-items:				flex-end
-	display:					flex
-	justify-content:			space-between
 	a.pgc-tab
-		align-items:			center
-		background-color:		aliceblue
-		color:					#425
-		display:				flex
-		height:					2rem
-		margin:					0 0 0 .5rem
-		padding:				0 1rem
-	a.pgc-tab:hover
-		background-color:		gainsboro !important
-	a.pgc-tab.active,
-	a.pgc-tab.active:hover
-		background-color:		#425 !important
-		color:					white !important
-.polyBase
-	height:						10em
-	width:						10em
-.polyBase.over-full-host
-	background-color:			red
-	cursor:						no-drop
-.polyBase.full-host
-	background-color:			darkgreen
-	cursor:						no-drop
-.polyBase.not-full-host
-	background-color:			orange
-.poly-2
-	display:					flex
-	justify-content:			center
-	align-items:				center
-	clip-path:					circle(30%)
-.poly-content-2
-	display:					flex
-	justify-content:			center
-.poly-6
-	align-items:				flex-end
-	clip-path:					polygon(50% 0%,  5% 90%,  95% 90%)
-.poly-content-6
-	display:					flex
-	flex-flow:					row wrap
-	justify-content:			center
-	margin:						0 31%
-	padding-top:				31%
-.poly-8
-	clip-path:					polygon(50% 0%,  95% 50%,  50% 100%,  5% 50%)
-.poly-content-8
-	display:					flex
-	flex-flow:					row wrap
-	justify-content:			center
-	margin:						0 23%
-	padding-top:				28%
-.poly-10
-	clip-path:					polygon(50% 0%,  95% 40%,  75% 90%,  25% 90%,  5% 40%)
-.poly-content-10
-	display:					flex
-	flex-flow:					row wrap
-	justify-content:			center
-	margin:						0 10%
-	padding-top:				30%
-.poly-12
-	clip-path:					polygon(50% 0%,  95% 25%,  95% 75%,  50% 100%,  5% 75%,  5% 25%)
-.poly-content-12
-	display:					flex
-	flex-flow:					row wrap
-	justify-content:			center
-	margin:						0 10%
-	padding-top:				24%
-.social-icon
-	width:						24px
-	text-align:					center
-.submenu
-	display:					none
-.submenu:hover
-	ul
-		display:				block
-.toggle
-	order:						1
-	font-size:					20px
-
-
-app-login
-	.mat-card
-		height: auto !important
-
-
-html
-	font-family:				Roboto, sans-serif
-	font-weight:				200
-body
-	margin: 					0
-	width:						100%
-a
-	color:						white
-	text-decoration:			none
-	cursor:						pointer
-div.vertical-info
-	color:						#425
-	text-align:					center
-	.info-head
-		background-color:		aliceblue
-		text-align:				center
-		margin:					1em 0
-h1
-	font-size:					2.5rem
-	text-align:					center
-h2
-	margin:						0
-h3
-	font-size:					1.3rem
-	margin:						0 0 0 1.25em
-h4
-	margin:						0.75em 0
-h1, h2, h3, h4
-	color:						#425
-hr
-	margin:						.5rem 0
-input[type="text"]
-	box-sizing:					border-box
-	width:						100%
-	padding:					.5rem
-nav
-	background:					#526b94
-	color:						white
-	width:						100%
-	height:						2.5rem
-mat-accordion .mat-expansion-panel-header-title,
-mat-accordion .mat-expansion-panel-header-description
-	flex-basis:					0
-	align-items:				center
-	justify-content:			space-between
-mat-card
-	align-items:				center
-	background-color:			aliceblue
-	color:						#425
-	display:					flex
-	justify-content:			space-between
-	padding: 					0 .25em
-	height:						1.75em
-	mat-icon
-		display:				flex
-		font-size:				xx-small
-		align-items:			center
-mat-card:active
-	cursor:						grabbing
-	.cdk-drag-disabled
-		cursor:					none
-mat-card:hover
-	cursor:						grab
-	.cdk-drag-disabled
-		cursor:					not-allowed
-mat-grid-tile
-	background:					gainsboro
-mat-icon.unassigned-guest
-	color:						white
-	float:						right
-mat-icon.assigned-guest-guest
-	color:						lime
-	float:						right
-mat-icon.assigned-guest-host
-	color:						black
-	float:						right
-strong
-	margin:						0 .5rem
-	font-weight:				600
-section
-	display:					flex
-	font-weight:				600 !important
-	width:						100%
-table
-	border-collapse:			collapse
-	padding:					0
-	width: 						100%
-td.gutter
-	display:					flex
-	flex-wrap:					wrap
-	justify-content:			space-evenly
-	align-items:				center
-	border:						solid
-	min-width: 					32%
-	width: 						40%
-	background-color:			gainsboro
-td.vertical-info
-	display:					flex
-	flex-direction:				column
-	justify-content:			space-between
-	width:						20%
-tr
-	display:					flex
-	justify-content:			space-between
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////        Mobile Styles       ///////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		align-items:	center
+		height:			2rem
+		margin:			0 0 0 .5rem
+		padding:		0 1rem
 @media all and (min-width: 700px)
 	.item.button
 		width:			auto
 		order:			1
 		display:		block
-	.toggle
+	.menu li.button 	a 					/*  Button up from tablet screen  */
+		padding:		10px 15px
+		margin:			5px 0
+#contact-button
+	background-color:	#D99A4D
+	color:				white
+	display:			inline-block
+	padding:			0.333em 2.5em
+	overflow-wrap:		break-word
+	text-transform:		uppercase
+///////////////////////////////////////////////////////////////////////////  IDS
+#app-name
+	font-family:		serif
+	font-size:			2em
+	margin-right:		1rem
+	overflow:			auto
+#page-body
+	padding:			1rem
+	ul
+		flex-direction: column
+		margin-top:		0
+#page-title
+	align-items:		center
+	background-color:	#425
+	display:			flex
+	justify-content:	space-between
+	padding:			0 1rem
+	height:				2.5rem
+	h2
+		color: 			aliceblue
+#page-title-2
+	padding:			0
+	display:			flex
+	justify-content:	space-between
+	align-items:		center
+	background-color:	inherit
+	h3
+		margin:			0
+///////////////////////////////////////////////////////////////////////  CLASSES
+.active-span
+	background-color: 	red
+.app-body
+	padding:			1rem 2rem
+.full
+	color:				green
+.guests, .hosts
+	list-style-type:	none
+	padding:			0
+.item
+	order:				3
+	width:				100%
+	text-align:			center
+	display:			none
+.item:hover
+	display:			block
+.list
+	display:			flex
+	justify-content:	center
+	flex-wrap:			wrap
+	align-items:		center
+	div
+		font-size:		9px
+		width:			90%
+		padding:		0 10px
+.mat-expansion-panel
+	border-radius:		0		!important
+.mat-button
+	padding:			0.25rem 0.5rem
+.mat-expansion-panel
+	margin:				0 .5rem	!important
+.mat-expansion-panel-header
+	font-size:			1.1rem	!important
+span.mat-expansion-indicator::after,
+mat-panel-title,
+mat-panel-description
+	color:				#425	!important
+.mat-expanded
+	.mat-expansion-panel-header
+		height:				3rem	!important
+		background-color:	#425	!important
+	span.mat-expansion-indicator::after,
+	mat-panel-title,
+	mat-panel-description
+		color:				white	!important
+.mat-form-field + .mat-form-field
+	margin-left:		8px
+.mat-grid-tile-content
+	flex-direction:		column
+	align-items:		flex-start
+	justify-content:	flex-start
+	margin:				1em 0 0 1em
+	display:			flex
+.menu 														/*  mobile menu   */
+	display:			flex
+	justify-content:	space-evenly
+	padding:			0
+	margin:				.688em 0
+	.submenu
+		list-style-type:	none
+.not-full
+	color:				red
+.pgc
+	.badge
+		justify-content:	center
+		margin-right:		1em
+		width:				2rem
+		padding:			0.25em
+	list-style-type:	none
+	padding:			0
+	div
+		display:		flex
+		align-items:	center
+	li
+		margin:			.25em 0
+		align-items:	center
+.pgc-nav
+	align-items:		flex-end
+	display:			flex
+	justify-content:	space-between
+.social-icon
+	width:				24px
+	text-align:			center
+.submenu
+	display:			none
+.submenu:hover
+	ul
+		display:		block
+// .toggle
+	order:				1
+	font-size:			20px
+
+////////////////////////////////////////////////////////////////////////// TAGS
+html
+	font-family:		Roboto, sans-serif
+	font-weight:		200
+body
+	margin: 			0
+	width:				100%
+	color:				#425
+div.vertical-info
+	text-align:			center
+	.info-head
+		text-align:			center
+		margin:				1em 0
+h1
+	font-size:			2.5rem
+	text-align:			center
+h2
+	margin:				0
+h3
+	font-size:			1.3rem
+	margin:				0 0 0 1.25em
+h4
+	font-size:			1.1rem
+	margin:				0.75em 0
+hr
+	margin:				.5rem 0
+input[type="text"]
+	box-sizing:			border-box
+	width:				100%
+	padding:			.5rem
+nav
+	background:			#526b94
+	color:				white
+	width:				100%
+	height:				2.5rem
+mat-grid-tile
+	background:			gainsboro
+mat-icon.unassigned-guest
+	color:				white
+	float:				right
+mat-icon.assigned-guest-guest
+	color:				lime
+	float:				right
+mat-icon.assigned-guest-host
+	color:				black
+	float:				right
+strong
+	margin:				0 .5rem
+	font-weight:		600
+section
+	display:			flex
+	font-weight:		600			!important
+	width:				100%
+table
+	border-collapse:	collapse
+	padding:			0
+	width: 				100%
+td.gutter
+	display:			flex
+	flex-wrap:			wrap
+	justify-content:	space-evenly
+	align-items:		center
+	border:				solid
+	min-width: 			32%
+	width: 				40%
+	background-color:	gainsboro
+td.vertical-info
+	display:			flex
+	flex-direction:		column
+	justify-content:	space-between
+	width:				20%
+th
+	background-color:	#425
+	color:				white
+	padding:			0 0.5em
+tr
+	display:			flex
+	justify-content:	space-between
+
+///////////////////////////////////////////////////////////        Mobile Styles
+@media all and (min-width: 700px)
+	// .toggle
 		flex:			1
 		text-align:		right
 		order:			2
-	.menu li.button 	a 							/* Button up from tablet screen */
-		padding:		10px 15px
-		margin:			5px 0
-	.button a
-		background:		#0080ff
-		border:			1px royalblue solid
-@media all and (min-width: 960px) 					/* Desktop menu */
+@media all and (min-width: 960px) 							/*  Desktop menu  */
 	.item
 		order:			1
 		position:		relative
@@ -479,13 +317,10 @@ tr
 		font-weight:	600
 	.button
 		order:			2
-	.toggle
+	// .toggle
 		display:		none
 @media only screen and (max-device-width : 47.99rem)
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////         MOBILE PRESBY OLDNESS                ///////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////        MOBILE PRESBY OLDNESS
 @media only screen and (max-device-width : 59.99rem)
 	body .g-content
 		padding:		20px 15px																																				/* All Mobile up to Small Desktop */
@@ -506,3 +341,11 @@ tr
 	.g-container
 		margin:			0 auto
 		padding:		0
+
+
+// a.pgc-tab:hover
+	background-color:	gainsboro !important
+// a.pgc-tab.active,
+// a.pgc-tab.active:hover
+	background-color:	#425 !important
+	color:				white !important

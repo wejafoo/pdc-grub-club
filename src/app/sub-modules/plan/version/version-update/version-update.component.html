@@ -1,50 +1,85 @@
 
 
-<div id="page-title">
-	<h3>
-		Plan ID: <strong>{{planId}}
-		</strong>Version:<strong>{{versionId}}</strong>
-	</h3>
-	<a style="visibility: hidden; " [routerLink]="['/plan', planId, 'version', versionId + 1]">
-		<mat-icon>add</mat-icon>
-	</a>
+
+<div id="page-title" class="bg-d">
+	<h2>
+		Plan ID:
+		<strong>
+			{{planId}}
+		</strong>
+		Version:
+		<strong>
+			{{versionId+1}}
+		</strong>
+	</h2>
+	<mat-icon style="visibility: hidden">add</mat-icon>
 </div>
 <div id="page-body">
-	<nav id="page-title-2">
-		<div><h3> Schedule </h3></div>
+	<div id="page-title-2">
+		<div>
+			<h3>
+				Schedule
+			</h3>
+		</div>
 		<div *ngIf="deepEqual(ver, ver); else changes_made">
-			<a style="background-color: floralwhite; color: gainsboro; "> Save </a>
-			<a (click)="toVersions()"> Back </a></div>
+			{{deepEqual(ver, ver)}}
+			<a class="gc-disabled">
+				Save
+			</a>
+			<a (click)="toVersions()">
+				Back
+			</a>
+		</div>
 		<ng-template #changes_made>
 			<div>
-				<a style="background-color: #425; color: white;" (click)="save()"> Save </a>
-				<a [routerLink]="['/plan', planId, 'version', 's']"> Cancel </a>
+				<a (click)="save()">
+					Save
+				</a>
+				<a [routerLink]="['/plan', planId, 'version', 's']">
+					Cancel
+				</a>
 			</div>
 		</ng-template>
-	</nav>
+	</div>
 	<hr>
+	<div style="margin: .5rem;">
+		<h4>
+			<label for="editVer-labels">
+				Version Labels
+			</label>
+		</h4>
+		<input type="text" id="editVer-labels"
+			[(ngModel)]="ver['labels']"
+			placeholder="labels"
+		>
+	</div>
 	<div>
 		<mat-accordion>
-			<!-- #################################################################################  HOST CONFIGURATIONS  ##-->
+			<!-- #########################################  HOST CONFIGURATIONS  ##-->
 			<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
-				<mat-expansion-panel-header>
+				<mat-expansion-panel-header class="bg f c">
 					<mat-panel-title>
-						<strong>Hosting</strong>
+						<mat-icon>person</mat-icon>
+						<strong>
+							Hosting
+						</strong>
 					</mat-panel-title>
 					<mat-panel-description>
-						Schedule hosts for this event <mat-icon> person </mat-icon>
+						Schedule hosts for this event
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				<hr>
 				<div class="events" *ngFor="let evt of events">
-					<div class="event-heading">
-						<div>
+					<div class="event-heading bg f">
+						<div class="f">
 							<h4>
-								<strong>{{evt}}</strong>
+								<strong>
+									{{evt}}
+								</strong>
 								Hostings
 							</h4>
 						</div>
-						<div>
+						<div class="f">
 							Auto-assign:
 							<button (click)="autoAllocate('all')">
 								All
@@ -56,58 +91,69 @@
 					</div>
 					<table *ngIf="loaded" cdkDropListGroup>
 						<tr>
-							<th style="background-color: #425; color: white; padding: 0 0.5em;">
-								<strong> Unallocated </strong>
-							</th>
-							<th style="background-color: #425; color: white; padding: 0 0.5em;">
-								<strong> Allocated 	</strong>
-							</th>
+							<th><strong>Unallocated</strong></th>
+							<th><strong>Allocated</strong></th>
 						</tr>
 						<tr>
-							<!-- ############################################################################  UN-ASSIGNED HOSTS  ###-->
-							<td cdkDropList id="unallocated" class="gutter unassigned list"
+							<!-- ##################################  UN-ASSIGNED HOSTS  ###-->
+							<td cdkDropList id="unallocated"
+									class="gutter unassigned list"
 									[cdkDropListData]="unHs[evt]"
 									(cdkDropListDropped)="unDropHost( $event, evt )"
 							>
 								<div *ngFor="let unH of unHs[evt]">
-									<mat-card cdkDrag [cdkDragData]="unH" [cdkDragDisabled]="unH['isDisabled']">
+									<mat-card cdkDrag
+														[cdkDragData]="unH"
+														[cdkDragDisabled]="unH['isDisabled']"
+									>
 										<mat-icon>menu</mat-icon>
 										{{unH['hostKey']}}
 									</mat-card>
 								</div>
 							</td>
-							<!-- ########################################################################  EVENT HOSTING SUMMARY  ###-->
+							<!-- ##############################  EVENT HOSTING SUMMARY  ###-->
 							<td class="vertical-info">
 								<div class="vertical-info">
-									<div style="margin-top: 0" class="info-head">
+									<div style="margin-top: 0" class="info-head bg">
 										<span style="font-weight: 900">Guests</span>
 									</div>
 									<div>
 										RSVPs:
-										<span style="font-weight: 900">{{summary[evt]['rsvps']}}</span>
+										<span style="font-weight: 900">{{
+											summary[evt]['rsvps']
+										}}</span>
 									</div>
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 900">Seats</span>
 									</div>
 									<div style="padding: 0 .5em; text-align: justify-all;">
 										<div style="display: inline-block; text-align: center; margin-bottom: 1em;">
 											Total Available:
-											<span style="font-weight: 900">{{summary[evt]['seats']}}</span>
+											<span style="font-weight: 900">{{
+												summary[evt]['seats']
+											}}</span>
 										</div>
 										<div style="text-align: left">
 											<<<  Unallocated:
-											<span style="font-weight: 900">{{summary[evt]['unAllocatedSeatCnt']}}</span>
+											<span style="font-weight: 900">{{
+												summary[evt]['unAllocatedSeatCnt']
+											}}</span>
 										</div>
 										<div style="text-align: right">
 											Allocated:
-											<span style="font-weight: 900">{{summary[evt]['allocatedSeatCnt']}}</span>
+											<span style="font-weight: 900">{{
+												summary[evt]['allocatedSeatCnt']
+											}}</span>
 											>>>
 										</div>
 									</div>
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 900">Allocation Over/Under</span>
 									</div>
-									<div [class]="summary[evt]['overAllocatedSeats'] >= 0? 'full': 'not-full'">
+									<div [class]="
+										summary[evt]['overAllocatedSeats'] >= 0 ?
+									 		'full': 'not-full'
+									">
 										<div style="text-align: justify-all;">
 											<div style="display: inline-block; text-align: left;">
 												RSVPs:
@@ -115,47 +161,52 @@
 											<div style="display: inline-block; text-align: left;"></div>
 											<div style="display: inline-block; text-align: right;">
 												<span style="font-weight: 900">{{
-						 							summary[evt]['overAllocatedSeats'] > 0? '+'+summary[evt]['overAllocatedSeats'] :
-							  					summary[evt]['overAllocatedSeats'] < 0?	summary[evt]['overAllocatedSeats'] :
-								  			'---'}}</span>
+													summary[evt]['overAllocatedSeats'] > 0 ?
+														'+'+summary[evt]['overAllocatedSeats'] :
+															summary[evt]['overAllocatedSeats'] < 0 ?
+																summary[evt]['overAllocatedSeats'] :
+																	'---'
+												}}</span>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="vertical-info">
 									<hr style="width: 100%;">
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 900">Status Key</span>
 									</div>
 									<div class="cdk-drag-disabled" style="margin: .25em;">
 										host disabled
 									</div>
-									<div style="background-color: aliceblue; color: #425; margin: .25em;">
+									<div class="bg" style="margin: .25em;">
 										host active
 									</div>
-									<div style="background-color: gainsboro; color: #425; margin: .25em; border-style: solid; border-color: green">
+									<div class="bg-m" style="
+										margin: .25em; border-style: solid; border-color: green
+									">
 										event fully allocated
 									</div>
-									<div style="background-color: gainsboro; color: #425; margin: .25em; border-style: solid; border-color: red">
+									<div class="bg-m"  style="
+										margin: .25em; border-style: solid; border-color: red
+									">
 										event under allocated
 									</div>
 								</div>
 							</td>
-							<!-- td *ngIf="loaded || summary[evt]" class="vertical-info">
-								<div style="background-color: aliceblue; margin: 0;"><strong> Seats </strong></div><div>Total: <strong>{{ summary[evt]['seats']}}</strong></div><div>< &nbsp;&nbsp; UNALLOCATED</div><div><strong>{{summary[evt]['unAllocatedSeatCnt']}}</strong></div>
-								<div>ALLOCATED	&nbsp;&nbsp;&nbsp; ></div><div><strong>{{summary[evt]['allocatedSeatCnt']}}</strong></div>
-								<div style="background-color: aliceblue">RSVPs: <strong>{{summary[evt]['rsvps']}}</strong></div>
-								<div [class]="summary[evt]['overAllocatedSeats'] >= 0 ? 'full' : 'not-full'"> O/U RSVPs: <strong>{{summary[evt]['overAllocatedSeats'] > 0 ? '+' +	summary[evt]['overAllocatedSeats'] : summary[evt]['overAllocatedSeats'] < 0 ?				summary[evt]['overAllocatedSeats'] : '-'}}</strong></div>
-							</td --><!-- ###############################################################################  ASSIGNED HOSTS  ###-->
+							<!-- #####################################  ASSIGNED HOSTS  ###-->
 							<td cdkDropList id="allocated" [class] = "
 										summary[evt]['overAllocatedSeats'] >= 0 ?
-										'gutter assigned plan-list full': 'gutter assigned plan-list not-full'
-									"
-									*ngIf="loaded || summary[evt] !== undefined"
-									[cdkDropListData]="aHs[evt]" (cdkDropListDropped)="dropHost($event, evt)"
+											'gutter assigned plan-list full' :
+												'gutter assigned plan-list not-full'
+							"		*ngIf="loaded || summary[evt] !== undefined"
+									[cdkDropListData]="aHs[evt]"
+									(cdkDropListDropped)="dropHost($event, evt)"
 							>
 								<div *ngFor="let aH of aHs[evt]">
-									<mat-card cdkDrag id="{{aH['hostKey']}}" [cdkDragData]="aH">
+									<mat-card cdkDrag id="{{aH['hostKey']}}"
+										[cdkDragData]="aH"
+									>
 										<mat-icon>menu</mat-icon>
 										{{aH['hostKey']}}
 									</mat-card>
@@ -165,34 +216,42 @@
 					</table>
 				</div>
 				<mat-action-row>
-					<button mat-button (click)="prevStep()">
+					<button (click)="prevStep()">
 						Previous
 					</button>
-					<button mat-button (click)="nextStep()">
+					<button (click)="nextStep()">
 						Next
 					</button>
 				</mat-action-row>
 			</mat-expansion-panel>
-			<!-- #################################################################################  GUEST CONFIGURATION  ##-->
-			<mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
-				<mat-expansion-panel-header>
+			<!-- #########################################  GUEST CONFIGURATION  ##-->
+			<mat-expansion-panel
+				[expanded]="step === 1"
+				(opened)="setStep(1)"
+			>
+				<mat-expansion-panel-header class="bg f c">
 					<mat-panel-title>
-						<strong>Guesting</strong>
+						<mat-icon>people</mat-icon>
+						<strong>
+							Guesting
+						</strong>
 					</mat-panel-title>
 					<mat-panel-description>
 						Schedule guests for this event
-						<mat-icon>people</mat-icon>
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				<hr>
 				<div *ngFor="let evt of events" class="events">
-					<div class="event-heading">
-						<div>
+					<div class="event-heading bg f">
+						<div class="f">
 							<h4>
-								<strong>{{evt}} Guestings </strong>
+								<strong>
+									{{evt}}
+									Guestings
+								</strong>
 							</h4>
 						</div>
-						<div>
+						<div class="f">
 							Auto-assign:
 							<button (click)="autoAssign('all')">
 								All
@@ -203,84 +262,98 @@
 						</div>
 					</div>
 					<table *ngIf="loaded" cdkDropListGroup>
+						<tr><th><strong>Unassigned</strong></th><th><strong>Assigned</strong></th></tr>
 						<tr>
-							<th style="background-color: #425; color: white; padding: 0 0.5em;">
-								<strong>Unassigned</strong>
-							</th>
-							<th style="background-color: #425; color: white; padding: 0 0.5em;">
-								<strong>Assigned</strong>
-							</th>
-						</tr>
-						<tr>
-							<!-- #######################################################################  UN-ASSIGNED GUESTS  ### -->
-							<td cdkDropList id="unassigned" class="gutter unassigned list"
-									[cdkDropListData]="unGs[evt]"  (cdkDropListDropped)="unDropGuest($event, evt)"
+							<!-- ################################  UN-ASSIGNED GUESTS  ### -->
+							<td cdkDropList id="unassigned"
+									class="gutter unassigned list"
+									[cdkDropListData]="unGs[evt]"
+									(cdkDropListDropped)="unDropGuest($event, evt)"
 							>
 								<div *ngFor="let unG of unGs[evt]">
 									<mat-card cdkDrag id="{{unG['guestKey']}}"
-											[cdkDragData]="unG"  [cdkDragDisabled]="unG['isDisabled']"
+										[cdkDragData]="unG"
+										[cdkDragDisabled]="unG['isDisabled']"
 									>
 										<mat-icon>menu</mat-icon>
 										{{unG['guestKey']}}
 									</mat-card>
 								</div>
 							</td>
-							<!-- ##########################################################################  EVENT GUEST SUMMARY  ###-->
+							<!-- ################################  EVENT GUEST SUMMARY  ###-->
 							<td class="vertical-info">
 								<div class="vertical-info">
-									<div style="margin-top: 0;" class="info-head">
-										<span style="font-weight: 900;"> Guests </span>
+									<div style="margin-top: 0;" class="info-head bg">
+										<span style="font-weight: 900;">Guests</span>
 									</div>
 									<div style="margin-bottom: 1em;">
 										RSVPs:
-										<span style="font-weight: 900">{{summary[evt]['rsvps']}}</span>
+										<span style="font-weight: 900">{{
+											summary[evt]['rsvps']
+										}}</span>
 									</div>
 									<div style="text-align: left">
 										<<<  Unassigned:
-										<span style="font-weight: 900">{{summary[evt]['unAssignedGuestCnt']}}</span>
+										<span style="font-weight: 900">{{
+												summary[evt]['unAssignedGuestCnt']
+										}}</span>
 									</div>
 									<div style="text-align: right">
 										Assigned:
-										<span style="font-weight: 900;">{{summary[evt]['assignedGuestCnt']}}</span>
+										<span style="font-weight: 900;">{{
+												summary[evt]['assignedGuestCnt']
+											}}</span>
 										>>>
 									</div>
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 900">Seats</span>
 									</div>
 									<div style="padding: 0 .5em; text-align: justify-all;">
 										<div style="display: inline-block; text-align: left;">
 											Total Available:
-											<span style="font-weight: 900">{{summary[evt]['seats']}}</span>
+											<span style="font-weight: 900">{{
+												summary[evt]['seats']
+											}}</span>
 										</div>
 										<div style="display: inline-block; text-align: left;">
 											Allocated:
-											<span style="font-weight: 900">{{summary[evt]['allocatedSeatCnt']}}</span>
+											<span style="font-weight: 900">{{
+												summary[evt]['allocatedSeatCnt']
+											}}</span>
 										</div>
 									</div>
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 600">Allocation Over/Under</span>
 									</div>
-									<div [class]="summary[evt]['overAllocatedSeats'] >= 0? 'full': 'not-full'">
+									<div [class]="
+										summary[evt]['overAllocatedSeats'] >= 0 ?
+											'full': 'not-full'
+									">
 										<div style="text-align: justify-all;">
 											<div style="display: inline-block; text-align: left;">
 												RSVPs:
 											</div>
 											<div style="display: inline-block; text-align: right;">
 												<span style="font-weight: 900">{{
-						  						summary[evt]['overAllocatedSeats'] > 0? '+'+summary[evt]['overAllocatedSeats'] :
-							 							summary[evt]['overAllocatedSeats'] < 0?	summary[evt]['overAllocatedSeats'] :
-								  						'---'
+						  						summary[evt]['overAllocatedSeats'] > 0 ? '+' +
+														summary[evt]['overAllocatedSeats'] :
+						 									summary[evt]['overAllocatedSeats'] < 0 ?
+																summary[evt]['overAllocatedSeats'] :
+							  									'---'
 												}}</span>
 											</div>
 										</div>
-										<div [class]="summary[evt]['overAssignedGuests'] >= 0? 'full': 'not-full'">
+										<div [class]="
+											summary[evt]['overAssignedGuests'] >= 0 ?
+												'full': 'not-full'
+										">
 											Assigned:
 											<span style="font-weight: 900">{{
-													summary[evt]['overAssignedGuests'] > 0? '+'  +
+												summary[evt]['overAssignedGuests'] > 0? '+'  +
+													summary[evt]['overAssignedGuests'] :
+														summary[evt]['overAssignedGuests'] < 0 ?
 															summary[evt]['overAssignedGuests'] :
-																summary[evt]['overAssignedGuests'] < 0 ?
-																		summary[evt]['overAssignedGuests'] :
-																			'---'
+																'---'
 											}}</span>
 										</div>
 										<div>
@@ -292,21 +365,27 @@
 								</div>
 								<div class="vertical-info">
 									<hr style="width: 100%;">
-									<div class="info-head">
+									<div class="info-head bg">
 										<span style="font-weight: 900">Status Key</span>
 									</div>
-									<div style="background-color: orange; color: #425; margin: .25em;">
-										<strong>under assigned</strong>
+									<div style="background-color: orange; margin: .25em;">
+										<strong>
+											under assigned
+										</strong>
 									</div>
 									<div style="background-color: darkgreen; color: yellow; margin: .25em;">
-										<strong>fully assigned</strong>
+										<strong>
+											fully assigned
+										</strong>
 									</div>
 									<div style="background-color: red; color: aliceblue; margin: .25em;">
-										<strong> over assigned</strong>
+										<strong>
+											over assigned
+										</strong>
 									</div>
 								</div>
 							</td>
-							<!-- ###########################################################################  ASSIGNED GUESTS  ###-->
+							<!-- ####################################  ASSIGNED GUESTS  ###-->
 							<td class="gutter">
 								<div cdkDropList style="text-align: center; max-width: 10em; height: 12em; max-height: 12em; padding: .5em;" [id]="aH['hostKey']"
 										 *ngFor="let aH of aHs[evt]"
@@ -315,41 +394,59 @@
 										 [cdkDropListEnterPredicate]="pairsPredicate()"
 								>
 									{{aH['hostKey']}}
-									<!-- ##########################################################  ASSIGNED GUESTS - PEEPS VIEW  ###-->
+									<!-- ###################  ASSIGNED GUESTS - PEEPS VIEW  ###-->
 									<div *ngIf="summary[evt][aH['hostKey']]">
-										<div	[class]	= "
-													summary[evt][aH['hostKey']]['assignedSeatCnt']  <  aH['seats']  ?  'polyBase poly-' + aH['seats'] + ' not-full-host'	:
-														summary[evt][aH['hostKey']]['assignedSeatCnt']  >  aH['seats']  ?  'polyBase poly-' + aH['seats'] + ' over-full-host'	:
-															'polyBase poly-' + aH['seats'] + ' full-host'
+										<div	[class]="
+											summary[evt][aH['hostKey']]['assignedSeatCnt'] <
+											 aH['seats'] ?
+												'polyBase poly-'+aH['seats']+' not-full-host'	:
+													summary[evt][aH['hostKey']]['assignedSeatCnt'] >
+													 aH['seats'] ?
+														'polyBase poly-'+aH['seats']+' over-full-host' :
+															'polyBase poly-'+aH['seats']+' full-host'
 										" *ngIf = "! isOpen; else boxView">
-											<div [class]="'poly-content-' + aH['seats']">
-												<div *ngFor="let cnt of [].constructor(aH['seats']); let i = index">
-													<mat-icon id="peep-1" class="assigned-guest-host peep"
-														*ngIf="i <= summary[evt][aH['hostKey']]['hosts'].length-1; else notHost"
+											<div [class]="'poly-content-'+aH['seats']">
+												<div *ngFor="
+													let cnt of [].constructor(aH['seats']);
+													 let i = index
+												">
+													<mat-icon id="peep-1"
+														class="assigned-guest-host peep"
+														*ngIf="
+															i <= summary[evt][aH['hostKey']]['hosts'].length-1;
+															 else notHost
+														"
 													>person</mat-icon>
 													<ng-template #notHost>
-														<mat-icon id="peep-2" class="assigned-guest-guest peep"
-															*ngIf="i <= summary[evt][aH['hostKey']]['assignedSeatCnt']-1; else notAssigned"
+														<mat-icon id="peep-2" *ngIf="i <=
+																summary[evt][aH['hostKey']]['assignedSeatCnt']-1;
+															 		else notAssigned
+															" class="assigned-guest-guest peep"
 														>person</mat-icon>
 														<ng-template #notAssigned>
-															<mat-icon id="peep-o" class="unassigned-guest peep">
-																person_outline
-															</mat-icon>
+															<mat-icon id="peep-o"
+																class="unassigned-guest peep"
+															>person_outline</mat-icon>
 														</ng-template>
 													</ng-template>
 												</div>
 											</div>
 										</div>
-										<!-- ########################################################  ASSIGNED GUESTS - CARD VIEW  ###-->
+										<!-- ##################### ASSIGNED GUESTS-CARD VIEW  ###-->
 										<ng-template #boxView>
-											<div	[class]="
-												summary[evt][aH['hostKey']]['assignedSeatCnt'] < aH['seats'] ? 'polyBase plan-list not-full-host' :
-													summary[evt][aH['hostKey']]['assignedSeatCnt'] > aH['seats'] ? 'polyBase plan-list over-full-host' :
-														'polyBase plan-list full-host'
+											<div [class]="
+												summary[evt][aH['hostKey']]['assignedSeatCnt'] <
+												 aH['seats'] ?
+													'polyBase plan-list not-full-host' :
+														summary[evt][aH['hostKey']]['assignedSeatCnt'] >
+														 aH['seats'] ?
+															'polyBase plan-list over-full-host' :
+																'polyBase plan-list full-host'
 											">
 												<div *ngFor="let aG of aGs[evt][aH['hostKey']]">
 													<mat-card cdkDrag id="{{aG['guestKey']}}"
-																		[cdkDragData]="aG"  [cdkDragDisabled]="aG['isDisabled']"
+														[cdkDragData]="aG"
+														[cdkDragDisabled]="aG['isDisabled']"
 													>
 														<mat-icon>menu</mat-icon>
 														{{aG['guestKey']}}
@@ -364,10 +461,10 @@
 					</table>
 				</div>
 				<mat-action-row>
-					<button mat-button (click)="prevStep()">
+					<button (click)="prevStep()">
 						Previous
 					</button>
-					<button mat-button (click)="nextStep()">
+					<button  (click)="nextStep()">
 						End
 					</button>
 				</mat-action-row>
@@ -376,105 +473,4 @@
 	</div>
 </div>
 
-<!-- mat-expansion-panel>
-	<##############################################################################################  SUMMARY  ##>
-	<mat-expansion-panel-header>
-		<mat-panel-title>
-			<strong> Summary / Settings </strong>
-		</mat-panel-title>
-		<mat-panel-description>
-			General version information and event settings  <mat-icon>info</mat-icon>
-		</mat-panel-description>
-	</mat-expansion-panel-header >
-	
-	<#######################################################################################  Event SETTINGS  ##>
-	<div style="display: flex; justify-content: space-between; align-items: center">
-		<div style="display: flex; background-color: aliceblue">
-			Event Settings:
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="eventSetting1" name="vehicle1" value="true" checked>
-			<label for="eventSetting1"> Auto-allocate most seats first </label>
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="eventSetting2" name="vehicle2" value="true">
-			<label for="eventSetting2"> I want a new car </label>
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="eventSetting3" name="vehicle3" value="true">
-			<label for="eventSetting3"> I want a new boat </label>
-		</div>
-	</div>
-	<#######################################################################################  Host SETTINGS  ##>
-	<div style="display: flex; justify-content: space-between; align-items: center">
-		<div style="display: flex; background-color: aliceblue">
-			Allocation Settings:
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="allocationSetting1" name="vehicle1" value="true" checked>
-			<label for="allocationSetting1">
-				Auto-allocate most seats first
-			</label>
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="allocationSetting2" name="vehicle2" value="true">
-			<label for="allocationSetting2">
-				I want a new car
-			</label>
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="allocationSetting3" name="vehicle3" value="true">
-			<label for="allocationSetting3">
-				I want a new boat
-			</label>
-		</div>
-	</div>
-	<############################################################################################  SETTINGS  ##>
-	<div style="display: flex; justify-content: space-between; align-items: center">
-		<div style="display: flex; background-color: aliceblue">
-			Assignment Settings:
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="assignmentSetting1" name="vehicle1" value="true" checked>
-			<label for="assignmentSetting1"> Allow host over-assignment </label>
-		</div>
-		<div style="display: flex; background-color: aliceblue">
-			Force sort:
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="assignmentSetting2" name="vehicle2" value="true" checked>
-			<label for="assignmentSetting2"> Unassigned Guests </label>
-		</div>
-		<div style="display: flex;">
-			<input type="checkbox" id="assignmentSetting3" name="vehicle2" value="true">
-			<label for="assignmentSetting3"> Assigned Guests </label>
-		</div>
-	</div>
-	
-	<div *ngIf="deepEqual(loadedVer, ver); else changes_made_2">Loaded version:<strong>{{ver['id']}}</strong></div><ng-template #changes_made_2><div><h3><span class="mat-warn"> Unsaved new version: </span><strong> {{ver['id'] + 1}} </strong></h3></div></ng-template>
-	
-	<div>
-		Total active hosts: <strong> 20	</strong>
-	</div>
-	<div>	RSVPs: <strong> 20 </strong></div>
-	<div>
-		<br>
-		Host seats available by event
-		<br>
-		<hr>
-		<div style="display: flex; justify-content: space-evenly;">
-			<div> January:	<strong> 110	</strong></div>
-			<div> February:	<strong> 80		</strong></div>
-			<div> March:		<strong> 135	</strong></div>
-		</div>
-	</div>
-</mat-expansion-panel>
-
-<#####################################################################################  VERSION METADATA  ## -->
-<!-- mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"><mat-expansion-panel-header><mat-panel-title><strong> Version Metadata </strong></mat-panel-title><mat-panel-description> Misc info to help identify this version <mat-icon> more </mat-icon></mat-panel-description></mat-expansion-panel-header><div><h4><label for="next-labels"> Labels: </label><input type="text" id="next-labels" [(ngModel)]="ver['labels']" placeholder="labels(comma-separated)" /></h4></div></mat-expansion-panel-->
-<!-- ############################################################################  EVENT DATE CONFIGURATIONS  ## -->
-<!-- mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"><mat-expansion-panel-header><mat-panel-title><strong> Event Dates </strong></mat-panel-title><mat-panel-description> Provide the specific dates for each event-plan-list <mat-icon> date_range </mat-icon></mat-panel-description></mat-expansion-panel-header>
-	<div style="text-align: center; width: 100%;"><mat-form-field appearance="fill" floatLabel="always"><mat-label> event-plan-list: January	</mat-label><input matInput [matDatepicker]="picker1" (focus)="picker1.open()"></mat-form-field><mat-datepicker #picker1></mat-datepicker></div>
-	<div style="text-align: center; width: 100%;"><mat-form-field appearance="fill" floatLabel="always"><mat-label> event-plan-list: February	</mat-label><input matInput [matDatepicker]="picker2" (focus)="picker2.open()"></mat-form-field><mat-datepicker #picker2></mat-datepicker></div>
-	<div style="text-align: center; width: 100%;"><mat-form-field appearance="fill" floatLabel="always"><mat-label> event-plan-list: March	</mat-label><input matInput [matDatepicker]="picker3" (focus)="picker3.open()"></mat-form-field><mat-datepicker #picker3></mat-datepicker></div>
-</mat-expansion-panel -->
+<!-- a style="visibility: hidden;"[routerLink]="['/plan', planId, 'version', versionId + 1]"><a style="visibility: hidden;"><mat-icon>add</mat-icon></a -->

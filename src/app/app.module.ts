@@ -12,31 +12,27 @@ import { APOLLO_NAMED_OPTIONS		} from 'apollo-angular';						// cms
 import { HttpLink            		} from 'apollo-angular/http';
 import { NamedOptions        		} from 'apollo-angular';
 import { NgxAuthFirebaseUIModule	} from 'ngx-auth-firebaseui';					// AUTH
-
-import { AppRoutingModule	} from './app-routing.module';
-import { GraphQLModule		} from './sub-modules/graphql.module';
-import { MaterialModule		} from './sub-modules/material.module';
-import { PlanModule			} from './sub-modules/plan/plan.module';
-import { PresbyModule		} from './sub-modules/presby/presby.module';
-import { AdminComponent		} from './admin/admin.component';
-import { AppComponent		} from './app.component';
-import { MessageComponent	} from './compose-message/compose-message.component';
-import { HomeComponent		} from './home/home.component';
-import { LoginComponent		} from './login/login.component';
-import { LogoutComponent	} from './logout/logout.component';
-import { NoSoupComponent	} from './no-soup/no-soup.component';
-import { NavPipe			} from './_pipes/nav.pipe';
-import { SafePipe			} from './_pipes/safe.pipe';
+import { AppRoutingModule			} from './app-routing.module';
+import { MaterialModule				} from './sub-modules/material.module';
+import { PlanModule					} from './sub-modules/plan/plan.module';
+import { PresbyModule				} from './sub-modules/presby/presby.module';
+import { AdminComponent				} from './admin/admin.component';
+import { AppComponent				} from './app.component';
+import { MessageComponent			} from './compose-message/compose-message.component';
+import { LoginComponent				} from './login/login.component';
+import { LogoutComponent			} from './logout/logout.component';
+import { NoSoupComponent			} from './no-soup/no-soup.component';
+import { NavPipe					} from './_pipes/nav.pipe';
+import { SafePipe					} from './_pipes/safe.pipe';
 
 import 'hammerjs';
 
-export function firebaseAppNameFactory() { return `weja-us` }
+export function firebaseAppNameFactory() {return `weja-us`}
 
 @NgModule({
 	declarations:	[
 		AppComponent,
 		AdminComponent,
-		HomeComponent,
 		LoginComponent,
 		LogoutComponent,
 		MessageComponent,
@@ -46,12 +42,9 @@ export function firebaseAppNameFactory() { return `weja-us` }
 	],
 	imports: [
 		BrowserModule,
-		AngularFireModule.initializeApp(
-			environment.firebase.creds
-		),
+		AngularFireModule.initializeApp(environment.firebase.creds),
 		BrowserAnimationsModule,
 		FormsModule,
-		GraphQLModule,
 		HttpClientModule,
 		MaterialModule,
 		NgxAuthFirebaseUIModule.forRoot(
@@ -64,15 +57,14 @@ export function firebaseAppNameFactory() { return `weja-us` }
 		AppRoutingModule		// absolutely MUST remain last!!!
 	],
 	providers: [{
-		provide: APOLLO_NAMED_OPTIONS, deps: [HttpLink],
-		useFactory( httpLink: HttpLink ): NamedOptions {
-			return {
-				newClientName: {
-					cache:	new InMemoryCache(),
-					link:	httpLink.create({ uri: environment.service.roster })
-				}
+		provide:	APOLLO_NAMED_OPTIONS,
+		deps:		[HttpLink],
+		useFactory(httpLink: HttpLink): NamedOptions { return {
+			rosterClient: {
+				cache:	new InMemoryCache(),
+				link:	httpLink.create({uri: environment.service.roster})
 			}
-		}
+		}}
 	}],
 	bootstrap:	[AppComponent]
 })

@@ -5,10 +5,10 @@ import { Component		} from '@angular/core';
 import { Input			} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { Plans			} from '../../../../../.ARCHIVE/models/plan';
-import { Presbies		} from '../../../../../.ARCHIVE/models/plan';
 import { PlanService	} from '../services/plan.service';
 import { PresbyService	} from '../../presby/presby.service';
+import { Plans			} from '../../models/plan';
+import { Presbies		} from '../../models/roster';
 
 @Component({templateUrl: './plan-list.component.html'})
 export class PlanListComponent implements OnInit {

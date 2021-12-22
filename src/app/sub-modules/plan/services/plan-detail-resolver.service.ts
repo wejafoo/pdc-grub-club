@@ -5,11 +5,13 @@ import { Injectable				} from '@angular/core';
 import { Resolve				} from '@angular/router';
 import { RouterStateSnapshot	} from '@angular/router';
 import { ActivatedRouteSnapshot	} from '@angular/router';
-import { Observable				} from 'rxjs';
-import { of						} from 'rxjs';
-import { EMPTY					} from 'rxjs';
-import { PlanService			} from './plan.service';
-import { Plan					} from '../../../../../.ARCHIVE/models/plan';
+
+import { Observable	} from 'rxjs';
+import { of			} from 'rxjs';
+import { EMPTY		} from 'rxjs';
+
+import { PlanService	} from './plan.service';
+import { Plan			} from '../../models/plan';
 
 /*
 	import { Router		} from '@angular/router';

@@ -1,115 +1,194 @@
 
 
-<div id="page-title" style="color: white;">
-	<h3> Configuration </h3>
+<div id="page-title" class="bg-d">
+	<h2 style="margin: 0;">
+		Configuration
+	</h2>
 	<a style="visibility: hidden; " [routerLink]="['/admin/edit']">
 		<mat-icon>edit</mat-icon>
 	</a>
 </div>
 <div id="page-body">
-	<nav id="page-title-2">
-		<div><h3> View Configuration </h3></div>
-		<div *ngIf="true; else changes_made">
-			<a style="background-color: floralwhite; color: gainsboro; cursor: not-allowed;"> Save </a>
-			<a href="."> Edit </a>
+	<div id="page-title-2">
+		<div>
+			<h3>
+				Update Configuration
+			</h3>
 		</div>
-		<ng-template #changes_made>
+		<div *ngIf="true; else changed">
+			<a class="gc-disabled">
+				Save
+			</a>
+			<a href=".">
+				Edit
+			</a>
+		</div>
+		<ng-template #changed>
 			<div>
-				<a style="background-color: #425; color: white; " href="."> Save </a>
-				<a href="."> Cancel </a>
+				<a href=".">
+					Save
+				</a>
+				<a href=".">
+					Cancel
+				</a>
 			</div>
 		</ng-template>
-	</nav>
+	</div>
 	<hr>
 	<div>
 		<mat-accordion>
 			<mat-expansion-panel>
-				<mat-expansion-panel-header>
+				<mat-expansion-panel-header class="bg f c">
 					<mat-panel-title>
-						<strong> Summary / Settings </strong>
+						<strong>
+							Setup
+						</strong>
 					</mat-panel-title>
 					<mat-panel-description>
-						General version information and event settings  <mat-icon> info </mat-icon>
+						Functional setup and configuration
 					</mat-panel-description>
 				</mat-expansion-panel-header>
-				<div style="display: flex; justify-content: space-between; align-items: center">
-					<div style="display: flex; background-color: aliceblue">
-						Event Settings:
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="eventSetting1" name="vehicle1" value="true" checked>
-						<label for="eventSetting1"> Auto-allocate most seats first </label>
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="eventSetting2" name="vehicle2" value="true">
-						<label for="eventSetting2"> I want a new car </label>
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="eventSetting3" name="vehicle3" value="true">
-						<label for="eventSetting3"> I want a new boat </label>
-					</div>
-				</div>
-				<div style="display: flex; justify-content: space-between; align-items: center">
-					<div style="display: flex; background-color: aliceblue">
-						Allocation Settings:
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="allocationSetting1" name="vehicle1" value="true" checked>
-						<label for="allocationSetting1"> Auto-allocate most seats first </label>
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="allocationSetting2" name="vehicle2" value="true">
-						<label for="allocationSetting2"> I want a new car </label>
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="allocationSetting3" name="vehicle3" value="true">
-						<label for="allocationSetting3"> I want a new boat </label>
-					</div>
-				</div>
-				<div style="display: flex; justify-content: space-between; align-items: center">
-					<div style="display: flex; background-color: aliceblue">
-						Assignment Settings:
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="assignmentSetting1" name="vehicle1" value="true" checked>
-						<label for="assignmentSetting1"> Allow host over-assignment </label>
-					</div>
-					<div style="display: flex; background-color: aliceblue">
-						Force sort:
-					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="assignmentSetting2" name="vehicle2" value="true" checked>
-						<label for="assignmentSetting2">
-							Unassigned Guests
+				<p>
+				<div class="fc" style="font-size: 1.1rem;">
+					<div class="fr">
+						<label for="roster-url">
+							<strong>
+								Roster URL:
+							</strong>
 						</label>
 					</div>
-					<div style="display: flex;">
-						<input type="checkbox" id="assignmentSetting3" name="vehicle2" value="true">
-						<label for="assignmentSetting3"> Assigned Guests </label>
+					<div>
+						<input type="text" id="roster-url" style="
+								font-size: 1.1rem; font-family: 'Courier New',serif;
+							" [value]="rosterUrl"
+							(input)='rosterUrlChange($event.target["value"])'
+						>
 					</div>
-				</div>
-					<!-- div *ngIf="deepEqual(loadedVer, ver); else changes_made_2">Loaded version:<strong>{{ver['id']}}</strong></div><ng-template-- #changes_made_2><div><h3><span class="mat-warn"> Unsaved new version: </span><strong> {{ver['id'] + 1}} </strong></h3></div></ng-template -->
-				<div>
-					Total active hosts: <strong> 20	</strong>
-				</div>
-				<div>	RSVPs: <strong> 20 </strong></div>
-				<div>
-					<br>
-					Host seats available by event
-					<br>
-					<hr>
-					<div style="display: flex; justify-content: space-evenly;">
-						<div> January:	<strong> 110	</strong></div>
-						<div> February:	<strong> 80		</strong></div>
-						<div> March:		<strong> 135	</strong></div>
+					<div class="fr" style="justify-content: flex-end;">
+						<i style="font-size: x-small;">
+							e.g. https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8
+						</i>
+					</div>
+					<br><br>
+					<div class="fc" style="font-size: 1.1rem;">
+						<div class="fr">
+							<label for="service-url">
+								<strong>
+									Roster Service URL:
+								</strong>
+							</label>
+						</div>
+						<div>
+							<input type="text" id="service-url"	style="
+									font-size: 1.1rem; font-family: 'Courier New',serif;
+								" [value]="serviceUrl"
+								(input)="rosterServiceChange($event.target['value'])"
+							>
+						</div>
+						<div class="fr" style="justify-content: flex-end;">
+							<i style="font-size: x-small;">
+								e.g. http://localhost:8080/query
+							</i>
+						</div>
+						<p>
 					</div>
 				</div>
 			</mat-expansion-panel>
-			<div>
-			</div>
+			<mat-expansion-panel>
+				<mat-expansion-panel-header class="bg f c">
+					<mat-panel-title>
+						<strong>
+							Settings
+						</strong>
+					</mat-panel-title>
+					<mat-panel-description>
+						General version information and user defaults
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+				<p>
+				<div class="fc" style="font-size: 1.1rem;">
+					<h4 class="bg">
+						Event Settings:
+					</h4>
+					<div class="fr">
+						<input type="checkbox"
+									 checked id="gcSetting1"
+									 name="vehicle1" value="true"
+						>
+						<label for="gcSetting1">
+							Auto-allocate most seats first
+						</label>
+					</div>
+					<div class="f">
+						<input type="checkbox"
+									 id="gcSetting2"
+									 name="vehicle2"
+									 value="true"
+						>
+						<label for="gcSetting2">
+							I wanna a new car
+						</label>
+					</div>
+					<div class="f">
+						<input type="checkbox"
+									 id="gcSetting3"
+									 name="vehicle3"
+									 value="true"
+						>
+						<label for="gcSetting3">
+							I wanna a new boat
+						</label>
+					</div>
+					<h4 class="bg"> Allocation Settings: </h4>
+					<div class="f">
+						<input type="checkbox" checked
+									 id="gcAllocationSetting1"
+									 name="vehicle1" value="true"
+						>
+						<label for="gcAllocationSetting1">
+							Auto-allocate most seats first
+						</label>
+					</div>
+					<h4 class="bg">
+						Assignment Settings:
+					</h4>
+					<div>
+						<input type="checkbox" checked
+									 id="gcAssignmentSetting1"
+									 name="vehicle1" value="true"
+						>
+						<label for="gcAssignmentSetting1">
+							Allow host over-assignment
+						</label>
+					</div>
+					<div style="margin-left: 2rem;">
+						<h4>
+							Force sort:
+						</h4>
+						<div style="margin-left: 2rem;">
+							<div>
+								<input type="checkbox" checked
+											 id="gcAssignmentSetting2"
+											 name="vehicle2" value="true"
+								>
+								<label for="gcAssignmentSetting2">
+									Unassigned Guests
+								</label>
+							</div>
+							<div>
+								<input type="checkbox"
+											 id="gcAssignmentSetting3"
+											 name="vehicle2" value="true"
+								>
+								<label for="gcAssignmentSetting3">
+									Assigned Guests
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</mat-expansion-panel>
 		</mat-accordion>
 	</div>
 </div>
-<!-- #######################################################################################  Event SETTINGS  ##-->
-<!-- #######################################################################################  Host SETTINGS  ##-->
-<!-- ############################################################################################  SETTINGS  ##-->
+

@@ -1,17 +1,19 @@
 
 
-<div id="page-title">
+<div id="page-title" class="bg-d">
 	<h2> Login </h2>
-	<span title="Logout"><a (click)="onSuccess($event)"><mat-icon> logout </mat-icon></a></span>
+	<span title="Logout"><a (click)="onSuccess($event)">
+			<mat-icon>logout</mat-icon>
+	</a></span>
 </div>
 
 <div id="page-body">
 	<mat-card>
-		<mat-card-content>
-			<ngx-auth-firebaseui	[tabindex]	=	"0"
-														(onSuccess)	= "onSuccess($event)"
-														(onError)		= "onError($event)"
-														[providers]	= "[providers.Google, providers.Facebook, providers.Twitter]"
+		<mat-card-content class="bg-m">
+			<ngx-auth-firebaseui [tabindex]="0"
+				(onSuccess)="onSuccess($event)"
+				(onError)="onError($event)"
+				[providers]="[providers.Google, providers.Facebook, providers.Twitter]"
 			></ngx-auth-firebaseui>
 		</mat-card-content>
 	</mat-card>

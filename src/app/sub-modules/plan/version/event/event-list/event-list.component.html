@@ -1,6 +1,6 @@
 
 
-<div id="page-title">
+<div id="page-title" class="bg-d">
 	<h2>
 		Plan Hub Scrub
 	</h2>
@@ -15,12 +15,18 @@
 		</h3>
 	</div>
 	<ul class="pgc">
-		<li *ngFor="let event of events" [class.selected]="event.id === selectedEventId">
+		<li *ngFor="let event of events"
+				[class.selected]="event.id === selectedEventId"
+		>
 			<div>
 				<div>
 					<a [routerLink]="['/plan', event.id]" routerLinkActive="active">
-						<div>{{event.id}}</div>
-						<div>{{event.name}}</div>
+						<div>
+							{{event.id}}
+						</div>
+						<div>
+							{{event.name}}
+						</div>
 					</a>
 				</div>
 				<div>
