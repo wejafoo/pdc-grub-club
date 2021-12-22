@@ -11,6 +11,7 @@
 	display:			flex
 	flex-direction:		row
 	justify-content:	space-between
+	align-items:		center
 .c
 	align-items:		center
 	text-align:			center
@@ -185,12 +186,16 @@ mat-panel-description
 	margin:				1em 0 0 1em
 	display:			flex
 .menu 														/*  mobile menu   */
-	display:			flex
-	justify-content:	space-evenly
+	justify-content:	space-around
 	padding:			0
 	margin:				.688em 0
 	.submenu
 		list-style-type:	none
+	.item
+		a,
+		button
+			background-color: inherit
+			color: inherit
 .not-full
 	color:				red
 .pgc
@@ -219,9 +224,13 @@ mat-panel-description
 .submenu:hover
 	ul
 		display:		block
-// .toggle
-	order:				1
-	font-size:			20px
+.vertical-info
+	color:				#425
+	text-align:			center
+	padding:			0 .5em
+	.info-head
+		text-align:		center
+		margin:			1em 0
 
 ////////////////////////////////////////////////////////////////////////// TAGS
 html
@@ -231,11 +240,6 @@ body
 	margin: 			0
 	width:				100%
 	color:				#425
-div.vertical-info
-	text-align:			center
-	.info-head
-		text-align:			center
-		margin:				1em 0
 h1
 	font-size:			2.5rem
 	text-align:			center
@@ -289,11 +293,6 @@ td.gutter
 	min-width: 			32%
 	width: 				40%
 	background-color:	gainsboro
-td.vertical-info
-	display:			flex
-	flex-direction:		column
-	justify-content:	space-between
-	width:				20%
 th
 	background-color:	#425
 	color:				white
@@ -341,11 +340,3 @@ tr
 	.g-container
 		margin:			0 auto
 		padding:		0
-
-
-// a.pgc-tab:hover
-	background-color:	gainsboro !important
-// a.pgc-tab.active,
-// a.pgc-tab.active:hover
-	background-color:	#425 !important
-	color:				white !important

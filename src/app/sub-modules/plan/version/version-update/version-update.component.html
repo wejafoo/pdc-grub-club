@@ -55,7 +55,9 @@
 	</div>
 	<div>
 		<mat-accordion>
+			
 			<!-- #########################################  HOST CONFIGURATIONS  ##-->
+			
 			<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
 				<mat-expansion-panel-header class="bg f c">
 					<mat-panel-title>
@@ -90,29 +92,48 @@
 						</div>
 					</div>
 					<table *ngIf="loaded" cdkDropListGroup>
-						<tr>
-							<th><strong>Unallocated</strong></th>
-							<th><strong>Allocated</strong></th>
+						<tr class="f">
+							<th class="f left-gutter">
+								<strong>
+									Unallocated
+								</strong>
+							</th>
+							<th class="f median">
+								<strong>
+									Summary
+								</strong>
+							</th>
+							<th class="f right-gutter">
+								<strong>
+									Allocated
+								</strong>
+							</th>
 						</tr>
-						<tr>
+						<tr class="f">
+							
 							<!-- ##################################  UN-ASSIGNED HOSTS  ###-->
-							<td cdkDropList id="unallocated"
-									class="gutter unassigned list"
-									[cdkDropListData]="unHs[evt]"
-									(cdkDropListDropped)="unDropHost( $event, evt )"
+							
+							<td cdkDropList
+								id="unallocated" class="f gutter unassigned list"
+								[cdkDropListData]="unHs[evt]"
+								(cdkDropListDropped)="unDropHost( $event, evt )"
 							>
 								<div *ngFor="let unH of unHs[evt]">
 									<mat-card cdkDrag
-														[cdkDragData]="unH"
-														[cdkDragDisabled]="unH['isDisabled']"
+										[cdkDragData]="unH"
+										[cdkDragDisabled]="unH['isDisabled']"
 									>
 										<mat-icon>menu</mat-icon>
 										{{unH['hostKey']}}
 									</mat-card>
 								</div>
 							</td>
+							
 							<!-- ##############################  EVENT HOSTING SUMMARY  ###-->
-							<td class="vertical-info">
+							
+							<td class="fc" style="
+								width: 20%; border-top: solid #425;
+							">
 								<div class="vertical-info">
 									<div style="margin-top: 0" class="info-head bg">
 										<span style="font-weight: 900">Guests</span>
@@ -126,7 +147,7 @@
 									<div class="info-head bg">
 										<span style="font-weight: 900">Seats</span>
 									</div>
-									<div style="padding: 0 .5em; text-align: justify-all;">
+									<div>
 										<div style="display: inline-block; text-align: center; margin-bottom: 1em;">
 											Total Available:
 											<span style="font-weight: 900">{{
@@ -194,11 +215,13 @@
 									</div>
 								</div>
 							</td>
+							
 							<!-- #####################################  ASSIGNED HOSTS  ###-->
+							
 							<td cdkDropList id="allocated" [class] = "
 										summary[evt]['overAllocatedSeats'] >= 0 ?
-											'gutter assigned plan-list full' :
-												'gutter assigned plan-list not-full'
+											'f gutter assigned plan-list full' :
+												'f gutter assigned plan-list not-full'
 							"		*ngIf="loaded || summary[evt] !== undefined"
 									[cdkDropListData]="aHs[evt]"
 									(cdkDropListDropped)="dropHost($event, evt)"
@@ -224,7 +247,9 @@
 					</button>
 				</mat-action-row>
 			</mat-expansion-panel>
+			
 			<!-- #########################################  GUEST CONFIGURATION  ##-->
+			
 			<mat-expansion-panel
 				[expanded]="step === 1"
 				(opened)="setStep(1)"
@@ -262,11 +287,29 @@
 						</div>
 					</div>
 					<table *ngIf="loaded" cdkDropListGroup>
-						<tr><th><strong>Unassigned</strong></th><th><strong>Assigned</strong></th></tr>
-						<tr>
+						<tr class="f">
+							<th class="f left-gutter">
+								<strong>
+									Unassigned
+								</strong>
+							</th>
+							<th class="f median">
+								<strong>
+									Summary
+								</strong>
+							</th>
+							<th class="f right-gutter">
+								<strong>
+									Assigned
+								</strong>
+							</th>
+						</tr>
+						<tr class="f">
+							
 							<!-- ################################  UN-ASSIGNED GUESTS  ### -->
+							
 							<td cdkDropList id="unassigned"
-									class="gutter unassigned list"
+									class="f gutter unassigned list"
 									[cdkDropListData]="unGs[evt]"
 									(cdkDropListDropped)="unDropGuest($event, evt)"
 							>
@@ -280,8 +323,12 @@
 									</mat-card>
 								</div>
 							</td>
+							
 							<!-- ################################  EVENT GUEST SUMMARY  ###-->
-							<td class="vertical-info">
+							
+							<td class="fc" style="
+								width: 20%; border-top: solid #425;
+							">
 								<div class="vertical-info">
 									<div style="margin-top: 0;" class="info-head bg">
 										<span style="font-weight: 900;">Guests</span>
@@ -356,8 +403,10 @@
 																'---'
 											}}</span>
 										</div>
-										<div>
-											<button style="margin-top: 2em;" (click)="isOpen=!isOpen">
+										<div class="fr" style="
+											padding: 2em 0; justify-content: space-around;
+										">
+											<button (click)="isOpen=!isOpen">
 												{{isOpen? "Peeps View": "Card View"}}
 											</button>
 										</div>
@@ -366,7 +415,9 @@
 								<div class="vertical-info">
 									<hr style="width: 100%;">
 									<div class="info-head bg">
-										<span style="font-weight: 900">Status Key</span>
+										<span style="font-weight: 900">
+											Status Key
+										</span>
 									</div>
 									<div style="background-color: orange; margin: .25em;">
 										<strong>
@@ -386,7 +437,7 @@
 								</div>
 							</td>
 							<!-- ####################################  ASSIGNED GUESTS  ###-->
-							<td class="gutter">
+							<td class="f gutter">
 								<div cdkDropList style="text-align: center; max-width: 10em; height: 12em; max-height: 12em; padding: .5em;" [id]="aH['hostKey']"
 										 *ngFor="let aH of aHs[evt]"
 										 [cdkDropListData]="aGs[evt][aH['hostKey']]"

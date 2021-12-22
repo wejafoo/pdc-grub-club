@@ -3,7 +3,11 @@
 import { environment	} from '../../environments/environment';
 import { Component		} from '@angular/core';
 
-@Component({ templateUrl: './admin.component.html' })
+@Component({
+	selector: 'app-admin',
+	templateUrl: './admin.component.html',
+	styleUrls: ['./admin.component.sass']
+})
 export class AdminComponent {
 	env:	any;
 	debug:	any;

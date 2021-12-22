@@ -1,12 +1,12 @@
 
-// ID
+///////////////////////////////////////////////////////////////////////////// ID
 #unassigned,
 #allocated,
 #unallocated
 	div
 		font-size:	1em
 
-// CLASS
+////////////////////////////////////////////////////////////////////////// CLASS
 .cdk-drag-animating
 	transition:		transform 250ms cubic-bezier(0, 0, 0.2, 1)
 .cdk-drag-disabled
@@ -60,6 +60,8 @@
 		padding:		0 10px
 .mat-card
 	margin:				.25rem
+.mat-expansion-panel-header-description
+	flex-grow:			inherit	!important
 .mat-form-field + .mat-form-field
 	margin-left:		8px
 .mat-grid-tile-content
@@ -123,16 +125,7 @@
 	margin:				0 10%
 	padding-top:		24%
 
-
-// TAG
-// button
-	color:				#425
-// button:hover
-	font-weight:		750
-div.vertical-info
-	color:				#425
-	text-align:			center
-
+/////////////////////////////////////////////////////////////////////////// TAGS
 mat-card
 	align-items:		center
 	display:			flex
@@ -148,7 +141,6 @@ mat-card:active
 	cursor:				grabbing
 mat-card:hover
 	cursor:				grab
-
 mat-grid-tile
 	background:			gainsboro
 mat-icon.unassigned-guest
@@ -164,20 +156,21 @@ table
 	border-collapse:	collapse
 	padding:			0
 	width: 				100%
+td.gutter,
+th.left-gutter,
+th.right-gutter
+	min-width: 			32%
+	width:				40%
+th.left-gutter
+	justify-content:	left
+th.right-gutter
+	justify-content:	right
+th.median
+	justify-content:	center
+	width:				20%
 td.gutter
-	display:			flex
 	flex-wrap:			wrap
 	justify-content:	space-evenly
 	align-items:		center
 	border:				solid
-	min-width: 			32%
-	width: 				40%
 	background-color:	gainsboro
-td.vertical-info
-	display:			flex
-	flex-direction:		column
-	justify-content:	space-between
-	width:				20%
-tr
-	display:			flex
-	justify-content:	space-between

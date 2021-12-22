@@ -1,31 +1,33 @@
 
 
-import { environment	} from '../../../../../environments/environment';
-import { Component		} from '@angular/core';
-import { OnInit			} from '@angular/core';
-import { ActivatedRoute	} from '@angular/router';
-import { Router			} from '@angular/router';
-
+import { environment		} from '../../../../../environments/environment';
+import { Component			} from '@angular/core';
+import { Inject				} from '@angular/core';
+import { OnInit				} from '@angular/core';
+import { ActivatedRoute		} from '@angular/router';
+import { Router				} from '@angular/router';
+import { MAT_DIALOG_DATA	} from '@angular/material/dialog';
+import { MatDialog			} from '@angular/material/dialog';
 import { moveItemInArray	} from '@angular/cdk/drag-drop';
 import { CdkDrag			} from '@angular/cdk/drag-drop';
 import { CdkDropList		} from '@angular/cdk/drag-drop';
 import { transferArrayItem	} from '@angular/cdk/drag-drop';
 import { CdkDragDrop		} from '@angular/cdk/drag-drop';
+import { Apollo				} from 'apollo-angular';
+import { isObject			} from 'lodash';
+import { PlanService 		} from '../../services/plan.service';
+import { PresbyService 		} from '../../../presby/presby.service';
+import { Plan				} from '../../../models/plan';
+import { Schedule			} from '../../../models/plan';
+import { Version			} from '../../../models/plan';
+import { Presbies			} from '../../../models/roster';
+import { Presby				} from '../../../models/roster';
 
-import { Apollo		} from 'apollo-angular';
-import { gql		} from 'apollo-angular';
-import { isObject	} from 'lodash';
-
-import { PlanService 	} from '../../services/plan.service';
-import { PresbyService 	} from '../../../presby/presby.service';
-
-import { Plan		} from '../../../models/plan';
-import { Schedule	} from '../../../models/plan';
-import { Version	} from '../../../models/plan';
-import { Presbies	} from '../../../models/roster';
-import { Presby		} from '../../../models/roster';
-
-// export type Query = { presbies: Presbies }
+@Component({selector: 'dialog-content-example-dialog', templateUrl: './dialog-content-example-dialog.html'})
+export class DialogContentComponent {
+	results: string
+	constructor(@Inject(MAT_DIALOG_DATA) public data: string) {this.results = JSON.stringify(data['aGs'])}
+}
 
 @Component({
 	selector: 'app-version-update',
@@ -55,43 +57,32 @@ export class VersionUpdateComponent implements OnInit {
 	loaded	= false;
 	step	= 1;									// accordion order-control
 	
-// QUERY =
-// gql`{
-// presbies {
-// key id isActive last guests guestings hostings seats unknown1 unknown2 email home cell smail city st zip mmail
-// }}`;
-	
 	constructor(
-		private	route:	ActivatedRoute,
-		private	router:	Router,
-		private	apollo:	Apollo,
-		private	planSvc: PlanService,
-		private	presby:	PresbyService
+		private	planSvc:	PlanService,
+		private	presby:		PresbyService,
+		private	apollo:		Apollo,
+		private dialog:		MatDialog,
+		private	route:		ActivatedRoute,
+		private	router:		Router
 	) {
-		this.env = environment;
-		this.debug = this.env.debug;
+		this.env	= environment;
+		this.debug	= this.env.debug;
 		console.log('>>> VersionUpdateComponent');
 	}
 	
-	
 	save() {
 		this.sched.ver.id++;
-		console.log(
-			'!!! VersionUpdate -> ver:',
-			typeof this.ver.labels, Array.isArray(this.ver.labels), this.ver
-		);
-		localStorage.setItem(
-			this.planId + '-latest',
-			JSON.stringify(this.sched)
-		);
-		localStorage.setItem(
-			this.sched.id,
-			JSON.stringify(this.sched)
-		);
+		console.log('!!! VersionUpdate -> ver:', typeof this.ver.labels, Array.isArray(this.ver.labels), this.ver);
+		localStorage.setItem(this.planId + '-latest', JSON.stringify(this.sched));
+		localStorage.setItem(this.sched.id, JSON.stringify(this.sched));
 		this.planSvc.addVersion(this.ver);
-		this.router.navigate([
-			'/plan', this.planId, 'version', 's', ++this.sched.ver.id
-		]).then()
+		
+		const dialogRef = this.dialog.open(
+			DialogContentComponent,
+			{width: '640px', disableClose: true, data: this.sched}
+		);
+		dialogRef.afterClosed().subscribe(result => { console.log(`Dialog result: ${result}`)});
+		// this.router.navigate(['/plan', this.planId, 'version', 's', ++this.sched.ver.id]).then()
 	}
 
 	deepEqual(object1: any, object2: any) {
@@ -155,14 +146,14 @@ export class VersionUpdateComponent implements OnInit {
 		}
 		this.ver.id++;
 		this.sched = {
-			id:		String(this.plan.id) + '-' + String(this.ver.id),
-			plan:	this.plan,
-			ver:	this.ver,
-			actives: this.actives,
-			aGs:	this.aGs,
-			aHs:	this.aHs,
-			unGs:	this.unGs,
-			unHs:	this.unHs,
+			id:			String(this.plan.id) + '-' + String(this.ver.id),
+			plan:		this.plan,
+			ver:		this.ver,
+			actives:	this.actives,
+			aGs:		this.aGs,
+			aHs:		this.aHs,
+			unGs:		this.unGs,
+			unHs:		this.unHs,
 		};
 		this.sched.ver.labels.push(this.sched.id)
 		const pairs: {[key: string]: string[]} = {};
