@@ -15,29 +15,21 @@
 				Update Configuration
 			</h3>
 		</div>
-		<div *ngIf="true; else changed">
-			<a class="gc-disabled">
-				Save
-			</a>
-			<a href=".">
-				Edit
-			</a>
+		<div *ngIf="!changed; else isChanged">
+			<a class="gc-disabled"				> Save		</a>
+			<a [routerLink]="['/plan/s']"	> Back		</a>
 		</div>
-		<ng-template #changed>
+		<ng-template #isChanged>
 			<div>
-				<a href=".">
-					Save
-				</a>
-				<a href=".">
-					Cancel
-				</a>
+				<a (click)="reload()"			 > Save		</a>
+				<a (click)="cancelChange()"> Cancel	</a>
 			</div>
 		</ng-template>
 	</div>
 	<hr>
 	<div>
 		<mat-accordion>
-			<mat-expansion-panel>
+			<mat-expansion-panel expanded="true" >
 				<mat-expansion-panel-header class="bg f c">
 					<mat-panel-title>
 						<strong>
@@ -49,7 +41,7 @@
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				<p>
-				<div class="fc" style="font-size: 1.1rem;">
+				<div class="fc">
 					<div class="fr">
 						<label for="roster-url">
 							<strong>
@@ -58,9 +50,9 @@
 						</label>
 					</div>
 					<div>
-						<input type="text" id="roster-url" style="
-								font-size: 1.1rem; font-family: 'Courier New',serif;
-							" [value]="rosterUrl"
+						<input type="text" id="roster-url"
+							style="font-family: 'Courier New',serif;"
+							[value]="rosterUrl"
 							(input)='rosterUrlChange($event.target["value"])'
 						>
 					</div>
@@ -70,7 +62,7 @@
 						</i>
 					</div>
 					<br><br>
-					<div class="fc" style="font-size: 1.1rem;">
+					<div class="fc">
 						<div class="fr">
 							<label for="service-url">
 								<strong>
@@ -79,10 +71,10 @@
 							</label>
 						</div>
 						<div>
-							<input type="text" id="service-url"	style="
-									font-size: 1.1rem; font-family: 'Courier New',serif;
-								" [value]="serviceUrl"
-								(input)="rosterServiceChange($event.target['value'])"
+							<input type="text" id="service-url"
+								style		= "font-family: 'Courier New',serif;"
+								[value]	= "serviceUrl"
+								(input)	= "updateRosterService($event.target['value'])"
 							>
 						</div>
 						<div class="fr" style="justify-content: flex-end;">
@@ -106,7 +98,7 @@
 					</mat-panel-description>
 				</mat-expansion-panel-header>
 				<p>
-				<div class="fc" style="font-size: 1.1rem;">
+				<div class="fc">
 					<h4 class="bg">
 						Event Settings:
 					</h4>

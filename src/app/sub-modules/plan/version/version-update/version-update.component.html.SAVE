@@ -188,12 +188,8 @@
 								<div>
 									<div class="bg c"><strong> Seats </strong></div>
 									<div>
-										<div>
-											Total Available: <strong><i>{{summary[evt]['seats']}}</i></strong>
-										</div>
-										<div>
-											Allocated:<strong><i>{{summary[evt]['allocatedSeatCnt']}}</i></strong>
-										</div>
+										<div>Total Available: <strong><i>{{summary[evt]['seats']}}</i></strong></div>
+										<div>Allocated: <strong><i>{{summary[evt]['allocatedSeatCnt']}}</i></strong></div>
 									</div>
 								</div>
 								<div>
@@ -217,29 +213,21 @@
 								</div>
 								<div>
 									<div class="bg c"><strong>Status Key</strong></div>
-									<div class="c" style="background-color: orange; color: aliceblue;">
-										<strong><i>under assigned</i></strong>
-									</div>
-									<div class="c" style="background-color: darkgreen; color: aliceblue;">
-										<strong><i>fully assigned</i></strong>
-									</div>
-									<div class="c" style="background-color: red; color: aliceblue;">
-										<strong><i>over assigned</i></strong>
-									</div>
+									<div class="c" style="background-color: orange; color: aliceblue;"><strong><i>under assigned</i></strong></div>
+									<div class="c" style="background-color: darkgreen; color: aliceblue;"><strong><i>fully assigned</i></strong></div>
+									<div class="c" style="background-color: red; color: aliceblue;"><strong><i>over assigned</i></strong></div>
 								</div>
 								<div class="f c">
-									<button (click)="isOpen=!isOpen">
-										{{isOpen? "Peeps View": "Card View"}}
-									</button>
+									<button (click)="isOpen=!isOpen">{{isOpen? "Peeps View": "Card View"}}</button>
 								</div>
 							</td>
 							<!-- ####################################  ASSIGNED GUESTS  ###-->
 							<td class="f r gutter">
-								<div style="margin: .5em;" *ngFor="let aH of aHs[evt]"
-									cdkDropList [id]="aH['hostKey']"
-									[cdkDropListData]="aGs[evt][aH['hostKey']]"
-										(cdkDropListDropped)="dropGuest($event, evt)"
-										[cdkDropListEnterPredicate]="pairsPredicate()"
+								<div *ngFor="let aH of aHs[evt]"
+										 cdkDropList [id]="aH['hostKey']"
+										 [cdkDropListData]="aGs[evt][aH['hostKey']]"
+										 (cdkDropListDropped)="dropGuest($event, evt)"
+										 [cdkDropListEnterPredicate]="pairsPredicate()"
 								>
 									<div class="fr">
 										<div style="display: inline-block;">{{aH['hostKey']}}</div>
@@ -256,15 +244,16 @@
 										" *ngIf = "! isOpen; else boxView">
 											<div [class]="'poly-content-'+aH['seats']">
 												<div *ngFor="let cnt of [].constructor(aH['seats']); let i = index">
-													<mat-icon id="peep-1" class="assigned-guest-host peep" *ngIf="
-														i <= summary[evt][aH['hostKey']]['hosts'].length-1; else notHost
-													">person</mat-icon>
+													<mat-icon id="peep-1" class="assigned-guest-host peep" *ngIf="i <= summary[evt][aH['hostKey']]['hosts'].length-1; else notHost"
+													>person</mat-icon>
 													<ng-template #notHost>
 														<mat-icon id="peep-2" class="assigned-guest-guest peep" *ngIf="
 															i <= summary[evt][aH['hostKey']]['assignedSeatCnt']-1; else notAssigned
 														">person</mat-icon>
 														<ng-template #notAssigned>
-															<mat-icon id="peep-o" class="unassigned-guest peep">person_outline</mat-icon>
+															<mat-icon id="peep-o" class="unassigned-guest peep">
+																person_outline
+															</mat-icon>
 														</ng-template>
 													</ng-template>
 												</div>
@@ -280,7 +269,10 @@
 																'polyBase plan-list full-host'
 											">
 												<div *ngFor="let aG of aGs[evt][aH['hostKey']]">
-													<mat-card	cdkDrag id="{{aG['guestKey']}}" [cdkDragData]="aG" [cdkDragDisabled]="aG['isDisabled']">
+													<mat-card	cdkDrag id="{{aG['guestKey']}}"
+																[cdkDragData]="aG"
+																[cdkDragDisabled]="aG['isDisabled']"
+													>
 														<mat-icon class="menu">menu</mat-icon> {{aG['guestKey']}}
 													</mat-card>
 												</div>

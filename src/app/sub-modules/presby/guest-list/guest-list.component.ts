@@ -19,13 +19,15 @@ export class GuestListComponent implements OnInit {
 	) {
 		this.env	= environment;
 		this.debug	= this.env.debug;
+		console.log('>>> GuestListComponent');
 	}
 	
-	ngOnInit() {
-		this.guests = this.presby.getData()
+	ngOnInit()	{
+		this.presby.apollo.watchQuery({query: this.presby.QUERY}).valueChanges.subscribe( ret => {
+			console.log('>>> GuestListComponent > PresbyService says:  Incoming roster update...');
+			this.guests = ret.data['presbies'];
+		})
 	}
 	
-	toHosts() {
-		this.router.navigate(['/host/list']).then()
-	}
+	toHosts()	{ this.router.navigate(['/host/list']).then()}
 }

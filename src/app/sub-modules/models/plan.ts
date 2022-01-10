@@ -12,7 +12,7 @@ export interface Schedule  {
 	aGs:		{[key: string]: Guests};
 	unHs:		{[key: string]: Hosts};
 	aHs:		{[key: string]: Hosts};
-};
+}
 
 export type Plans = Plan[];
 export interface Plan {
@@ -23,16 +23,16 @@ export interface Plan {
 
 export type Versions = Version[];
 export interface Version {
-	id:		number;
-	labels:	string[];
-	events:	Events;
+	id:			number;
+	labels:		string[];
+	events:		Events;
 }
 
 export type Events = Event[];
 export interface Event {
-	id:		number;
-	name:	string;
-	hosts?:	Hosts;
+	id:			number;
+	name:		string;
+	hosts?:		Hosts;
 }
 
 export type Hosts = Host[];
@@ -47,16 +47,3 @@ export interface Host {
 	isAssigned?:	boolean;
 	isDisabled?:	boolean;
 }
-
-// sched: {
-// assignedHosts?: {
-// [key: string]: any};
-// assignedGuests?:{
-// [key: string]: any
-// };
-// unassignedHosts?: {
-// [key: string]: any
-// };
-// unassignedGuests?: {[key: string]: any
-// }; actives?: Presbies;
-// } = {};

@@ -37,8 +37,8 @@ export interface Presby {
 	guestings:	Guests;
 	hostings:	Hosts;
 	seats?:		number;
-	unknown1?:	boolean;
-	unknown2?:	boolean;
+	subs?:		boolean;
+	steps?:		boolean;
 	email?:		string;
 	home?:		string;
 	cell?:		string;
@@ -46,5 +46,4 @@ export interface Presby {
 	city?:		string;
 	st?:		string;
 	zip?:		string;
-	mmail?:		string;
 }

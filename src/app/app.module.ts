@@ -59,12 +59,16 @@ export function firebaseAppNameFactory() {return `weja-us`}
 	providers: [{
 		provide:	APOLLO_NAMED_OPTIONS,
 		deps:		[HttpLink],
-		useFactory(httpLink: HttpLink): NamedOptions { return {
-			rosterClient: {
-				cache:	new InMemoryCache(),
-				link:	httpLink.create({uri: environment.service.roster})
+		useFactory(httpLink: HttpLink): NamedOptions {
+			return {
+				rosterClient: {
+					cache:	new InMemoryCache(),
+					link:	httpLink.create({
+						uri: JSON.parse( localStorage.getItem('rosterService'))
+					})
+				}
 			}
-		}}
+		}
 	}],
 	bootstrap:	[AppComponent]
 })

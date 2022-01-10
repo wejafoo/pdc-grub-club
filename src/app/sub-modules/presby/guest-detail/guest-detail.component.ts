@@ -31,7 +31,15 @@ export class GuestDetailComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this.guests = this.presby.getData()
+		this.presby.apollo.watchQuery(
+			{query: this.presby.QUERY}
+		).valueChanges.subscribe( ret => {
+			console.log(
+				'>>> GuestDetailComponent > ' +
+				'PresbyService says:  Incoming roster update...'
+			);
+			this.guests = ret.data['presbies'];
+		})
 	}
 	
 	toGuests() {

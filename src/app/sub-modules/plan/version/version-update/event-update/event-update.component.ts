@@ -5,14 +5,13 @@ import { ActivatedRoute	} from '@angular/router';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-
-import { Observable	} from 'rxjs';
-import { of			} from 'rxjs';
-import { switchMap	} from 'rxjs/operators';
-
-import { DialogService	} from '../../../../../services/dialog.service';
+import { of				} from 'rxjs';
+import { switchMap		} from 'rxjs/operators';
 import { PlanService	} from '../../../services/plan.service';
 import { Version		} from '../../../../models/plan';
+
+// import {Observable} from 'rxjs';
+// import {DialogService} from '../../../../../services/dialog.service';
 
 @Component({
 	selector: 'app-event-plan-list-plan-update',
@@ -49,10 +48,8 @@ export class EventUpdateComponent implements OnInit {
 		this.route.paramMap.pipe(
 			switchMap(params => of( params.get('versionId')))
 		).subscribe(versionId => {
-			this.loadedVer =
-				JSON.parse( JSON.stringify( this.ps.getPlan(+versionId)));
-			this.ver =
-				JSON.parse( JSON.stringify( this.ps.getPlan(+versionId)));
+			this.loadedVer =	JSON.parse( JSON.stringify( this.ps.getPlan(+versionId)));
+			this.ver =			JSON.parse( JSON.stringify( this.ps.getPlan(+versionId)));
 		});
 
 		this.route.paramMap.pipe(

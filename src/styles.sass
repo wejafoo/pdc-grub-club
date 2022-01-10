@@ -2,11 +2,31 @@
 
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
 
+
+// th
+	background-color:	gainsboro
+	color:				white
+	min-width: 			20%
+	max-width: 			20%
+	padding:			0 0.5em
+
+#page-title
+	a
+		padding: 				0
+		border-style: 			double
+		border-color: 			#425
+#page-title-2
+	a
+		padding:			5px 10px
+		margin-right:		10px
+		display:			inline-block
+
 .f, li, ul, a, button
 	display:			flex
 .fc
 	display:			flex
 	flex-direction:		column
+	justify-content:	space-between
 .fr
 	display:			flex
 	flex-direction:		row
@@ -15,6 +35,7 @@
 .c
 	align-items:		center
 	text-align:			center
+	justify-content:	center
 .bg
 	background-color:	aliceblue		!important
 	color:				#425			!important
@@ -24,6 +45,10 @@
 .bg-m
 	background-color:	gainsboro
 	color:				#425
+.l
+	justify-content:	left
+.r
+	justify-content:	right
 .no-bg
 	background-color:	white
 	color:				#425
@@ -48,25 +73,12 @@ a.active:hover
 	color:					white	!important
 	font-weight:			600
 	
-#page-title
-	a
-		padding: 				0
-		border-style: 			double
-		border-color: 			#425
-#page-title-2
-	a
-		padding:			5px 10px
-		margin-right:		10px
-		display:			inline-block
 .guests, .hosts
 	a
 		display:			inline-block
 		font-size:			1.2rem
 		margin:				.1em
 		width:				100%
-// .item:not(.button) a:hover
-	.item a:hover::after
-		color: #ccc
 .item.button
 	padding:				9px 5px
 	order:					2
@@ -78,7 +90,7 @@ a.active:hover
 			border-color:		#625
 			font-size:			1.2rem
 			width:				100%
-.menu 														/*  mobile menu   */
+.main 														/*  mobile menu   */
 	.submenu
 		a
 			padding:	15px
@@ -93,7 +105,7 @@ a.active:hover
 		width:			auto
 		order:			1
 		display:		block
-	.menu li.button 	a 					/*  Button up from tablet screen  */
+	.main li.button 	a 					/*  Button up from tablet screen  */
 		padding:		10px 15px
 		margin:			5px 0
 #contact-button
@@ -185,7 +197,7 @@ mat-panel-description
 	justify-content:	flex-start
 	margin:				1em 0 0 1em
 	display:			flex
-.menu 														/*  mobile menu   */
+.main 														/*  mobile menu   */
 	justify-content:	space-around
 	padding:			0
 	margin:				.688em 0
@@ -224,14 +236,6 @@ mat-panel-description
 .submenu:hover
 	ul
 		display:		block
-.vertical-info
-	color:				#425
-	text-align:			center
-	padding:			0 .5em
-	.info-head
-		text-align:		center
-		margin:			1em 0
-
 ////////////////////////////////////////////////////////////////////////// TAGS
 html
 	font-family:		Roboto, sans-serif
@@ -284,23 +288,9 @@ table
 	border-collapse:	collapse
 	padding:			0
 	width: 				100%
-td.gutter
-	display:			flex
-	flex-wrap:			wrap
-	justify-content:	space-evenly
-	align-items:		center
-	border:				solid
-	min-width: 			32%
-	width: 				40%
-	background-color:	gainsboro
-th
-	background-color:	#425
-	color:				white
-	padding:			0 0.5em
 tr
-	display:			flex
 	justify-content:	space-between
-
+	// display:			flex
 ///////////////////////////////////////////////////////////        Mobile Styles
 @media all and (min-width: 700px)
 	// .toggle

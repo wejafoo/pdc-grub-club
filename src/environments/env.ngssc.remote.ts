@@ -17,7 +17,8 @@ const authService	= '/login';
 const authMife		= thisMife + authService;
 const assetsBucket	= 'https://storage.googleapis.com/weja.us';							// GLOBAL DEFAULTS
 const cmsService	= 'https://foo.weja.us/cms';
-const rosterService = 'http://localhost:5430/query';
+
+// const rosterService = 'http://localhost:5430/query';
 
 export const environment = {
 	production: Boolean(alias === 'prod'),
@@ -28,9 +29,9 @@ export const environment = {
 	remote: true,
 	test: false,
 	title,
-	assets: { bucket: assetsBucket },
-	mifen: { this: thisMife, private: thisMife, auth: authMife, register: authMife + 'register' },
-	service: { auth: authService, cms: cmsService, roster: rosterService },
+	assets: {bucket: assetsBucket},
+	mifen: {this: thisMife, private: thisMife, auth: authMife, register: authMife + 'register'},
+	service: {auth: authService, cms: cmsService},	// roster: rosterService
 	authGuardRemoteFallbackURL:	authMife,
 	authGuardRemoteLoggedInURL:	thisMife,
 	firebase: {

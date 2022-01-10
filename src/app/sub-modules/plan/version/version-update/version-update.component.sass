@@ -1,176 +1,138 @@
-
 ///////////////////////////////////////////////////////////////////////////// ID
-#unassigned,
-#allocated,
-#unallocated
-	div
-		font-size:	1em
-
 ////////////////////////////////////////////////////////////////////////// CLASS
-.cdk-drag-animating
-	transition:		transform 250ms cubic-bezier(0, 0, 0.2, 1)
 .cdk-drag-disabled
-	background:		floralwhite
-	color:			darkgoldenrod
+	background:				floralwhite
+	color:					darkgoldenrod
 .cdk-drag-disabled:hover
-	cursor:			not-allowed
-.cdk-drag-placeholder
-	opacity:		0
-.cdk-drag-placeholder #unassigned
-	opacity:		.5
+	cursor:					not-allowed
 .cdk-drag-preview
-	align-items:		center
-	background-color:	pink
-	border-color: 		red
-	border-radius:		50px
-	border-style: 		solid
-	box-shadow:			0 15px 15px 15px rgba(0, 0, 0, 0.5)
-	display:			flex
-	height:				1.75em
-	justify-content:	space-between
-	padding:			0 .25em
-	mat-icon
-		display:		flex
-		font-size:		xx-small
-		align-items:	center
+	background-color:		lightskyblue
 .cdk-drop-list-dragging
-	background-color:	greenyellow
-.cdk-drop-list-dragging:hover
-	border-color:		red
-	border-style:		inset
-	border-collapse:	collapse
+	background-color:		greenyellow
+	padding:				0 0.5em 0.2em 0.5em
 .cdk-drop-list-receiving
-	background-color:	lightgreen
+	background-color:		lightgreen
+	padding:				0 0.2em 0.2em 0.2em
+.cdk-drag-placeholder
+	border:					dotted
+	opacity:				.2
 .event-heading
-	color:				#425
-	justify-content:	space-between
-	align-items:		center
-	padding:			0 1em
-	margin:				.75em 0 .5em 0
+	color:					#425
+	justify-content:		space-between
+	align-items:			center
+	padding:				0 1em
+	margin:					.75em 0 .5em 0
 .full
-	color:				green
-.list
-	display:			flex
-	justify-content:	center
-	flex-wrap:			wrap
-	align-items:		center
-	div
-		font-size:		9px
-		width:			90%
-		padding:		0 10px
-.mat-card
-	margin:				.25rem
+	color:					red
+.gutter
+	align-items:			center
+	background-color:		gainsboro
+	border:					solid
+	flex-wrap:				wrap
+	justify-content:		space-evenly
+.gutter.l
+	min-width: 				25%
+.gutter.r
+	min-width: 				50%
+	max-width: 				55%
 .mat-expansion-panel-header-description
-	flex-grow:			inherit	!important
+	flex-grow:				inherit	!important
 .mat-form-field + .mat-form-field
-	margin-left:		8px
+	margin-left:			8px
 .mat-grid-tile-content
-	flex-direction:		column
-	align-items:		flex-start
-	justify-content:	flex-start
-	margin:				1em 0 0 1em
-	display:			flex
+	flex-direction:			column
+	align-items:			flex-start
+	justify-content:		flex-start
+	margin:					1em 0 0 1em
+	display:				flex
+.median
+	min-width:				fit-content
+	border:					solid white
 .not-full
-	color:				red
+	color:					green
+.plan-list
+	padding:				0.1em 0
+	height:					unset !important
+	width:					14em !important
+	max-width:				15em
 .polyBase
-	height:				10em
-	width:				10em
+	height:					11em
+	width:					11em
 .polyBase.over-full-host
-	background-color:	red
-	cursor:				no-drop
+	background-color:		red
+	cursor:					no-drop
 .polyBase.full-host
-	background-color:	darkgreen
-	cursor:				no-drop
+	background-color:		darkgreen
+	cursor:					no-drop
 .polyBase.not-full-host
-	background-color:	orange
+	background-color:		orange
 .poly-2
-	display:			flex
-	justify-content:	center
-	align-items:		center
-	clip-path:			circle( 30% )
+	display:				flex
+	justify-content:		center
+	align-items:			center
+	clip-path:				circle(30%)
 .poly-content-2
-	display:			flex
-	justify-content:	center
+	display:				flex
+	justify-content:		center
 .poly-6
-	align-items:		flex-end
-	clip-path:	polygon(50% 0%,  5% 90%,  95% 90%)
+	align-items:			flex-end
+	clip-path:				polygon(50% 0%,5% 90%,95% 90%)
 .poly-content-6
-	display:			flex
-	flex-flow:			row wrap
-	justify-content:	center
-	margin:				0 31%
-	padding-top:		31%
+	display:				flex
+	flex-flow:				row wrap
+	justify-content:		center
+	margin:					0 31%
+	padding-top:			31%
 .poly-8
-	clip-path:	polygon(50% 0%,  95% 50%,  50% 100%,  5% 50%)
+	clip-path:				polygon(50% 0%,95% 50%,50% 100%,5% 50%)
 .poly-content-8
-	display:			flex
-	flex-flow:			row wrap
-	justify-content:	center
-	margin:				0 23%
-	padding-top:		28%
+	display:				flex
+	flex-flow:				row wrap
+	justify-content:		center
+	margin:					0 23%
+	padding-top:			28%
 .poly-10
-	clip-path:	polygon(50% 0%,  95% 40%,  75% 90%,  25% 90%,  5% 40%)
+	clip-path:				polygon(50% 0%,95% 40%,75% 90%,25% 90%,5% 40%)
 .poly-content-10
-	display:			flex
-	flex-flow:			row wrap
-	justify-content:	center
-	margin:				0 10%
-	padding-top:		30%
+	display:				flex
+	flex-flow:				row wrap
+	justify-content:		center
+	margin:					0 10%
+	padding-top:			30%
 .poly-12
-	clip-path:	polygon(50% 0%,	95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)
+	clip-path:				polygon(50% 0%,95% 25%,95% 75%,50% 100%,5% 75%,5% 25%)
 .poly-content-12
-	display:			flex
-	flex-flow:			row wrap
-	justify-content:	center
-	margin:				0 10%
-	padding-top:		24%
-
+	display:				flex
+	flex-flow:				row wrap
+	justify-content:		center
+	margin:					0 10%
+	padding-top:			24%
 /////////////////////////////////////////////////////////////////////////// TAGS
+mat-card.mat-card
+	margin:					.25rem
 mat-card
-	align-items:		center
-	display:			flex
-	font-size:			x-small
-	justify-content:	space-between
-	padding: 			0 .25em
-	height:				1.75em
-	mat-icon
-		align-items:	center
-		display:		flex
-		font-size:		xx-small
+	align-items:			center
+	padding: 				0 .25em
 mat-card:active
-	cursor:				grabbing
+	cursor:					grabbing
 mat-card:hover
-	cursor:				grab
+	cursor:					grab
 mat-grid-tile
-	background:			gainsboro
-mat-icon.unassigned-guest
-	color:				white
-	float:				right
+	background:				gainsboro
 mat-icon.assigned-guest-guest
-	color:				lime
-	float:				right
+		color:				lime
+		float:				right
 mat-icon.assigned-guest-host
-	color:				black
-	float:				right
-table
-	border-collapse:	collapse
-	padding:			0
-	width: 				100%
-td.gutter,
-th.left-gutter,
-th.right-gutter
-	min-width: 			32%
-	width:				40%
-th.left-gutter
-	justify-content:	left
-th.right-gutter
-	justify-content:	right
-th.median
-	justify-content:	center
-	width:				20%
-td.gutter
-	flex-wrap:			wrap
-	justify-content:	space-evenly
-	align-items:		center
-	border:				solid
-	background-color:	gainsboro
+		color:				black
+		float:				right
+mat-icon.menu
+		margin-right:		.5rem
+mat-icon.unassigned-guest
+		color:				white
+		float:				right
+th
+	background-color:		gainsboro
+	border-top:				solid
+	border-bottom:			solid
+	color:					white
+	justify-content:		center

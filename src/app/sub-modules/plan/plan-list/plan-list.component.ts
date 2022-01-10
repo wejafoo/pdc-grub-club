@@ -12,11 +12,10 @@ import { Presbies		} from '../../models/roster';
 
 @Component({templateUrl: './plan-list.component.html'})
 export class PlanListComponent implements OnInit {
-	env:			any;
-	debug:			boolean;
-	presbies:		Presbies | undefined | null;
+	env: any;
+	debug: boolean;
+	presbies: Presbies | undefined | null;
 	@Input() plans:	Plans;
-	
 	planId = 0;
 	
 	constructor (
@@ -24,12 +23,16 @@ export class PlanListComponent implements OnInit {
 		public	presby:	PresbyService,
 		public	router:	Router
 	) {
-		this.env	= environment;
-		this.debug	= this.env.debug;
+		this.env = environment;
+		this.debug = this.env.debug;
 		console.log('>>> PlanListComponent');
 	}
 	ngOnInit() {
-		this.presbies = this.presby.getData();
+		
+		this.presby.apollo.watchQuery({query: this.presby.QUERY}).valueChanges.subscribe( ret => {
+			console.log('>>> PlanListComponent > PresbyService says:  Incoming roster update...');
+			this.presbies = ret.data['presbies'];
+		});
 		this.subscribeToChanges();
 	}
 	addPlan() {
