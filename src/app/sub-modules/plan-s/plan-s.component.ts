@@ -1,17 +1,17 @@
 
 
-import { environment	} from '../../../../environments/environment';
+import { environment	} from '../../../environments/environment';
 import { Component		} from '@angular/core';
 import { Input			} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { PlanService	} from '../services/plan.service';
-import { PresbyService	} from '../../presby/presby.service';
-import { Plans			} from '../../models/plan';
-import { Presbies		} from '../../models/roster';
+import { PlanService	} from './services/plan.service';
+import { PresbyService	} from '../presby/presby.service';
+import { Plans			} from '../models/plan';
+import { Presbies		} from '../models/roster';
 
-@Component({templateUrl: './plan-list.component.html'})
-export class PlanListComponent implements OnInit {
+@Component({templateUrl: './plan-s.component.html'})
+export class PlansComponent implements OnInit {
 	env: any;
 	debug: boolean;
 	presbies: Presbies | undefined | null;
@@ -25,12 +25,12 @@ export class PlanListComponent implements OnInit {
 	) {
 		this.env = environment;
 		this.debug = this.env.debug;
-		console.log('>>> PlanListComponent');
+		console.log('>>> PlansComponent');
 	}
 	ngOnInit() {
 		
 		this.presby.apollo.watchQuery({query: this.presby.QUERY}).valueChanges.subscribe( ret => {
-			console.log('>>> PlanListComponent > PresbyService says:  Incoming roster update...');
+			console.log('>>> PlansComponent > PresbyService says:  Incoming roster update...');
 			this.presbies = ret.data['presbies'];
 		});
 		this.subscribeToChanges();

@@ -11,7 +11,7 @@ import { NoSoupComponent 	} from './no-soup/no-soup.component';
 import { AuthGuard		 	} from './_guards/auth.guard';
 
 const appRoutes: Routes = [
-	{ path: 'plan',		loadChildren: './sub-modules/plan/plan.module#PlanModule'		},
+	{ path: 'plan',		loadChildren: './sub-modules/plan-s/plan.module#PlanModule'		},
 	{ path: 'guests',	loadChildren: './sub-modules/presby/presby.module#PresbyModule'	},
 	{ path: 'hosts',	loadChildren: './sub-modules/presby/presby.module#PresbyModule'	},
 	{ path: 'login',	component: LoginComponent										},

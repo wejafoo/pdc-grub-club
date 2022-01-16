@@ -1,6 +1,6 @@
 
 
-import { environment	} from '../../../../../environments/environment';
+import { environment	} from '../../../../../../environments/environment';
 import { ActivatedRoute	} from '@angular/router';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
@@ -9,10 +9,10 @@ import { Router			} from '@angular/router';
 import { of			} from 'rxjs';
 import { switchMap	} from 'rxjs/operators';
 
-import { Plan			} from '../../../models/plan';
-import { Version		} from '../../../models/plan';
-import { Versions		} from '../../../models/plan';
-import { PlanService	} from '../../services/plan.service';
+import { Plan			} from '../../../../models/plan';
+import { Version		} from '../../../../models/plan';
+import { Versions		} from '../../../../models/plan';
+import { PlanService	} from '../../../services/plan.service';
 
 @Component({ templateUrl: './version-list.component.html' })
 export class VersionListComponent implements OnInit {

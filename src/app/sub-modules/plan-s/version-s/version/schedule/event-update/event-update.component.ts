@@ -1,20 +1,20 @@
 
 
-import { environment	} from '../../../../../../environments/environment';
+import { environment	} from '../../../../../../../environments/environment';
 import { ActivatedRoute	} from '@angular/router';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
 import { of				} from 'rxjs';
 import { switchMap		} from 'rxjs/operators';
-import { PlanService	} from '../../../services/plan.service';
-import { Version		} from '../../../../models/plan';
+import { PlanService	} from '../../../../services/plan.service';
+import { Version		} from '../../../../../models/plan';
 
 // import {Observable} from 'rxjs';
 // import {DialogService} from '../../../../../services/dialog.service';
 
 @Component({
-	selector: 'app-event-plan-list-plan-update',
+	selector: 'app-event-plan-list-version-s',
 	templateUrl: './event-update.component.html',
 	styleUrls: ['./event-update.component.sass']
 })
@@ -63,6 +63,7 @@ export class EventUpdateComponent implements OnInit {
 		this.loadedVer = JSON.parse( JSON.stringify(this.ver));
 		this.ps.addVersion(this.ver);
 	}
+	toPlan() { this.router.navigate(['/plan', this.planId, 'update', 'event', this.eventId]).then()}
 }
 
 // eventSlug =
@@ -82,11 +83,6 @@ export class EventUpdateComponent implements OnInit {
 // reviewEvent() {
 // this.router.navigate(
 // ['/plan', this.planId, 'version', this.ver.id, 'event', this.eventId ]
-// ).then()
-// }
-// toPlan() {
-// this.router.navigate(
-// ['/plan', this.planId, 'update', 'event', this.eventId	]
 // ).then()
 // }
 // toPlans() {

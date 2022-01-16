@@ -1,86 +1,44 @@
 
 
-<div id="page-title" class="bg-d">
-	<h2 style="margin: 0;">
-		Configuration
-	</h2>
-	<a style="visibility: hidden; " [routerLink]="['/admin/edit']">
-		<mat-icon>edit</mat-icon>
-	</a>
-</div>
-<div id="page-body">
-	<div id="page-title-2">
-		<div>
-			<h3>
-				Update Configuration
-			</h3>
+<div id="wj-title" class="fr bg-d"><h2>Administration</h2></div>
+
+<div class="wj-body">
+	<div class="fr">
+		<div style="width: 89%;"><h3>Configuration</h3></div>
+		<div style="width: 11%;" class="fr" *ngIf="!changed; else changed">
+			<a class="wj-disabled"><button>Save</button></a><a [routerLink]="['/plan', 's']"><button>Back</button></a>
 		</div>
-		<div *ngIf="!changed; else isChanged">
-			<a class="gc-disabled"				> Save		</a>
-			<a [routerLink]="['/plan/s']"	> Back		</a>
-		</div>
-		<ng-template #isChanged>
-			<div>
-				<a (click)="reload()"			 > Save		</a>
-				<a (click)="cancelChange()"> Cancel	</a>
+		<ng-template #changed>
+			<div style="width: 11%;" class="fr">
+				<a (click)="reload()"><button>Save</button></a><a (click)="cancelChange()"><button>Cancel</button></a>
 			</div>
 		</ng-template>
 	</div>
 	<hr>
-	<div>
+	<div class="fc wj-body">
 		<mat-accordion>
 			<mat-expansion-panel expanded="true" >
 				<mat-expansion-panel-header class="bg f c">
-					<mat-panel-title>
-						<strong>
-							Setup
-						</strong>
-					</mat-panel-title>
-					<mat-panel-description>
-						Functional setup and configuration
-					</mat-panel-description>
+					<mat-panel-title><strong>Setup</strong></mat-panel-title>
+					<mat-panel-description>Functional setup and configuration</mat-panel-description>
 				</mat-expansion-panel-header>
 				<p>
 				<div class="fc">
-					<div class="fr">
-						<label for="roster-url">
-							<strong>
-								Roster URL:
-							</strong>
-						</label>
-					</div>
-					<div>
-						<input type="text" id="roster-url"
-							style="font-family: 'Courier New',serif;"
-							[value]="rosterUrl"
-							(input)='rosterUrlChange($event.target["value"])'
-						>
-					</div>
+					<div class="fr"><label for="roster-url"><strong>Roster URL:</strong></label></div>
+					<div><input type="text" id="roster-url" style="font-family: 'Courier New',serif;" [value]="rosterUrl" (input)='rosterUrlChange($event.target["value"])'></div>
 					<div class="fr" style="justify-content: flex-end;">
-						<i style="font-size: x-small;">
-							e.g. https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8
-						</i>
+						<i style="font-size: x-small;">e.g. https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8</i>
 					</div>
 					<br><br>
 					<div class="fc">
-						<div class="fr">
-							<label for="service-url">
-								<strong>
-									Roster Service URL:
-								</strong>
-							</label>
-						</div>
+						<div class="fr"><label for="service-url"><strong>Roster Service URL:</strong></label></div>
 						<div>
-							<input type="text" id="service-url"
-								style		= "font-family: 'Courier New',serif;"
-								[value]	= "serviceUrl"
-								(input)	= "updateRosterService($event.target['value'])"
+							<input type="text" id="service-url" style="font-family: 'Courier New',serif;"
+										 [value]="serviceUrl" (input)="updateRosterService($event.target['value'])"
 							>
 						</div>
 						<div class="fr" style="justify-content: flex-end;">
-							<i style="font-size: x-small;">
-								e.g. http://localhost:8080/query
-							</i>
+							<i style="font-size: x-small;">e.g. http://localhost:8080/query</i>
 						</div>
 						<p>
 					</div>

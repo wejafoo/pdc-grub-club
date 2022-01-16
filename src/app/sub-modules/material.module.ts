@@ -6,7 +6,6 @@ import { MatButtonModule			} from '@angular/material/button';
 import { MatButtonToggleModule		} from '@angular/material/button-toggle';
 import { MatCardModule				} from '@angular/material/card';
 import { MatCheckboxModule			} from '@angular/material/checkbox';
-import { MatGridListModule			} from '@angular/material/grid-list';
 import { MatIconModule				} from '@angular/material/icon';
 import { MatInputModule				} from '@angular/material/input';
 import { MatMenuModule				} from '@angular/material/menu';
@@ -23,6 +22,8 @@ import { DragDropModule				} from '@angular/cdk/drag-drop';
 import { MatTableModule				} from '@angular/material/table';
 import { OverlayModule				} from '@angular/cdk/overlay';
 
+// import {MatGridListModule} from '@angular/material/grid-list';
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -33,7 +34,7 @@ import { OverlayModule				} from '@angular/cdk/overlay';
 		MatCheckboxModule,
 		MatDatepickerModule,
 		MatExpansionModule,
-		MatGridListModule,
+		// MatGridListModule,
 		MatIconModule,
 		MatInputModule,
 		MatMenuModule,
@@ -56,7 +57,7 @@ import { OverlayModule				} from '@angular/cdk/overlay';
 		MatCheckboxModule,
 		MatDatepickerModule,
 		MatExpansionModule,
-		MatGridListModule,
+		// MatGridListModule,
 		MatIconModule,
 		MatInputModule,
 		MatProgressSpinnerModule,

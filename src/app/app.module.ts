@@ -5,16 +5,16 @@ import { BrowserAnimationsModule	} from '@angular/platform-browser/animations';
 import { BrowserModule				} from '@angular/platform-browser';
 import { FormsModule				} from '@angular/forms';
 import { NgModule					} from '@angular/core';
-import { AngularFireModule			} from '@angular/fire';							// AUTH
-import { HttpClientModule			} from '@angular/common/http';					// AUTH
+import { AngularFireModule			} from '@angular/fire';						// AUTH
+import { HttpClientModule			} from '@angular/common/http';				// AUTH
 import { InMemoryCache       		} from '@apollo/client/core';
-import { APOLLO_NAMED_OPTIONS		} from 'apollo-angular';						// cms
+import { APOLLO_NAMED_OPTIONS		} from 'apollo-angular';					// CMS
 import { HttpLink            		} from 'apollo-angular/http';
 import { NamedOptions        		} from 'apollo-angular';
-import { NgxAuthFirebaseUIModule	} from 'ngx-auth-firebaseui';					// AUTH
+import { NgxAuthFirebaseUIModule	} from 'ngx-auth-firebaseui';				// AUTH
 import { AppRoutingModule			} from './app-routing.module';
 import { MaterialModule				} from './sub-modules/material.module';
-import { PlanModule					} from './sub-modules/plan/plan.module';
+import { PlanModule					} from './sub-modules/plan-s/plan.module';
 import { PresbyModule				} from './sub-modules/presby/presby.module';
 import { AdminComponent				} from './admin/admin.component';
 import { AppComponent				} from './app.component';
@@ -59,33 +59,18 @@ export function firebaseAppNameFactory() {return `weja-us`}
 	providers: [{
 		provide:	APOLLO_NAMED_OPTIONS,
 		deps:		[HttpLink],
-		useFactory(httpLink: HttpLink): NamedOptions {
-			return {
-				rosterClient: {
-					cache:	new InMemoryCache(),
-					link:	httpLink.create({
-						uri: JSON.parse( localStorage.getItem('rosterService'))
-					})
-				}
-			}
-		}
+		useFactory(httpLink: HttpLink): NamedOptions { return { rosterClient: {
+			cache:	new InMemoryCache(),
+			link:	httpLink.create({
+				uri: JSON.parse( localStorage.getItem('rosterService'))
+			})
+		}}}
 	}],
 	bootstrap:	[AppComponent]
 })
 export class AppModule {}
 
-
-// import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // ELEMENT SUPPORT
+// import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 // schemas:	[CUSTOM_ELEMENTS_SCHEMA],
-// Diagnostic router configuration inspector --
-// custom replacer displays function names pulled from route configs
-// constructor(router:Router){
-// 	const replacer=(key:any,value:{name:any})=>{
-// 	(typeof value==='function')?value.name:value
-// 	}
-// 	if (this.debug) console.log('Routes:',JSON.stringify(router.config,replacer,2))
-// }
-// Register the ServiceWorker below asap,
-// once the app is stable or after 30 seconds (whichever comes first).
-// ServiceWorkerModule.register('ngsw-worker.js',
-// {enabled:environment.production,registrationStrategy:'registerWhenStable:30000'}),
+// constructor(router:Router){const replacer=(key:any,value:{name:any})=>{(typeof value==='function')?value.name:value}}				// Diagnostic router configuration inspector -- custom replacer displays function names pulled from route configs
+// ServiceWorkerModule.register('ngsw-worker.js',{enabled:environment.production,registrationStrategy:'registerWhenStable:30000'}),		// Register the ServiceWorker below asap, once the app is stable or after 30 seconds (whichever comes first).

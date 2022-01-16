@@ -1,12 +1,12 @@
 
 
-import { environment	} from '../../../../../../environments/environment';
+import { environment	} from '../../../../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { Input			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { PlanService	} from '../../../services/plan.service';
-import { Events			} from '../../../../models/plan';
-import { Plans			} from '../../../../models/plan';
+import { PlanService	} from '../../../../services/plan.service';
+import { Events			} from '../../../../../models/plan';
+import { Plans			} from '../../../../../models/plan';
 
 @Component({templateUrl: './event-list.component.html'})
 export class EventListComponent {

@@ -1,14 +1,14 @@
 
 
-import { environment	} from '../../../../../../environments/environment';
+import { environment	} from '../../../../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { Input			} from '@angular/core';
 import { OnChanges 		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { SimpleChanges	} from '@angular/core';
 
-import { Plan		} from '../../../../models/plan';
-import { Version	} from '../../../../models/plan';
+import { Plan		} from '../../../../../models/plan';
+import { Version	} from '../../../../../models/plan';
 
 @Component({
 	selector: 'app-event-plan-list-host-detail',

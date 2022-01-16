@@ -13,8 +13,8 @@ import { Version		} from '../../models/plan';
 // import { Presbies		} from '../../models/roster';
 // import { PresbyService	} from '../../presby/presby.service';
 
-@Component({ templateUrl: './plan-update.component.html' })
-export class PlanUpdateComponent implements OnInit {
+@Component({ templateUrl: './version-s.component.html' })
+export class VersionsComponent implements OnInit {
 	env:		any;
 	debug:		boolean;
 	plan:		Plan;
@@ -34,7 +34,7 @@ export class PlanUpdateComponent implements OnInit {
 		this.env		= environment;
 		this.debug		= this.env.debug;
 		this.JSON		= JSON;
-		console.log('>>> PlanUpdateComponent');
+		console.log('>>> VersionsComponent');
 	}
 
 	save() {
@@ -44,7 +44,7 @@ export class PlanUpdateComponent implements OnInit {
 	
 	ngOnInit () {
 		// this.presby.apollo.watchQuery({query: this.presby.QUERY}).valueChanges.subscribe( ret => {
-		// 	console.log('>>> PlanUpdateComponent > PresbyService says:  Incoming roster update...');
+		// 	console.log('>>> VersionsComponent > PresbyService says:  Incoming roster update...');
 		// 	this.presbies = ret.data['presbies'];
 		// });
 		this.route.paramMap.pipe(

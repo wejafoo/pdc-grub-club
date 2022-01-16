@@ -1,6 +1,6 @@
 
 
-import { environment		} from '../../../../../environments/environment';
+import { environment		} from '../../../../../../environments/environment';
 import { Component			} from '@angular/core';
 import { Inject				} from '@angular/core';
 import { OnInit				} from '@angular/core';
@@ -15,13 +15,13 @@ import { transferArrayItem	} from '@angular/cdk/drag-drop';
 import { CdkDragDrop		} from '@angular/cdk/drag-drop';
 import { Apollo				} from 'apollo-angular';
 import { isObject			} from 'lodash';
-import { PlanService 		} from '../../services/plan.service';
-import { PresbyService 		} from '../../../presby/presby.service';
-import { Plan				} from '../../../models/plan';
-import { Schedule			} from '../../../models/plan';
-import { Version			} from '../../../models/plan';
-import { Presbies			} from '../../../models/roster';
-import { Presby				} from '../../../models/roster';
+import { PlanService 		} from '../../../services/plan.service';
+import { PresbyService 		} from '../../../../presby/presby.service';
+import { Plan				} from '../../../../models/plan';
+import { Schedule			} from '../../../../models/plan';
+import { Version			} from '../../../../models/plan';
+import { Presbies			} from '../../../../models/roster';
+import { Presby				} from '../../../../models/roster';
 
 @Component({
 	selector: 'dialog-content-example-dialog',
@@ -35,11 +35,11 @@ export class DialogContentComponent {
 }
 
 @Component({
-	selector: 'app-version-update',
-	templateUrl: './version-update.component.html',
-	styleUrls: ['./version-update.component.sass']
+	selector: 'app-schedule',
+	templateUrl: './schedule.component.html',
+	styleUrls: ['./schedule.component.sass']
 })
-export class VersionUpdateComponent implements OnInit {
+export class ScheduleComponent implements OnInit {
 	env:		any;
 	debug:		boolean;
 	actives:	Array<Presby> = [];
@@ -71,7 +71,7 @@ export class VersionUpdateComponent implements OnInit {
 	) {
 		this.env = environment;
 		this.debug = this.env.debug;
-		console.log('>>> VersionUpdateComponent');
+		console.log('>>> ScheduleComponent');
 	}
 	/////////////////////////////////////////////////////////////  INITIALIZE //
 	ngOnInit		()					{
@@ -556,33 +556,7 @@ export class VersionUpdateComponent implements OnInit {
 			}
 		}
 	}
-	pairsPredicate	() {
-		return (gstDrag: CdkDrag, hstDrop: CdkDropList) => {
-			const guests: any = [];
-			const gst = gstDrag.data.guestKey
-			guests.push(...hstDrop.data);
-			return guests.every(
-				(guest: {guestKey: string}) =>
-					this.summary.pairs[gst].includes(guest.guestKey) || hstDrop.id === 'unassigned'
-			)
-		}
-	}
-	save			() {
-		this.sched.ver.id++;
-		console.log(
-			'!!! VersionUpdate -> ver:', typeof this.ver.labels,
-			Array.isArray(this.ver.labels), this.ver
-		);
-		localStorage.setItem(this.planId + '-latest', JSON.stringify(this.sched));
-		localStorage.setItem(this.sched.id, JSON.stringify(this.sched));
-		this.planSvc.addVersion(this.ver);
-		const dialogRef = this.dialog.open(
-			DialogContentComponent,
-			{width: '640px', disableClose: true, data: this.sched}
-		);
-		dialogRef.afterClosed().subscribe(result => { console.log(`Dialog result: ${result}`)});
-		// this.router.navigate(['/plan', this.planId, 'version', 's', ++this.sched.ver.id]).then()
-	}
+	back			() { this.router.navigate(['/plan', this.planId]).then() }
 	deepEqual		(object1: any, object2: any) {
 		const keys1	= Object.keys(object1);
 		const keys2	= Object.keys(object2);
@@ -601,8 +575,34 @@ export class VersionUpdateComponent implements OnInit {
 			return rtnVal;
 		}
 	}
+	pairsPredicate	() {
+		return (gstDrag: CdkDrag, hstDrop: CdkDropList) => {
+			const guests: any = [];
+			const gst = gstDrag.data.guestKey
+			guests.push(...hstDrop.data);
+			return guests.every(
+				(guest: {guestKey: string}) =>
+					this.summary.pairs[gst].includes(guest.guestKey) || hstDrop.id === 'unassigned'
+			)
+		}
+	}
+	next			() { this.step++ }
+	prev			() { this.step-- }
+	save			() {
+		this.sched.ver.id++;
+		console.log(
+			'!!! VersionUpdate -> ver:', typeof this.ver.labels,
+			Array.isArray(this.ver.labels), this.ver
+		);
+		localStorage.setItem(this.planId + '-latest', JSON.stringify(this.sched));
+		localStorage.setItem(this.sched.id, JSON.stringify(this.sched));
+		this.planSvc.addVersion(this.ver);
+		const dialogRef = this.dialog.open(
+			DialogContentComponent,
+			{width: '640px', disableClose: true, data: this.sched}
+		);
+		dialogRef.afterClosed().subscribe(result => { console.log(`Dialog result: ${result}`)});
+		// this.router.navigate(['/plan', this.planId, 'version', 's', ++this.sched.ver.id]).then()
+	}
 	setStep			(index: number) { this.step = index }
-	toVersions		() { this.router.navigate(['/plan', this.planId]).then() }
-	nextStep		() { this.step++ }
-	prevStep		() { this.step-- }
 }

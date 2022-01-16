@@ -33,7 +33,7 @@ export class LoginComponent {
 		console.log('>>> LoginComponent');
 	}
 	
-	onSuccess(event: string) {
+	onSuccess(event: MouseEvent) {
 		this.error	= false;
 		this.index	= 2;
 		if (this.env.debug)  console.log('>>> LoginComponent -> event:', event);
