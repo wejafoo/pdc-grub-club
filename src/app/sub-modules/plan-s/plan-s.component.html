@@ -19,12 +19,9 @@
 	</div>
 	<hr style="margin: 0;">
 	<ul class="fc wj wj-b">
-		<li [class.selected]="plan.id === planId"
-				*ngFor="let plan of plansBy()"
-		>
+		<li [class.selected]="plan.id === planId" *ngFor="let plan of plansBy()">
 			<a [routerLink]="['/plan', 's', plan.id]"	routerLinkActive="active">
-				<div class="badge bg-m f c">{{plan.id}}</div>
-				<div>{{plan.name}}</div>
+				<div class="badge bg-m f c">{{plan.id}}</div><div>{{plan.name}}</div>
 			</a>
 			<div>
 				<a title='Open a new schedule using the "latest" version of this plan.'
@@ -33,8 +30,7 @@
 				><button><mat-icon>schedule</mat-icon></button></a>
 			</div>
 			<div>
-				<a title="Manage/Update this plan's versions."
-					 routerLinkActive="active"
+				<a title="Manage/Update this plan's versions." routerLinkActive="active"
 					 [routerLink]="['/plan', plan.id, 'version', 's']"
 				><button><mat-icon>edit</mat-icon></button></a>
 			</div>
