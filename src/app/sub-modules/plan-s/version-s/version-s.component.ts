@@ -20,47 +20,40 @@ export class VersionsComponent implements OnInit {
 	plan:		Plan;
 	loadedPlan:	Plan;
 	versionId:	number;
-	
 	JSON:		JSON = JSON;
 	
-	// presbies: Presbies;
-
 	constructor (
 		public	ps:		PlanService,
-		// private presby:	PresbyService,
 		public	route:	ActivatedRoute,
 		public	router:	Router
 	) {
-		this.env		= environment;
-		this.debug		= this.env.debug;
-		this.JSON		= JSON;
+		this.env	= environment;
+		this.debug	= this.env.debug;
+		this.JSON	= JSON;
 		console.log('>>> VersionsComponent');
 	}
 
-	save() {
-		this.ps.updatePlan(this.plan);
-		this.router.navigate(['/plan/s', this.plan.id]).then(r => console.log(r));
-	}
-	
 	ngOnInit () {
-		// this.presby.apollo.watchQuery({query: this.presby.QUERY}).valueChanges.subscribe( ret => {
-		// 	console.log('>>> VersionsComponent > PresbyService says:  Incoming roster update...');
-		// 	this.presbies = ret.data['presbies'];
-		// });
+		
 		this.route.paramMap.pipe(
-			switchMap(params => of( params.get('planId')))
+			switchMap(params => of(params.get('planId')))
 		).subscribe(planId => {
+			console.log('EDITING PLAN:', +planId);
 			this.loadedPlan	= JSON.parse( JSON.stringify( this.ps.getPlan(+planId)));
-			this.plan		= JSON.parse( JSON.stringify( this.ps.getPlan(+planId)));
+			this.plan = JSON.parse( JSON.stringify( this.ps.getPlan(+planId)));
 		});
+		
 		this.route.paramMap.pipe(
-			switchMap(params => of( params.get('versionId')))
-		).subscribe(versionId => this.versionId = +versionId);
+			switchMap(params => of(params.get('versionId')))
+		).subscribe(versionId => {
+			console.log('EDITING VERSION:', +versionId);
+			this.versionId = +versionId
+		});
 	}
 	
 	addVersion() {
 		const verId:	number	= this.plan.versions.length;
-		const ver:		Version	= { id: verId, labels: ['new'], events: []};
+		const ver:		Version	= {id: verId, labels: ['new'], events: []};
 		this.plan.versions.push(ver);
 	}
 	
@@ -69,4 +62,11 @@ export class VersionsComponent implements OnInit {
 		if ( rmIndex !== -1 ) this.plan.versions[this.versionId].events.splice(rmIndex, 1);
 		this.save();
 	}
+	
+	save() {
+		console.log('>>> VersionsComponent > save()', this.plan);
+		this.ps.updatePlan(this.plan);
+		this.router.navigate(['/plan', 's', this.plan.id]).then();
+	}
+	
 }

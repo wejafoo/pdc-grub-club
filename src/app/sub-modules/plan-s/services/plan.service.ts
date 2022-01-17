@@ -16,22 +16,31 @@ export class PlanService {
 	env:		any;
 	debug:		boolean;
 	plan:		Plan | undefined;
-	plans:		Plans = PLANS;
+	plans:		Plans;
 	version:	Version;
 	
 	nextPlanId	= 100;
 	nextEventId	= 100;
-	planSubject	= new BehaviorSubject<Plans>(this.plans);
+	planSubject: BehaviorSubject<Plans>;
 	
 	constructor () {
 		this.env	= environment;
 		this.debug	= this.env.debug;
 		console.log('>>> PlanService');
+		if ( localStorage.getItem('plans' ) === null) {
+			console.log('>>> PlanService says: No Saved Plans');
+			this.plans = PLANS;
+			localStorage.setItem('plans', JSON.stringify(this.plans));
+		} else {
+			this.plans = JSON.parse( localStorage.getItem('plans'));
+			console.log('>>> PlanService > Saved Plans? FOUND\n', this.plans);
+		}
+		this.planSubject = new BehaviorSubject<Plans>(this.plans);
 	}
 	
 	addEvent(planID: number, name: string): number	{
-		name				= name.trim();
-		const event: Event	= {id: ++this.nextEventId, name};
+		name = name.trim();
+		const event: Event = {id: ++this.nextEventId, name};
 		this.version.events.push(event);
 		this.planSubject.next(this.plans);
 		return this.nextEventId;
@@ -110,6 +119,7 @@ export class PlanService {
 	updatePlan(update: Plan) {
 		const itemToUpdateIndex = this.plans.findIndex(plan => plan.id === update.id);
 		if ( itemToUpdateIndex !== -1 ) this.plans.splice(itemToUpdateIndex, 1, update);
-		this.planSubject.next(this.plans)
+		localStorage.setItem('plans', JSON.stringify(this.plans));
+		this.planSubject.next(this.plans);
 	}
 }

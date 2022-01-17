@@ -1,17 +1,17 @@
 
 
-<div id="wj-title" class="fr bg-d"><h2>Plan: {{plan["name"]}}&nbsp;&nbsp;&nbsp;Version: {{plan["id"]}}</h2></div>
-<div class="fr wj-body">
+<div id="wj-t" class="fr bg-d"><h2>Plan: {{plan["name"]}}&nbsp;&nbsp;&nbsp;Version: {{plan["id"]}}</h2></div>
+<div class="fr wj-b">
 	<div><h3>Schedule</h3></div>
 	<div style="width: 12%;" *ngIf="deepEqual(ver, ver); else changed"><a class="wj-disabled"><button>Save</button></a><a [routerLink]="['/plan', 's']"><button>Back</button></a></div>
 	<ng-template #changed><div style="width: 12%;" class="fr"><a (click)="save()"><button>Save</button></a><a [routerLink]="['/plan',planId,'version','s']"><button>Cancel</button></a></div></ng-template>
 </div>
 <hr>
-<div class="fr wj-body">
+<div class="fr wj-b">
 	<div style="width: 15%;"><h4><label for="editVer-labels">Version Labels</label></h4></div>
 	<div style="width: 85%;"><input type="text" id="editVer-labels" [(ngModel)]="ver['labels']" placeholder="labels"></div>
 </div>
-<div class="wj-body">
+<div class="wj-b">
 	<mat-accordion>
 		<!-- #########################################  HOST CONFIGURATIONS  ##-->
 		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
@@ -20,12 +20,12 @@
 				</mat-panel-title><mat-panel-description class="fr c" style="width: 90%;">Schedule hosts for this event</mat-panel-description></mat-expansion-panel-header>
 			<div *ngFor="let evt of events" class="fc">
 				<hr style="width: 100%; margin: 1em 0 0 0;">
-				<div class="fr bg wj-body" style="height: 3em;">
+				<div class="fr bg wj-b" style="height: 3em;">
 					<div style="width: 85%;" class="fr"><div><h4><strong>{{evt}}</strong> Hostings </h4></div><div>	Auto-assign:</div></div>
 					<div style="width: 12%;" class="fr"><button (click)="autoAllocate('all')">All</button><button (click)="autoAllocate(evt)">{{evt}}</button></div>
 				</div>
 				<table cdkDropListGroup>
-					<tr class="fr wj-body">
+					<tr class="fr wj-b">
 						<!-- ####################################  UN-ASSIGNED HOSTS  ###-->
 						<td cdkDropList id="unallocated" class="gutter" [cdkDropListData]="unHs[evt]" (cdkDropListDropped)="unDropHost($event, evt)">
 							<div><i>Unallocated</i></div>
@@ -79,7 +79,7 @@
 			</mat-expansion-panel-header>
 			<div *ngFor="let evt of events">
 				<hr style="width: 100%; margin: 1em 0 0 0;">
-				<div class="fc bg wj-body">
+				<div class="fc bg wj-b">
 					<div class="fr bg" style="height: 3em;">
 						<div style="width: 85%;" class="fr">
 							<div><h4><strong>{{evt}} Guestings</strong></h4></div>
