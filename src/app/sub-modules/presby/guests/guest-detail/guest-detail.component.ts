@@ -1,12 +1,12 @@
 
 
-import { environment	} from '../../../../environments/environment';
+import { environment	} from '../../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { PresbyService	} from '../presby.service';
-import { Presbies	 	} from '../../models/roster';
+import { PresbyService	} from '../../presby.service';
+import { Presbies	 	} from '../../../models/roster';
 
 @Component({
 	selector: 'app-presby-host-detail',

@@ -14,51 +14,52 @@ export class AdminComponent {
 	debug:			any;
 	changed:		boolean;
 	panelOpenState:	boolean;
-	saveService:	string;
-	public rosterUrl =
-		'https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8';
-	public serviceUrl =
-		JSON.parse( localStorage.getItem('rosterService')) ||
-			'http://localhost:8080/tab/Presbies/query';
+	tmpSheetUrl:	string;
+	tmpServiceUrl:	string;
 	
-	constructor(
-		private router: Router
-	) {
-		this.env = environment;
-		this.debug = this.env.debug;
-		this.changed = false
-		this.saveService = localStorage.getItem('rosterService')
+	public roster = {
+		sheetUrl:	'https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8',
+		serviceUrl:	'http://localhost:8080/tab/Presbies/query'
+	}
+	
+	constructor(private router: Router) {
+		this.env		= environment;
+		this.debug		= this.env.debug;
+		this.changed	= false;
+		if ( localStorage.getItem('roster') !== null ) {
+			this.roster = JSON.parse( localStorage.getItem('roster'))
+		}
+		this.tmpSheetUrl	= this.roster.sheetUrl;
+		this.tmpServiceUrl	= this.roster.serviceUrl;
 		this.panelOpenState = true;
 		console.log('>>> AdminComponent > changed?', this.changed);
 	}
 	
-	reload() {
-		console.log(
-			'!!!!\n\tReloading:\t>'	+
-			localStorage.getItem('rosterService') + '<'
-		);
-		console.log( 'orig:', window.location.origin );
-		window.location.replace(window.location.origin + '/plan/s');
+	save() {
+		this.roster.sheetUrl	= this.tmpSheetUrl;
+		this.roster.serviceUrl	= this.tmpServiceUrl;
+		localStorage.setItem('roster', JSON.stringify(this.roster));
+		console.log('>>> AdminComponent > save()', this.roster);
+		this.router.navigate(['/plan', 's']).then();
 	}
 	
-	cancelChange() {
-		console.log(
-			'!!!!\n\tReplacing:\t>'	+ localStorage.getItem('rosterService') +
-			'<\n\t     with:\t>'	+ this.saveService + '<'
-		);
-		localStorage.setItem('rosterService', this.saveService)
+	cancel() {
+		this.tmpSheetUrl	= this.roster.sheetUrl;
+		this.tmpServiceUrl	= this.roster.serviceUrl;
+		this.changed		= false;
+		console.log('!!! CHANGES CANCELLED !!!');
 		this.router.navigate(['/plan', 's']).then()
 	}
 	
 	rosterUrlChange(newValue: string): void {
 		this.changed = true;
-		console.log('event:', newValue);
-		localStorage.setItem('rosterUrl', JSON.stringify(newValue));
+		console.log('Roster URL change detected:', newValue);
+		this.tmpSheetUrl = newValue;
 	}
 	
 	updateRosterService(newValue: string): void {
 		this.changed = true;
-		console.log('event:', newValue);
-		localStorage.setItem('rosterService', JSON.stringify(newValue));
+		console.log('Service URL change detected:', newValue);
+		this.tmpServiceUrl = newValue;
 	}
 }

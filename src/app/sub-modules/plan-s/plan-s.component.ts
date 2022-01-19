@@ -40,12 +40,15 @@ export class PlansComponent implements OnInit {
 	addPlan() {
 		const addRoute = ['/plan', this.plans.length, 'version', 's', '0'];		// state param: {plan: this.plan.getPlan(this.planId)}
 		console.log('>>> PlansComponent > Add a plan > navigate():', addRoute);
-		this.router.navigate(addRoute).then(r => { console.log(
-			'>>> PlansComponent > Add a plan > navigate() > success?', r
-		)})
+		this.router.navigate(addRoute).then(r => {
+			console.log(
+				'>>> PlansComponent > Add a plan > navigate() > success?',
+				r
+			)
+		})
 	}
 	
-	plansBy() { return this.plans.reverse()}						// this.plan.planSubject.subscribe(plans => { console.log(plans)})
+	plansBy() { return this.plans.reverse()}									// this.plan.planSubject.subscribe(plans => { console.log(plans)})
 	
 	rmPlan(planId: number) {
 		this.plan.rmPlan(planId);

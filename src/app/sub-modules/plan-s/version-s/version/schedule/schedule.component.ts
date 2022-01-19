@@ -46,6 +46,7 @@ export class ScheduleComponent implements OnInit {
 	error:		any;
 	events:		string[];
 	loadedVer:	Version;
+	openSeats:	number;
 	plan:		Plan;
 	planId:		number;								// router param--"plan/X"
 	sched:		Schedule
@@ -117,6 +118,7 @@ export class ScheduleComponent implements OnInit {
 		this.autoAssign('all');
 		this.loaded = true;
 	}
+	
 	autoAllocate	(ctx: string)		{
 		let events: string[];
 		if (ctx === 'all') {
@@ -586,9 +588,22 @@ export class ScheduleComponent implements OnInit {
 			)
 		}
 	}
-	next			() { this.step++ }
-	prev			() { this.step-- }
-	save			() {
+	countSeats(total: number, assigned: number): string {
+		let rtnVal;
+		this.openSeats = total - assigned;
+		if (this.openSeats > 0) {
+			rtnVal = 'under-booked'
+		} else if (this.openSeats < 0) {
+			rtnVal = 'over-booked'
+		} else {
+			rtnVal = 'perfectly-booked'
+		}
+		console.log('seats:', this.openSeats, 'return:', rtnVal);
+		return rtnVal;
+	}
+	next() { this.step++ }
+	prev() { this.step-- }
+	save() {
 		this.sched.ver.id++;
 		console.log(
 			'!!! VersionUpdate -> ver:', typeof this.ver.labels,

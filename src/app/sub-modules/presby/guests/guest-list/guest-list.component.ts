@@ -1,11 +1,11 @@
 
 
-import { environment	} from '../../../../environments/environment';
+import { environment	} from '../../../../../environments/environment';
 import { Component		} from '@angular/core';
 import { OnInit			} from '@angular/core';
 import { Router			} from '@angular/router';
-import { PresbyService	} from '../presby.service';
-import { Presbies		} from '../../models/roster';
+import { PresbyService	} from '../../presby.service';
+import { Presbies		} from '../../../models/roster';
 
 @Component({ templateUrl: './guest-list.component.html' })
 export class GuestListComponent implements OnInit {

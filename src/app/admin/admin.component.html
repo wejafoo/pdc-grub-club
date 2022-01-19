@@ -1,18 +1,22 @@
 
 
-<div id="wj-t" class="fr bg-d"><h2>Administration</h2></div>
+<div id="wj-t" class="fr bg-d">
+	<h2>Administration</h2>
+	<div style="width: 11%;" class="fr" *ngIf="changed; else unchanged">
+		<a (click)="save()"><button>Save</button></a>
+		<a (click)="cancel()"><button>Cancel</button></a>
+	</div>
+	<ng-template #unchanged>
+		<div style="width: 11%;" class="fr">
+			<a style="pointer-events: none;"><button class="wj-d">Save</button></a>
+			<a [routerLink]="['/plan', 's']"><button>Back</button></a>
+		</div>
+	</ng-template>
+</div>
 
 <div class="wj-b">
 	<div class="fr">
 		<div style="width: 89%;"><h3>Configuration</h3></div>
-		<div style="width: 11%;" class="fr" *ngIf="!changed; else changed">
-			<a class="wj-disabled"><button>Save</button></a><a [routerLink]="['/plan', 's']"><button>Back</button></a>
-		</div>
-		<ng-template #changed>
-			<div style="width: 11%;" class="fr">
-				<a (click)="reload()"><button>Save</button></a><a (click)="cancelChange()"><button>Cancel</button></a>
-			</div>
-		</ng-template>
 	</div>
 	<hr>
 	<div class="fc wj-b">
@@ -25,7 +29,7 @@
 				<p>
 				<div class="fc">
 					<div class="fr"><label for="roster-url"><strong>Roster URL:</strong></label></div>
-					<div><input type="text" id="roster-url" style="font-family: 'Courier New',serif;" [value]="rosterUrl" (input)='rosterUrlChange($event.target["value"])'></div>
+					<div><input type="text" id="roster-url" style="font-family: 'Courier New',serif;" [value]="tmpSheetUrl" (input)='rosterUrlChange($event.target["value"])'></div>
 					<div class="fr" style="justify-content: flex-end;">
 						<i style="font-size: x-small;">e.g. https://docs.google.com/spreadsheets/d/1V8L8Ub1FRKhXo1pLxwxXiBwIz1TWtatqheHh4RPltJ8</i>
 					</div>
@@ -34,7 +38,7 @@
 						<div class="fr"><label for="service-url"><strong>Roster Service URL:</strong></label></div>
 						<div>
 							<input type="text" id="service-url" style="font-family: 'Courier New',serif;"
-										 [value]="serviceUrl" (input)="updateRosterService($event.target['value'])"
+										 [value]="tmpServiceUrl" (input)="updateRosterService($event.target['value'])"
 							>
 						</div>
 						<div class="fr" style="justify-content: flex-end;">

@@ -1,11 +1,11 @@
 
 
-<div id="wj-t" class="fr bg-d"><h2>Plan: {{plan["name"]}}&nbsp;&nbsp;&nbsp;Version: {{plan["id"]}}</h2></div>
-<div class="fr wj-b">
-	<div><h3>Schedule</h3></div>
-	<div style="width: 12%;" *ngIf="deepEqual(ver, ver); else changed"><a class="wj-disabled"><button>Save</button></a><a [routerLink]="['/plan', 's']"><button>Back</button></a></div>
+<div id="wj-t" class="fr bg-d">
+	<h2>Plan: {{plan["name"]}}&nbsp;&nbsp;&nbsp;Version: {{plan["id"]}}</h2>
+	<div style="width: 12%;" *ngIf="deepEqual(ver, ver); else changed"><a class="wj-d"><button>Save</button></a><a [routerLink]="['/plan', 's']"><button>Back</button></a></div>
 	<ng-template #changed><div style="width: 12%;" class="fr"><a (click)="save()"><button>Save</button></a><a [routerLink]="['/plan',planId,'version','s']"><button>Cancel</button></a></div></ng-template>
 </div>
+<div class="fr wj-b"><div><h3>Schedule</h3></div></div>
 <hr>
 <div class="fr wj-b">
 	<div style="width: 15%;"><h4><label for="editVer-labels">Version Labels</label></h4></div>
@@ -16,8 +16,8 @@
 		<!-- #########################################  HOST CONFIGURATIONS  ##-->
 		<mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
 			<mat-expansion-panel-header class="bg f c" style="height: 3em;"><mat-panel-title class="fr" style="width: 11%;">
-					<mat-icon>person</mat-icon><strong>Hosting</strong>
-				</mat-panel-title><mat-panel-description class="fr c" style="width: 90%;">Schedule hosts for this event</mat-panel-description></mat-expansion-panel-header>
+				<mat-icon>person</mat-icon><strong>Hosting</strong>
+			</mat-panel-title><mat-panel-description class="fr c" style="width: 90%;">Schedule hosts for this event</mat-panel-description></mat-expansion-panel-header>
 			<div *ngFor="let evt of events" class="fc">
 				<hr style="width: 100%; margin: 1em 0 0 0;">
 				<div class="fr bg wj-b" style="height: 3em;">
@@ -25,7 +25,7 @@
 					<div style="width: 12%;" class="fr"><button (click)="autoAllocate('all')">All</button><button (click)="autoAllocate(evt)">{{evt}}</button></div>
 				</div>
 				<table cdkDropListGroup>
-					<tr class="fr wj-b">
+					<tr class="fr wj-b" style="justify-content: space-around;">
 						<!-- ####################################  UN-ASSIGNED HOSTS  ###-->
 						<td cdkDropList id="unallocated" class="gutter" [cdkDropListData]="unHs[evt]" (cdkDropListDropped)="unDropHost($event, evt)">
 							<div><i>Unallocated</i></div>
@@ -190,16 +190,40 @@
 						<!-- #####################################  ASSIGNED GUESTS  ### -->
 						<td class="gutter">
 							<div><i>Assigned</i></div>
-							<div class="f c" style="flex-wrap: wrap; justify-content: space-evenly;">
-								<div *ngFor="let aH of aHs[evt]" class="f c" style="margin: 0 0 1em 0; min-width: 15em;">
+							<div class="f c"
+									 style="flex-wrap: wrap; justify-content: space-evenly;"
+							>
+								<div *ngFor="let aH of aHs[evt]"
+										 class="f c" style="margin: 0 0 1em 0; min-width: 15em;"
+								>
+									
+									
 									<!-- ####################  ASSIGNED GUESTS - PEEPS VIEW  ### -->
-									<div *ngIf = "! isOpen; else cardView" style="" class="fc" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt']<aH['seats']?'not-full-host':summary[evt][aH['hostKey']]['assignedSeatCnt']>aH['seats']?'over-full-host':' full-host'">
+									<div	*ngIf = "! isOpen; else cardView" class="fc" [class]="
+													summary[evt][aH['hostKey']]['assignedSeatCnt'] <
+														aH['seats'] ? 'not-full-host' :
+															summary[evt][aH['hostKey']]['assignedSeatCnt'] >
+																aH['seats'] ? 'over-full-host' : ' full-host'
+												"
+									>
 										<div style="border: solid;" class="fr">
-											<div style="padding: 0 .5em 0 .25em;color: white;">{{aH['hostKey']}}</div>
-											<div style="background-color: white; color: red; padding: 0 0.25em 0 0.5em;">
-												
-												+3
-												
+											<div style="color: white; padding-left: .25em;">{{aH['hostKey']}}</div>
+											<div [ngSwitch]="countSeats(aH['seats'], summary[evt][aH['hostKey']]['assignedSeatCnt'])"
+													 style="background-color: white;"
+											>
+												<span title="Number of seats under-booked."
+															style="color: lime; margin: 0 .35em;"
+															*ngSwitchCase="'under-booked'"
+												>{{openSeats}}</span>
+												<span title="Number of seats over-booked."
+															style="color: red; margin: 0 .25em;"
+															*ngSwitchCase="'over-booked'"
+												>{{openSeats}}</span>
+												<!-- 'perfectly-booked' -->
+												<span title="Perfectly-booked!"
+															style="color: #425; margin: 0 .35em;"
+															*ngSwitchDefault
+												>--</span>
 											</div>
 										</div>
 										<div cdkDropList class="fc" style="background-color: white;	border: solid; border-top: 0;" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt']<aH['seats']?'not-full-host':summary[evt][aH['hostKey']]['assignedSeatCnt']>aH['seats']?'over-full-host':'full-host'"	[id]="aH['hostKey']" [cdkDropListData]="aGs[evt][aH['hostKey']]" (cdkDropListDropped)="dropGuest($event, evt)" [cdkDropListEnterPredicate]="pairsPredicate()">
@@ -216,15 +240,30 @@
 											</div>
 										</div>
 									</div>
+									
 									<!-- ######################## ASSIGNED GUESTS-CARD VIEW  ### -->
 									<ng-template #cardView>
 										<div style="border: solid;" class="fc" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt']<aH['seats']?'not-full-host':summary[evt][aH['hostKey']]['assignedSeatCnt'] > aH['seats']?'over-full-host':'full-host'">
 											<div style="border-bottom: solid;" class="fr">
-												<div style="padding: 0 .5em 0 .25em;color: white;">{{aH['hostKey']}}</div>
-												<div style="background-color: white; color: red; padding: 0 0.25em 0 0.5em;">
-													
-													+3
-													
+												<div style="color: white; padding-left: .25em;">{{aH['hostKey']}}</div>
+												<div	[ngSwitch]="countSeats(
+																aH['seats'],
+																summary[evt][aH['hostKey']]['assignedSeatCnt'])
+															" style="background-color: white;"
+												>
+													<span title="Number of seats under-booked."
+																style="color: greenyellow; margin: 0 .35em;"
+																*ngSwitchCase="'under-booked'"
+													>{{openSeats}}</span>
+													<span title="Number of seats over-booked."
+																style="color: red; margin: 0 .25em;"
+																*ngSwitchCase="'over-booked'"
+													>{{openSeats}}</span>
+													<!-- 'perfectly-booked' -->
+													<span title="Perfectly-booked!"
+																style="color: #425; margin: 0 .35em;"
+																*ngSwitchDefault
+													>--</span>
 												</div>
 											</div>
 											<div class="polyBase" style="margin: 0; min-height: 8em; padding: 1em;" cdkDropList	[id]="aH['hostKey']" [cdkDropListData]="aGs[evt][aH['hostKey']]" (cdkDropListDropped)="dropGuest($event, evt)" [cdkDropListEnterPredicate]="pairsPredicate()" [class]="summary[evt][aH['hostKey']]['assignedSeatCnt']<aH['seats']?'plan-list not-full-host':summary[evt][aH['hostKey']]['assignedSeatCnt']>aH['seats']?'plan-list over-full-host':'plan-list full-host'">

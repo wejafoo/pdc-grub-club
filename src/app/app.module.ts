@@ -62,7 +62,7 @@ export function firebaseAppNameFactory() {return `weja-us`}
 		useFactory(httpLink: HttpLink): NamedOptions { return { rosterClient: {
 			cache:	new InMemoryCache(),
 			link:	httpLink.create({
-				uri: JSON.parse( localStorage.getItem('rosterService'))
+				uri: JSON.parse( localStorage.getItem('roster')).serviceUrl
 			})
 		}}}
 	}],
